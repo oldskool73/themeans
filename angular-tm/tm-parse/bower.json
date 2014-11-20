@@ -1,0 +1,15 @@
+{
+  "name": "angular-tm-parse",
+  "version": "0.1.0",
+  "homepage": "https://github.com/amay0048/themeans",
+  "authors": [
+    "Xaun Lopez <xaunlopez@gmail.com>"
+  ],
+  "description": "Angular Parse Utilities",
+  "main": "./modules/tmparse.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "private": true
+}
