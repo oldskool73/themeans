@@ -1,0 +1,24 @@
+{
+	"name": "utils",
+	"version": "1.0.0",
+	"authors": [
+		"anthony@themeans.com.au"
+	],
+	"description": "TM Utils",
+	"keywords": [
+		""
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"angular":"~1.2.0"
+	},
+	"devDependencies": {
+	}
+}
