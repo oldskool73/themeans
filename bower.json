@@ -1,0 +1,8 @@
+{
+  "name": "themeans-localstorage",
+  "version": "0.0.1",
+  "main": ["./localstorage.js"],
+  "dependencies": {
+    "angular": "~1.2.0"
+  }
+}
