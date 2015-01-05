@@ -14,13 +14,14 @@ angular.module('tm.ionic-parse',['ionic'])
     var deferred = $q.defer(),
         self = this;
 
-    // override this function using a provider in the application config
-    this.getKeys = function(){
-      return {
+    var options = {
         applicationId: '',
         javaScriptKey: '',
         clientKey: ''
-      }
+      };
+
+    this.configure = function(configOptions) {
+      angular.extend(options, configOptions);
     };
 
     var parse = $window.Parse;
@@ -28,8 +29,8 @@ angular.module('tm.ionic-parse',['ionic'])
     delete $window.Parse; 
 
     parse.initialize(
-      self.getKeys().applicationId,
-      self.getKeys().javaScriptKey
+      options.applicationId,
+      options.javaScriptKey
     );
 
     $ionicPlatform.ready(function(){
@@ -38,7 +39,7 @@ angular.module('tm.ionic-parse',['ionic'])
         var bridge = $window.parsePlugin;
         // Delete from the $window scope to ensure that we use the deps injection
         delete $window.parsePlugin;
-        bridge.initialize(self.getKeys().applicationId, self.getKeys().clientKey, function()
+        bridge.initialize(options.applicationId, options.clientKey, function()
         {
           deferred.resolve(bridge);
         },function()
