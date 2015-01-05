@@ -1,7 +1,7 @@
 {
-  "name": "themeans-consolelog",
+  "name": "themeans-localstorage",
   "version": "0.0.1",
-  "main": ["./consolelog.js"],
+  "main": ["./localstorage.js"],
   "dependencies": {
     "angular": "~1.2.0"
   }
