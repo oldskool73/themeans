@@ -1,6 +1,14 @@
 # TM Utils
 
-[TODO - brief summary]
+Simlar library to ui.utils.
+
+grunt build:bower
+# or
+grunt build:gh-pages
+# or
+grunt publish:bower
+# or
+grunt publish:gh-pages
 
 ## Demo
 http://amay0048.github.io/utils/

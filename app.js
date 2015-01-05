@@ -7,7 +7,7 @@
 
 angular.module('myApp', [
 'ngRoute', 'ngSanitize', 'ngTouch',		//additional angular modules
-'amay0048.utils'
+'tm.utils'
 ]).
 config(['$routeProvider', '$locationProvider', '$compileProvider', function($routeProvider, $locationProvider, $compileProvider) {
 	/**
