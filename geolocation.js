@@ -6,7 +6,7 @@
  * # GeoLocation
  * Service in the pressChampagneApp.
  */
-angular.module('tm.geolocation').service('tmGeoLocation', [
+angular.module('tm.geolocation', []).service('tmGeoLocation', [
   '$q',
   '$http',
   function GeoLocation($q, $http) {
