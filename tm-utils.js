@@ -13,7 +13,7 @@
  * # CL
  * Service in the doctaApp.
  */
-angular.module('tm.consolelog')
+angular.module('tm.consolelog',[])
   .service('CL', function CL($log) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     this.log = function () {
@@ -42,7 +42,7 @@ angular.module('tm.consolelog')
  * # GeoLocation
  * Service in the pressChampagneApp.
  */
-angular.module('tm.geolocation')
+angular.module('tm.geolocation',[])
   .service('tmGeoLocation', function GeoLocation($q, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
@@ -120,6 +120,6 @@ angular.module('tm.geolocation')
 'use strict';
 
 angular.module('tm.utils', [
-	'tm.geolocation',
+  'tm.geolocation',
   'tm.consolelog'
 ]);
