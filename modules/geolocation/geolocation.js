@@ -7,7 +7,7 @@
  * # GeoLocation
  * Service in the pressChampagneApp.
  */
-angular.module('tm.geolocation')
+angular.module('tm.geolocation',[])
   .service('tmGeoLocation', function GeoLocation($q, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 

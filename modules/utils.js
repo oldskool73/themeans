@@ -8,6 +8,6 @@
 'use strict';
 
 angular.module('tm.utils', [
-	'tm.geolocation',
+  'tm.geolocation',
   'tm.consolelog'
 ]);

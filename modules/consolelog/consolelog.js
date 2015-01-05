@@ -7,7 +7,7 @@
  * # CL
  * Service in the doctaApp.
  */
-angular.module('tm.consolelog')
+angular.module('tm.consolelog',[])
   .service('CL', function CL($log) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     this.log = function () {
