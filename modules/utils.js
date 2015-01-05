@@ -9,5 +9,6 @@
 
 angular.module('tm.utils', [
   'tm.geolocation',
-  'tm.consolelog'
+  'tm.consolelog',
+  'tm.localstorage'
 ]);
