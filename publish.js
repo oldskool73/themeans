@@ -13,7 +13,7 @@ module.exports = function() {
 
   function makingComponentData(memo, name){
     memo[name] = {
-      name: 'angular-ui-' + name,
+      name: 'themeans-' + name,
       main: './' + name + '.js'
     };
 
@@ -22,20 +22,20 @@ module.exports = function() {
 
   return {
     // gh-pages stuff
-    humaName : 'UI.Utils',
-    repoName : 'ui-utils',
+    humaName : 'TM.Utils',
+    repoName : 'tm-utils',
     inlineHTML : fs.readFileSync(__dirname + '/demo/demos.html'),
     inlineJS : fs.readFileSync(__dirname + '/demo/demo.js'),
     // gh-pages css dependencies
     // css : []
     // gh-pages js dependencies
-    js : ['dist/ui-utils.js'],
+    js : ['dist/tm-utils.js'],
 
 
     // HACK...
     main_dist_dir: 'main',
 
-    bowerData : { main: './ui-utils.js'},
+    bowerData : { main: './tm-utils.js'},
 
     // The sub-components
     subcomponents : modulesName.reduce(makingComponentData, {}),

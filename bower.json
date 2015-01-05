@@ -1,10 +1,10 @@
 {
-	"name": "utils-demo",
+	"name": "themeans-utils",
 	"version": "0.0.0",
 	"authors": [
 		"anthony@themeans.com.au"
 	],
-	"description": "Demo",
+	"description": "Themeans",
 	"keywords": [
 	],
 	"license": "MIT",
@@ -16,11 +16,11 @@
 		"tests"
 	],
 	"dependencies": {
-		"angular":"~1.2.0",
+		"angular":"~1.2.0"
+	},
+	"devDependencies": {
 		"angular-sanitize":"~1.2.0",
 		"angular-route":"~1.2.0",
 		"angular-touch":"~1.2.0"
-	},
-	"devDependencies": {
 	}
 }

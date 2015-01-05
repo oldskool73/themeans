@@ -128,8 +128,8 @@ module.exports = function (grunt) {
       modules: {
         options: {banner: '<%= meta.banner %>'},
         files: {
-          'dist/main/ui-utils.js': ['tmp/dep.js', 'modules/utils.js'],
-          'dist/main/ui-utils-ieshiv.js' : ['modules/ie-shiv/*.js']
+          'dist/main/tm-utils.js': ['tmp/dep.js', 'modules/utils.js'],
+          'dist/main/tm-utils-ieshiv.js' : ['modules/ie-shiv/*.js']
         }
       }
     },
@@ -137,8 +137,8 @@ module.exports = function (grunt) {
       options: {banner: '<%= meta.banner %>'},
       main: {
         files: {
-          'dist/main/ui-utils.min.js': ['dist/main/ui-utils.js'],
-          'dist/main/ui-utils-ieshiv.min.js': ['dist/main/ui-utils-ieshiv.js']
+          'dist/main/tm-utils.min.js': ['dist/main/tm-utils.js'],
+          'dist/main/tm-utils-ieshiv.min.js': ['dist/main/tm-utils-ieshiv.js']
         }
       },
       sub: {
