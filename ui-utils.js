@@ -1,3 +1,9 @@
+/**
+ * utils-demo - 
+ * @version v0.0.0 - 2015-01-05
+ * @link 
+ * @license 
+ */
 'use strict';
 
 /**
@@ -74,3 +80,16 @@ angular.module('tm.geolocation')
     return this;
   });
 
+
+/**
+@fileOverview
+
+@toc
+
+*/
+
+'use strict';
+
+angular.module('tm.utils', [
+	'tm.geolocation'
+]);
