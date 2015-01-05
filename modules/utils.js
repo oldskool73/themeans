@@ -10,5 +10,6 @@
 angular.module('tm.utils', [
   'tm.geolocation',
   'tm.consolelog',
-  'tm.localstorage'
+  'tm.localstorage',
+  'tm.ionic-parse'
 ]);
