@@ -120,49 +120,58 @@ angular.module('tm.geolocation',[])
  * Service in the airplayPutioApp.
  */
 angular.module('tm.ionic-parse',['ionic'])
-  .service('Parse', function Parse($q, $window, $ionicPlatform) {
-    // AngularJS will instantiate a singleton by calling "new" on this function
+  .provider('Parse', function ParseProvider(){
 
-    var deferred = $q.defer(),
-        self = this;
-
-    // override this function using a provider in the application config
-    this.getKeys = function(){
-      return {
+    var options = {
         applicationId: '',
         javaScriptKey: '',
         clientKey: ''
-      }
+      };
+
+    this.configure = function(configOptions) {
+      angular.extend(options, configOptions);
     };
+      
+    this.$get = (function(options){
 
-    var parse = $window.Parse;
-    // Delete from the $window scope to ensure that we use the deps injection
-    delete $window.Parse; 
+      return function($q, $window, $ionicPlatform) {
+        // AngularJS will instantiate a singleton by calling "new" on this function
 
-    parse.initialize(
-      self.getKeys().applicationId,
-      self.getKeys().javaScriptKey
-    );
+        var deferred = $q.defer(),
+            self = this;
 
-    $ionicPlatform.ready(function(){
-      if($window.parsePlugin)
-      {
-        var bridge = $window.parsePlugin;
+        var parse = $window.Parse;
         // Delete from the $window scope to ensure that we use the deps injection
-        delete $window.parsePlugin;
-        bridge.initialize(self.getKeys().applicationId, self.getKeys().clientKey, function()
-        {
-          deferred.resolve(bridge);
-        },function()
-        {
-          deferred.reject(bridge);
-        });
-      }
-    });
+        delete $window.Parse; 
 
-    parse.nativeBridge = deferred.promise;
-    
-    return parse;
+        parse.initialize(
+          options.applicationId,
+          options.javaScriptKey
+        );
+
+        $ionicPlatform.ready(function(){
+          if($window.parsePlugin)
+          {
+            var bridge = $window.parsePlugin;
+            // Delete from the $window scope to ensure that we use the deps injection
+            delete $window.parsePlugin;
+            bridge.initialize(options.applicationId, options.clientKey, function()
+            {
+              deferred.resolve(bridge);
+            },function()
+            {
+              deferred.reject(bridge);
+            });
+          }
+        });
+
+        parse.nativeBridge = deferred.promise;
+        
+        return parse;
+      }
+      
+    })(options);
+
   });
 'use strict';
 
