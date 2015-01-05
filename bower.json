@@ -1,11 +1,8 @@
 {
-  "name": "utils-demo",
+  "name": "themeans-utils",
   "version": "0.0.0",
-  "main": ["./ui-utils.js"],
+  "main": ["./tm-utils.js"],
   "dependencies": {
-    "angular": "~1.2.0",
-    "angular-sanitize": "~1.2.0",
-    "angular-route": "~1.2.0",
-    "angular-touch": "~1.2.0"
+    "angular": "~1.2.0"
   }
 }
