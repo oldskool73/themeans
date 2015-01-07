@@ -1,11 +1,8 @@
 {
-  "name": "utils-demo",
-  "version": "0.0.0",
-  "main": ["./ui-utils.js"],
+  "name": "themeans-ionic-parse-login",
+  "version": "0.0.1",
+  "main": ["./ionic-parse-login.js"],
   "dependencies": {
-    "angular": "~1.2.0",
-    "angular-sanitize": "~1.2.0",
-    "angular-route": "~1.2.0",
-    "angular-touch": "~1.2.0"
+    "angular": "~1.3.0"
   }
 }
