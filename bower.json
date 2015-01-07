@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "main": ["./ionic-parse-login.js"],
   "dependencies": {
-    "angular": "~1.3.0"
+    "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse"
   }
 }
