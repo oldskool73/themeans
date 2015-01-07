@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"module",
+				"moduleName"
+			],
+			[
 				"down",
 				"downloadData"
 			],
@@ -460,10 +464,35 @@
 	"buffers":
 	[
 		{
+			"file": "Gruntfile.js",
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 7127,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 859,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "node_modules/npm-publisher/package.json",
+			"settings":
+			{
+				"buffer_size": 9429,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bower.json",
+			"settings":
+			{
+				"buffer_size": 407,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -515,10 +544,36 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/anthonyjmay/themeans"
+		"/Users/anthonyjmay/themeans",
+		"/Users/anthonyjmay/themeans/dist",
+		"/Users/anthonyjmay/themeans/node_modules",
+		"/Users/anthonyjmay/themeans/node_modules/npm-publisher",
+		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib",
+		"/Users/anthonyjmay/themeans/out",
+		"/Users/anthonyjmay/themeans/out/built",
+		"/Users/anthonyjmay/themeans/out/built/subnpm"
 	],
 	"file_history":
 	[
+		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/common.js",
+		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/publish.js",
+		"/Users/anthonyjmay/themeans/Gruntfile.js",
+		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/Gulpfile.js",
+		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/build.js",
+		"/Users/anthonyjmay/themeans/package.json",
+		"/Users/anthonyjmay/themeans/packages/parse-email/parse-email.js",
+		"/Users/anthonyjmay/themeans/publish.js",
+		"/Users/anthonyjmay/themeans/packages/utils.js",
+		"/Users/anthonyjmay/npm-publisher/package.json",
+		"/Users/anthonyjmay/npm-test/example.js",
+		"/Users/anthonyjmay/npm-test/index.js",
+		"/Users/anthonyjmay/themeans/index.html",
+		"/Users/anthonyjmay/themeans/README.md",
+		"/Users/anthonyjmay/themeans/server.js",
+		"/Users/anthonyjmay/themeans/app.js",
+		"/Users/anthonyjmay/themeans/demo/demos.html",
+		"/Users/anthonyjmay/themeans/node_modules/angular-ui-publisher/Gulpfile.js",
+		"/Users/anthonyjmay/themeans/node_modules/angular-ui-publisher/.jshintrc",
 		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/putio.js",
 		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/filesystem.js",
 		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/localstorage.js",
@@ -627,30 +682,11 @@
 		"/Users/anthonyjmay/docta/http/app/scripts/services/patients.js",
 		"/Users/anthonyjmay/docta/cloud-code/cloud/main.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/app.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/appointmentform.js",
-		"/Users/anthonyjmay/docta/.htaccess",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/accounts.js",
-		"/Users/anthonyjmay/docta/http/app/views/login.html",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/plans.js",
-		"/Users/anthonyjmay/docta/http/app/views/patients.html",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/main.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/patients.js",
-		"/Users/anthonyjmay/docta/http/app/views/main.html",
-		"/Users/anthonyjmay/docta/http/app/scripts/filters/modulus.js",
-		"/Users/anthonyjmay/docta/http/app/views/patient.html",
-		"/Users/anthonyjmay/docta/http/app/views/template.html",
-		"/Users/anthonyjmay/docta/http/app/views/plan.html",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/plan.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/templates.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/template.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/patient.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/utilities.js",
-		"/Users/anthonyjmay/docta/http/app/styles/main.css",
-		"/Users/anthonyjmay/docta/http/app/docta.webflow/patients.html"
+		"/Users/anthonyjmay/docta/http/app/scripts/services/appointmentform.js"
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -684,6 +720,32 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"serve",
+			"fakeTargetTask",
+			"build",
+			"bwrData",
+			"clean",
+			"ngmin",
+			"ngmin:",
+			"ngmin",
+			"uglify",
+			"ngmin",
+			"foo",
+			"ngMinModulesConfig",
+			"sub",
+			"package",
+			"modules",
+			"ngmin",
+			"ModuleNames",
+			"sub",
+			"ngmin",
+			"build",
+			"dist",
+			"publish",
+			"publish.js",
+			"publish",
+			"ngMinModulesConfig",
+			"modules",
 			"a",
 			"foo",
 			"framework",
@@ -785,33 +847,7 @@
 			"var",
 			"setTotal",
 			"getName",
-			"runningThreads",
-			"mp4",
-			"download",
-			"onInitFs",
-			"options",
-			"url",
-			"docs",
-			"true",
-			"threads",
-			"download",
-			"addDownload",
-			"getLink",
-			"200",
-			"20",
-			"&amp;",
-			"&amp",
-			"console",
-			"slug",
-			"getTrakt",
-			"ion-nav-bar",
-			"true",
-			"tru",
-			"ion-pane",
-			"66px",
-			"66",
-			"console",
-			"apiHash"
+			"runningThreads"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -869,15 +905,76 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "Gruntfile.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 7127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								82,
+								109
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 859,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								475,
+								475
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 25.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "node_modules/npm-publisher/package.json",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 9429,
 						"regions":
 						{
 						},
@@ -890,13 +987,44 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 261.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "bower.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 407,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

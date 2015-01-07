@@ -9,9 +9,10 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['jshint', 'karma:unit']);
   grunt.registerTask('serve', [ 'karma:continuous', 'dist:main', 'dist:demo', 'build:gh-pages', 'connect:continuous', 'watch']);
 
-  grunt.registerTask('dist', ['dist:main', 'dist:sub', 'dist:demo']);
+  grunt.registerTask('dist', ['dist:main', 'dist:sub', 'dist:npm', 'dist:demo']);
   grunt.registerTask('dist:main', ['concat:tmp', 'concat:modules', 'clean:rm_tmp', 'uglify:main']);
   grunt.registerTask('dist:sub', ['ngmin', 'uglify:sub']);
+  grunt.registerTask('dist:npm', ['requirejs', 'uglify:npm']);
   grunt.registerTask('dist:demo', ['concat:html_doc', 'copy']);
 
 
@@ -23,8 +24,15 @@ module.exports = function (grunt) {
 
       var done = this.async();
       var spawn = require('child_process').spawn;
+      var src = './node_modules/angular-ui-publisher';
+      if(['package','subpackage'].indexOf(this.args[0]) >= 0)
+      {
+        console.log('FOO');
+        src = './node_modules/npm-publisher';
+      }
+
       spawn('./node_modules/.bin/gulp', [ prefix, '--branch='+this.args[0] ].concat(grunt.option.flags()), {
-        cwd : './node_modules/angular-ui-publisher',
+        cwd : src,
         stdio: 'inherit'
       }).on('close', done);
     };
@@ -45,6 +53,29 @@ module.exports = function (grunt) {
       src: ['*.js'],
       dest: 'dist/sub/' + moduleName
     };
+
+    return memo;
+  }
+  //
+
+  // HACK TO LIST ALL THE MODULE NAMES
+  var packageNames = grunt.file.expand({ cwd: 'packages' }, ['*','!utils.js']);
+  function requireJsConfig(memo, moduleName){
+
+    //First set up the common build layer.
+    memo.push({
+      //module names are relative to baseUrl
+      name: moduleName+'/'+moduleName,
+      //List common dependencies here. Only need to list
+      //top level dependencies, "include" will find
+      //nested dependencies.
+      // include: [
+      //   'jquery',
+      //   'app/lib',
+      //   'app/controller/Base',
+      //   'app/model/Base'
+      // ]
+    });
 
     return memo;
   }
@@ -147,6 +178,13 @@ module.exports = function (grunt) {
         src: ['**/*.js'],
         ext: '.min.js',
         dest: 'dist/sub/'
+      },
+      npm: {
+        expand: true,
+        cwd: 'dist/npm/',
+        src: ['**/*.js'],
+        ext: '.min.js',
+        dest: 'dist/npm/'
       }
     },
     clean: {
@@ -189,9 +227,19 @@ module.exports = function (grunt) {
         ]
       }
     },
-
+    requirejs: {
+      std: {
+        options: {
+          baseUrl: 'packages',
+          dir: 'dist/npm',
+          optimize: 'none',
+          modules: packageNames.reduce(requireJsConfig, [])
+        }
+      }
+    },
     ngmin: moduleNames.reduce(ngMinModulesConfig, {}),
     changelog: { options: { dest: 'CHANGELOG.md' } }
   });
 
+  grunt.loadNpmTasks('grunt-requirejs');
 };

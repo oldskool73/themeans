@@ -18,8 +18,10 @@
     "grunt-contrib-watch": "~0.4.3",
     "grunt-conventional-changelog": "~1.0.0",
     "grunt-karma": "~0.6.2",
+    "grunt-ngmin": "0.0.3",
+    "grunt-requirejs": "^0.4.2",
     "load-grunt-tasks": "~0.2.0",
-    "grunt-ngmin": "0.0.3"
+    "npm-publisher": "amay0048/npm-publisher"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
