@@ -464,35 +464,27 @@
 	"buffers":
 	[
 		{
-			"file": "Gruntfile.js",
+			"file": "out/built/subbower/ionic-parse/bower.json",
 			"settings":
 			{
-				"buffer_size": 7127,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "package.json",
-			"settings":
-			{
-				"buffer_size": 859,
+				"buffer_size": 171,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "node_modules/npm-publisher/package.json",
+			"file": "modules/utils.js",
 			"settings":
 			{
-				"buffer_size": 9429,
-				"line_ending": "Unix"
+				"buffer_size": 182,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "bower.json",
+			"file": "publish.js",
 			"settings":
 			{
-				"buffer_size": 407,
-				"line_ending": "Windows"
+				"buffer_size": 1307,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -545,22 +537,18 @@
 	"expanded_folders":
 	[
 		"/Users/anthonyjmay/themeans",
-		"/Users/anthonyjmay/themeans/dist",
-		"/Users/anthonyjmay/themeans/node_modules",
-		"/Users/anthonyjmay/themeans/node_modules/npm-publisher",
-		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib",
-		"/Users/anthonyjmay/themeans/out",
-		"/Users/anthonyjmay/themeans/out/built",
-		"/Users/anthonyjmay/themeans/out/built/subnpm"
+		"/Users/anthonyjmay/themeans/modules"
 	],
 	"file_history":
 	[
+		"/Users/anthonyjmay/themeans/modules/ionic-parse-login/ionic-parse-login.js",
+		"/Users/anthonyjmay/themeans/Gruntfile.js",
+		"/Users/anthonyjmay/themeans/bower.json",
+		"/Users/anthonyjmay/themeans/package.json",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/common.js",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/publish.js",
-		"/Users/anthonyjmay/themeans/Gruntfile.js",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/Gulpfile.js",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/build.js",
-		"/Users/anthonyjmay/themeans/package.json",
 		"/Users/anthonyjmay/themeans/packages/parse-email/parse-email.js",
 		"/Users/anthonyjmay/themeans/publish.js",
 		"/Users/anthonyjmay/themeans/packages/utils.js",
@@ -680,9 +668,7 @@
 		"/Users/anthonyjmay/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/anthonyjmay/docta/cloud-code/config/global.json",
 		"/Users/anthonyjmay/docta/http/app/scripts/services/patients.js",
-		"/Users/anthonyjmay/docta/cloud-code/cloud/main.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/app.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/appointmentform.js"
+		"/Users/anthonyjmay/docta/cloud-code/cloud/main.js"
 	],
 	"find":
 	{
@@ -720,6 +706,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"build",
 			"serve",
 			"fakeTargetTask",
 			"build",
@@ -846,8 +833,7 @@
 			"setTotal",
 			"var",
 			"setTotal",
-			"getName",
-			"runningThreads"
+			"getName"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -910,19 +896,75 @@
 			[
 				{
 					"buffer": 0,
-					"file": "Gruntfile.js",
+					"file": "out/built/subbower/ionic-parse/bower.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7127,
+						"buffer_size": 171,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								82,
-								109
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "modules/utils.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 182,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								176,
+								176
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "publish.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1307,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								566,
+								566
 							]
 						],
 						"settings":
@@ -932,99 +974,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "package.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 859,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								475,
-								475
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 25.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "node_modules/npm-publisher/package.json",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 9429,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 261.0,
+						"translation.y": 325.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "bower.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 407,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
 					"type": "text"
 				}
 			]

@@ -178,23 +178,87 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
           });
 
         };
-
+        
         $scope.resetPasswordModal = $ionicModal.fromTemplate(resetTmpl, {
           scope: $scope,
           animation: $scope.modalAnimation
         });
-
-        $scope.forgotPasswordOnClick = function(){
+        $scope.forgotPasswordOnClick = function () {
           $scope.resetPasswordModal.show();
+        };
+        $scope.resetFormOnSubmit = function(){
+
+          $ionicLoading.show({
+            template: 'Loading...',
+            duration: 10000
+          });
+
+          Parse.User.requestPasswordReset($scope.user.email, {
+            success: function() {
+              // Password reset request was sent successfully
+              $ionicLoading.hide();
+              $ionicPopup.alert({
+                title: 'An email with a link to reset your password has been sent.'
+              }).then(function(){
+                $scope.resetPasswordModal.hide();
+              });
+            },
+            error: function(error) {
+              var message = error.message;
+              if(error.code === 100)
+              {
+                message = 'Please check your internet connnection and try again.';
+              }
+              // Show the error message somewhere
+              $ionicLoading.hide();
+              $ionicPopup.alert({
+                title: message
+              });
+            }
+          });
+
         };
 
         $scope.createAccountModal = $ionicModal.fromTemplate(createTmpl, {
           scope: $scope,
           animation: $scope.modalAnimation
         });
-
-        $scope.createAccountOnClick = function(){
+        $scope.createAccountOnClick = function () {
           $scope.createAccountModal.show();
+        };
+        $scope.createFormOnSubmit = function(){
+          
+          $ionicLoading.show({
+            template: 'Loading...',
+            duration: 10000
+          });
+
+          var user = new Parse.User();
+          user.set('username', $scope.user.username);
+          user.set('password', $scope.user.password);
+          user.set('email', $scope.user.email);
+           
+          user.signUp(null, {
+            success: function(user) {
+              // Hooray! Let them use the app now.
+              $ionicLoading.hide();
+              $scope.createAccountModal.hide();
+              $scope.onLoginSuccess(user);
+            },
+            error: function(user, error) {
+              var message = error.message;
+              if(error.code === 100)
+              {
+                message = 'Please check your internet connnection and try again.';
+              }
+              // Show the error message somewhere and let the user try again.
+              $ionicLoading.hide();
+              $ionicPopup.alert({
+                title: message
+              });
+            }
+          });
+
         };
       },
       link: function postLink(scope, element, attrs) {

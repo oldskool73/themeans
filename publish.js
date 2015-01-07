@@ -24,6 +24,11 @@ module.exports = function() {
           "ionic": "v1.0.0-beta.14"
         };
         break;
+      case 'ionic-parse-login':
+        memo[name].dependencies = {
+          "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse"
+        };
+        break;
     }
 
     return memo;
