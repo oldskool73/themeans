@@ -22,6 +22,7 @@ module.exports = function() {
         memo[name].dependencies = {
           "angular":"~1.3.0",
           "ionic": "v1.0.0-beta.14",
+          "parse": "1.3.1",
           "parse-angular-patch": "master"
         };
         break;
