@@ -467,7 +467,7 @@
 			"file": "publish.js",
 			"settings":
 			{
-				"buffer_size": 1350,
+				"buffer_size": 1378,
 				"line_ending": "Unix"
 			}
 		}
@@ -883,15 +883,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1350,
+						"buffer_size": 1378,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								356,
+								356
 							]
 						],
 						"settings":
@@ -901,7 +901,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 149.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,

@@ -53,7 +53,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
     '</div>';
 
     var createTmpl = '<ion-modal-view>'+
-      '<ion-header-bar class="bar-dark">'+
+      '<ion-header-bar class="{{headerBarClass}}">'+
         '<h1 class="title">Create Account</h1>'+
         '<div class="button button-clear" ng-click="createAccountModal.hide()">'+
           '<span class="icon ion-close"></span>'+
@@ -100,7 +100,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
     '</ion-modal-view>';
 
     var resetTmpl = '<ion-modal-view>'+
-      '<ion-header-bar class="bar-dark">'+
+      '<ion-header-bar class="{{headerBarClass}}">'+
         '<h1 class="title">Enter Your Email</h1>'+
         '<div class="button button-clear" ng-click="resetPasswordModal.hide()">'+
           '<span class="icon ion-close"></span>'+
@@ -132,6 +132,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
       template: mainTmpl,
       restrict: 'E',
       scope:{
+        headerBarClass:'@',
       	signInButtonClass:'@',
         signInButtonText:'@',
       	createAccountButtonClass:'@',
