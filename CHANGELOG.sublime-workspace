@@ -4,124 +4,24 @@
 		"selected_items":
 		[
 			[
-				"module",
-				"moduleName"
+				"curre",
+				"currentState"
 			],
 			[
-				"down",
-				"downloadData"
+				"pratitioner",
+				"practitionerModel"
 			],
 			[
-				"d",
-				"dataTotal"
+				"google",
+				"googlePlace"
 			],
 			[
-				"loca",
-				"localStorage"
+				"create",
+				"createLocationFromPlace"
 			],
 			[
-				"ex",
-				"externalWindowReference"
-			],
-			[
-				"file",
-				"fileSystemURL"
-			],
-			[
-				"process",
-				"processPending"
-			],
-			[
-				"get",
-				"getFullPath"
-			],
-			[
-				"err",
-				"ERR"
-			],
-			[
-				"con",
-				"continue"
-			],
-			[
-				"on",
-				"onGetFileEntry"
-			],
-			[
-				"append",
-				"appendContent"
-			],
-			[
-				"c",
-				"createFileEntry"
-			],
-			[
-				"dow",
-				"download"
-			],
-			[
-				"data",
-				"dataDir"
-			],
-			[
-				"fs",
-				"fsTest"
-			],
-			[
-				"runn",
-				"runningThreads"
-			],
-			[
-				"active",
-				"activeDownloads"
-			],
-			[
-				"trans",
-				"transferComplete"
-			],
-			[
-				"res",
-				"responseURL"
-			],
-			[
-				"download",
-				"downloader"
-			],
-			[
-				"pro",
-				"progress"
-			],
-			[
-				"Do",
-				"DownloadThread"
-			],
-			[
-				"stre",
-				"streamUrl"
-			],
-			[
-				"re",
-				"requestToken"
-			],
-			[
-				"playb",
-				"playback_started"
-			],
-			[
-				"play",
-				"nowPlaying"
-			],
-			[
-				"aP",
-				"aPlay"
-			],
-			[
-				"airplay",
-				"airplayButtonOnClick"
-			],
-			[
-				"tra",
-				"traktCB"
+				"place",
+				"place_id"
 			],
 			[
 				"ACL",
@@ -138,10 +38,6 @@
 			[
 				"Doc",
 				"DoctaUserId"
-			],
-			[
-				"create",
-				"createEntry"
 			],
 			[
 				"init",
@@ -196,10 +92,6 @@
 				"SocialLogin"
 			],
 			[
-				"google",
-				"googleInactiveClass"
-			],
-			[
 				"SO",
 				"SocialLogin"
 			],
@@ -222,6 +114,10 @@
 			[
 				"address",
 				"address_components"
+			],
+			[
+				"trans",
+				"translateKey"
 			],
 			[
 				"manual",
@@ -276,10 +172,6 @@
 				"ReSendCount"
 			],
 			[
-				"place",
-				"placeResult"
-			],
-			[
 				"Credit",
 				"CreditInquiryData"
 			],
@@ -296,6 +188,14 @@
 				"cookiePrefix"
 			],
 			[
+				"d",
+				"deferred"
+			],
+			[
+				"con",
+				"consumerId"
+			],
+			[
 				"CreditIn",
 				"CreditInquiry"
 			],
@@ -310,6 +210,10 @@
 			[
 				"proc",
 				"processingStatus"
+			],
+			[
+				"re",
+				"response"
 			],
 			[
 				"string",
@@ -416,12 +320,20 @@
 				"patientId"
 			],
 			[
+				"pro",
+				"processFileList"
+			],
+			[
 				"Tra",
 				"traktLogin"
 			],
 			[
 				"trakt",
 				"traktCB3"
+			],
+			[
+				"tra",
+				"traktCB2"
 			],
 			[
 				"putio",
@@ -463,14 +375,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "modules/ionic-parse/ionic-parse.js",
-			"settings":
-			{
-				"buffer_size": 2293,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -518,161 +422,148 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/Users/anthonyjmay/themeans",
-		"/Users/anthonyjmay/themeans/modules",
-		"/Users/anthonyjmay/themeans/modules/ionic-parse",
-		"/Users/anthonyjmay/themeans/modules/ionic-parse-login"
-	],
 	"file_history":
 	[
-		"/Users/anthonyjmay/themeans/publish.js",
-		"/Users/anthonyjmay/themeans/modules/ionic-parse-login/ionic-parse-login.js",
-		"/Users/anthonyjmay/themeans/package.json",
-		"/Users/anthonyjmay/themeans/Gruntfile.js",
-		"/Users/anthonyjmay/themeans/out/built/subbower/ionic-parse/bower.json",
-		"/Users/anthonyjmay/themeans/modules/utils.js",
-		"/Users/anthonyjmay/themeans/bower.json",
-		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/common.js",
-		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/publish.js",
-		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/Gulpfile.js",
-		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/build.js",
-		"/Users/anthonyjmay/themeans/packages/parse-email/parse-email.js",
-		"/Users/anthonyjmay/themeans/packages/utils.js",
-		"/Users/anthonyjmay/npm-publisher/package.json",
-		"/Users/anthonyjmay/npm-test/example.js",
-		"/Users/anthonyjmay/npm-test/index.js",
-		"/Users/anthonyjmay/themeans/index.html",
-		"/Users/anthonyjmay/themeans/README.md",
-		"/Users/anthonyjmay/themeans/server.js",
-		"/Users/anthonyjmay/themeans/app.js",
-		"/Users/anthonyjmay/themeans/demo/demos.html",
-		"/Users/anthonyjmay/themeans/node_modules/angular-ui-publisher/Gulpfile.js",
-		"/Users/anthonyjmay/themeans/node_modules/angular-ui-publisher/.jshintrc",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/putio.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/filesystem.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/localstorage.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader-thread.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader-thread-bak.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader-download.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/app.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader-manager.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader-file.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/contentscript.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/options.html",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/options.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/src/android/LargeFiles.java",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/src/ios/CDVLargeFiles.m",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/plugin.xml",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/background.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/Gruntfile.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/www/largefiles.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/platforms/ios/AirplayPutio/AirplayPutio-Info.plist",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/src/ios/CDVLargeFiles.h",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/src/ios/KxSMB/lib/talloc_stack.h",
-		"/Users/anthonyjmay/filter-io/ionic-putio/package.json",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/localfiles.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/fi.peekpoke.cordova.dnssd/plugin.xml",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/fi.peekpoke.cordova.dnssd/dnssd.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/config.xml",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/downloads.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/index.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/trakt.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/splashscreen.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/splashscreen.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/filedetail.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/styles/main.css",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/localfiledetail.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/directives/video-player.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/filedetail.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/localfiledetail.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/listfiles.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/menu.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/listfiles.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/downloads.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/views/local.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/videoplayer.js",
-		"/Users/anthonyjmay/Library/Developer/CoreSimulator/Devices/21C1630F-A723-4321-8B42-4437CA8ACC66/data/Containers/Data/Application/746D1867-7687-409E-900A-05A0B5F59013/tmp/The Simpsons [11x08] Take My Wife - Sleaze.avi-part-0.mp4",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers/menu.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/bower.json",
-		"/Users/anthonyjmay/filter-io/ionic-putio/Gruntfile.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file-transfer/src/ios/CDVFileTransfer.m",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file-transfer/www/FileTransfer.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file-transfer/plugin.xml",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file-transfer/src/android/FileTransfer.java",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.large-files/www/joinfiles.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.joinfiles/src/ios/CDVJoinFiles.h",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.joinfiles/plugin.xml",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.joinfiles/www/joinfiles.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.joinfiles/src/ios/CDVJoinFiles.m",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file/www/blackberry10/FileProxy.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file/www/FileReader.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/www/scripts/services/downloader-file.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/www/scripts/services/downloader-download.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.statusbar/plugin.xml",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.statusbar/www/statusbar.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.joinfiles/www/com.themeans.joinfiles.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/plugins/com.themeans.joinfiles/src/ios/CDVcom.themeans.joinfiles.m",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/services/downloader-file-bak.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/platforms/ios/AirplayPutio/config.xml",
-		"/Users/anthonyjmay/filter-io/ionic-putio/EXAMPLE.md",
-		"/Users/anthonyjmay/filter-io/ionic-putio/part2",
-		"/Users/anthonyjmay/filter-io/ionic-putio/part1",
-		"/Users/anthonyjmay/filter-io/putio/app/index.html",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/injected.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/templates/playlists.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/templates/login.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/controllers.js",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/templates/browse.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/templates/playlist.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/templates/search.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/templates/menu.html",
-		"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts/config.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/popup.html",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/popup.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/template.js",
-		"/Users/anthonyjmay/filter-io/putio/app.app/Contents/Resources/public/views/main.html",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/chromereload.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/manifest.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/package.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/bower.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/dist/scripts/popup.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/styles/main.css",
-		"/Users/anthonyjmay/filter-io/putio/app/scripts/services/Videos.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/chrome-putio",
-		"/Users/anthonyjmay/docta/cloud-code/cloud/datalock.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/practitioners.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioners.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/settings.js",
-		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/index.html",
-		"/Users/anthonyjmay/docta/http/app/views/practitioners.html",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/geolocation.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/team.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioner.js",
-		"/Users/anthonyjmay/docta/http/Gruntfile.js",
-		"/Users/anthonyjmay/docta/docta.sublime-project",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/plans.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/health-plans.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/list-plans.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/daily-summary.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/modal/booking.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/daily-summary.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/booking.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/booking.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/modal/book.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/modal/mood-check.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/modal/gym-checkin.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/app.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/rewards-store.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/tally.html",
+		"/Users/anthonyjmay/docta/ionic/wireframe.html",
+		"/Users/anthonyjmay/docta/ionic/app/lib/themeans-ionic-parse-login/ionic-parse-login.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/login.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/app.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/settings.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/login.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board/checkup.html",
+		"/Users/anthonyjmay/docta/ionic/app/index.html",
+		"/Users/anthonyjmay/docta/ionic/app/styles/ionic.app.scss",
+		"/Users/anthonyjmay/docta/ionic/README.md",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/settings.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board/summary.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/tally.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/app/health-plan-entries.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board/tetanus.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/rewards.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/app/list-plan-entries.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/menu.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board/on-board-age.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/daily-summary.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/app-daily-summary.html",
+		"/Users/anthonyjmay/Downloads/noun_8761_cc.png",
+		"/Users/anthonyjmay/docta/ionic/app/views/daily-summary.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-summary.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/start.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/on-board.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-welcome.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-bp.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-cholesterol.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-dental.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-skin.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-checkup.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-age.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-diabetes.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board-tetanus.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/on-board.js",
+		"/Users/anthonyjmay/docta/ionic/config.xml",
+		"/Users/anthonyjmay/docta/ionic/app/views/on-board.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/menu.html",
 		"/Users/anthonyjmay/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/Users/anthonyjmay/docta/cloud-code/config/global.json"
+		"/Users/anthonyjmay/docta/ionic/bower.json",
+		"/Users/anthonyjmay/docta/ionic/app/views/list-plan-entries.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/survey.js",
+		"/Users/anthonyjmay/docta/ionic/app/views/survey.html",
+		"/Users/anthonyjmay/docta/ionic/app/views/list-plans.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/list-plans.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/list-plan-entries.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/templates.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/practitioners.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/practitioner.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/plan.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/utilities.js",
+		"/Users/anthonyjmay/docta/ionic/Gruntfile.js",
+		"/Users/anthonyjmay/docta/ionic/app/templates/menu.html",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/controllers/start.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/patients.js",
+		"/Users/anthonyjmay/docta/ionic/app/scripts/services/patientform.js",
+		"/Users/anthonyjmay/docta/docta.sublime-project",
+		"/Users/anthonyjmay/docta/http/docta.sublime-project",
+		"/Users/anthonyjmay/docta/ionic/package.json",
+		"/Users/anthonyjmay/docta/ionic/.jshintrc",
+		"/Users/anthonyjmay/docta/DoctaApp/bower.json",
+		"/Users/anthonyjmay/docta/DoctaApp/package.json",
+		"/Users/xaunlopez/Projects/code/themeans/docta/iOS/External/html/contact_search/index.html",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioner.js",
+		"/Users/anthonyjmay/docta/http/app/index.html",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/settings.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioners.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/teams.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/practitioners.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/team.js",
+		"/Users/anthonyjmay/docta/cloud-code/cloud/teamfromplace.js",
+		"/Users/anthonyjmay/docta/cloud-code/cloud/email.js",
+		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/index.html",
+		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/js/controllers/practitioners.js",
+		"/Users/anthonyjmay/docta/cloud-code/cloud/datalock.js",
+		"/Users/anthonyjmay/docta/http/bower.json",
+		"/Users/anthonyjmay/docta/http/app/scripts/app.js",
+		"/Users/anthonyjmay/docta/http/app/bower_components/ngQuickDate/.bower.json",
+		"/Users/anthonyjmay/docta/http/app/scripts/directives/addresscomplete.js",
+		"/Users/anthonyjmay/docta/http/app/views/settings.html",
+		"/Users/anthonyjmay/docta/cloud-code/config/global.json",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/patients.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/templates.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/accounts.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/patientform.js",
+		"/Users/anthonyjmay/docta/cloud-code/cloud/main.js",
+		"/Users/anthonyjmay/docta/iOS/Doctor/Images.xcassets/20141023_docta_assets/clock.imageset/Contents.json",
+		"/Users/anthonyjmay/docta/iOS/External/html/website_search/index.html",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/utilities.js",
+		"/Users/anthonyjmay/docta/iOS/External/html/website_search/js/exclusion.js",
+		"/Users/anthonyjmay/docta/iOS/External/html/website_search/js/search.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/plans.js",
+		"/Users/anthonyjmay/docta/http/node_modules/grunt-google-cdn/node_modules/bower/node_modules/hogan.js/Makefile",
+		"/Users/anthonyjmay/docta/http/app/scripts/filters/groupbyperiod.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/services/appointmentform.js",
+		"/Users/anthonyjmay/docta/.htaccess",
+		"/Users/anthonyjmay/docta/http/app/views/login.html",
+		"/Users/anthonyjmay/docta/http/app/views/patients.html",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/main.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/patients.js",
+		"/Users/anthonyjmay/docta/http/app/views/main.html",
+		"/Users/anthonyjmay/docta/http/app/scripts/filters/modulus.js",
+		"/Users/anthonyjmay/docta/http/app/views/patient.html",
+		"/Users/anthonyjmay/docta/http/app/views/template.html",
+		"/Users/anthonyjmay/docta/http/app/views/plan.html",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/plan.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/template.js",
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/patient.js",
+		"/Users/anthonyjmay/docta/http/app/styles/main.css",
+		"/Users/anthonyjmay/docta/http/app/docta.webflow/patients.html",
+		"/Users/anthonyjmay/docta/http/app/views/templates.html",
+		"/Users/anthonyjmay/docta/http/app/styles/dist.css"
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
 		"height": 93.0,
 		"where_history":
 		[
-			"/Users/anthonyjmay/filter-io/ionic-putio/app/scripts",
-			"/Users/anthonyjmay/filter-io/ionic-putio/plugins/org.apache.cordova.file/www",
-			"<open files>",
-			"/Users/anthonyjmay/filter-io/ionic-putio/scripts",
-			"/Users/anthonyjmay/filter-io/ionic-putio",
-			"/Users/anthonyjmay/filter-io/putio",
-			"/Users/anthonyjmay/docta/http/app/scripts/",
-			"/Users/anthonyjmay/docta/http/app/scripts/controllers",
+			"/Users/anthonyjmay/docta/ionic/app/views/",
+			"/Users/anthonyjmay/docta/ionic/app",
 			"/Users/anthonyjmay/docta/http/app/scripts",
 			"/Users/anthonyjmay/docta/http",
 			"/Volumes/BOOTCAMP/zipmoney/yatango/Customer.ZipMoney.Web/app/scripts",
@@ -692,145 +583,144 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"this",
-			"build",
-			"serve",
-			"fakeTargetTask",
-			"build",
-			"bwrData",
-			"clean",
-			"ngmin",
-			"ngmin:",
-			"ngmin",
-			"uglify",
-			"ngmin",
-			"foo",
-			"ngMinModulesConfig",
-			"sub",
-			"package",
-			"modules",
-			"ngmin",
-			"ModuleNames",
-			"sub",
-			"ngmin",
-			"build",
-			"dist",
-			"publish",
-			"publish.js",
-			"publish",
-			"ngMinModulesConfig",
-			"modules",
-			"a",
-			"foo",
-			"framework",
-			"jsonData",
-			"DownloadThread",
-			"active",
-			"      setObject: function(key, value) {\n        $window.localStorage[key] = angular.toJson(value);\n      },\n      getObject: function(key) {\n        return angular.fromJson($window.localStorage[key] || '{}');\n      }",
-			"threadsPointer",
-			"splitDownloadIntoThreads",
-			"CheckUrl",
-			"Filesystem.getThreadSize",
-			"Filesystem",
-			"console",
-			"FileSystem",
-			"part",
-			"baseFile",
-			"appendFile",
-			"Local",
-			"videoElement",
-			"\\t",
-			"splitDownloadIntoThreads",
-			"checkURL",
-			"updateActiveThreads",
-			"true",
-			"aCheck",
-			"              \n",
-			"getFile",
-			"file",
-			"get",
-			"timeout",
-			"rootScope",
-			"timeout",
-			"file",
-			"Downloads",
-			"blob",
-			"updateActiveThreads",
-			"start",
-			"complete",
-			"onDownloadComplete",
-			"complete",
-			"remove",
-			"debugger",
-			"create",
-			"stream",
-			"onXhrFirstDownloadProgress",
-			"ionic",
-			"fail",
-			"targetUrl",
-			"target",
-			"getFUll",
-			"appendFile",
-			"localfile",
-			"cool",
-			"join",
-			"coolMethod",
-			"blob",
-			"_localURL",
-			"this._localURL;",
-			"initRead",
-			"readAsArrayBuffer",
+			"jsonFromParse",
+			"getPlans",
+			"Blue",
+			"check",
+			"titlw",
+			"li",
+			")\">",
+			"  ",
+			"</ion-radio ng-model=\"gym\">",
+			"ion-checkbox",
+			"gym",
+			"img/",
+			"  ",
+			"tally",
+			"menu",
+			"  ",
+			"my health plan",
+			"  ",
+			"Profile",
+			"AppRewardsCtrl",
+			"templates/login",
+			"templates",
+			"login",
+			"on-board-",
+			"menu",
+			"md-content",
+			"scroll",
+			"dental",
+			"skinCheck",
+			"md-content",
+			"bloodPressure",
+			"skinCheck",
+			"h3",
+			"Welcome",
+			"detalCheck",
+			"dental",
+			"diabetesCheck",
+			"skinCheck",
+			"Diabetes",
+			"diabetes",
+			"lastCheckup",
+			"skinCheck",
+			"lastCheckup",
+			"skin",
+			"10",
+			"9",
+			"Years",
+			"ageRange",
+			"p",
+			"updateParseObject",
+			"Utilities",
+			"Practitioner",
+			"Practitioners",
+			"Utilites",
+			"Utilities",
+			"Practitioner",
+			"Templates",
+			"practitioner",
+			"Practitioners",
+			"Templates",
+			"plans",
+			"($",
+			">\n",
+			"Entry",
+			"ngModel",
+			"PlanAppointment",
+			"assertive",
+			"})\n",
+			"login",
+			"docta",
+			"yeoman",
+			"//",
+			"TeamMap",
+			"createTeamMap",
+			"'",
+			"sendGrid",
+			"profile",
+			"place",
+			"Parse.Cloud.",
+			"      \n",
+			"req",
+			"definitions",
+			"email",
+			"getParsePractitionerDefinition",
+			"results",
+			"updateParseObject",
+			"Parse.Cloud",
+			"\"",
+			"\":.*",
+			"\"",
+			": \".*",
+			"like",
+			"docta",
+			"addNameForm",
+			"addName",
 			"<",
-			"file",
-			"getContent",
-			"console",
-			"file",
-			"append",
-			"filename",
+			"Patient",
+			"groupedPatients",
+			"Profile",
+			"profileMap",
+			"response",
+			"getTemplateById",
+			"this",
+			"'Profile'",
 			"create",
-			"writer",
-			"checkCompletion",
-			"status.error",
-			"error",
-			"stopWritingToFile",
-			"start",
-			"splitDownloadIntoThreads",
-			"onFirstDownloadProgress",
-			"threadsPointer",
-			"thread.",
-			"start",
-			"updateA",
-			".type",
-			"type",
-			"File",
-			"type",
-			"error.",
-			"error",
-			"splitDownloadIntoThreads",
-			"chunkThreads",
-			"createThreads",
-			"chunkThreads",
-			"chunkThread",
-			"complete",
-			"threads",
-			"getFileEntry",
-			"write",
-			"thread",
-			"fileSystem",
-			"setTotal",
-			"var",
-			"setTotal"
+			"Profile",
+			"debugger",
+			" \n",
+			"ngEntry",
+			"className",
+			";\n",
+			"template",
+			"create",
+			"morgan",
+			"head",
+			"ga",
+			"find",
+			"did you",
+			"        \n",
+			"ga",
+			"camera",
+			"submit",
+			"bank",
+			"form",
+			"upload",
+			"zipmoney-checkout7150642.webflow",
+			"progressbar",
+			"progress"
 		],
 		"highlight": true,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": true,
+		"regex": false,
 		"replace_history":
 		[
-			"  ",
-			"\\n\\t<",
-			"\\t<",
-			"&",
+			" ",
+			"images/",
+			" ",
 			"'",
 			"",
 			"zipmoney-checkout.webflow",
@@ -872,44 +762,13 @@
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": true
+		"wrap": false
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "modules/ionic-parse/ionic-parse.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2293,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1147,
-								1147
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 2.0,
-						"translation.y": 208.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -948,7 +807,7 @@
 	{
 		"height": 388.0
 	},
-	"project": "themeans.sublime-project",
+	"project": "CHANGELOG.sublime-project",
 	"replace":
 	{
 		"height": 50.0
@@ -972,19 +831,27 @@
 	},
 	"select_symbol":
 	{
-		"height": 392.0,
+		"height": 47.0,
 		"selected_items":
 		[
 			[
-				"sanatise",
-				"sanatise"
+				"getPractitionerByParseUser",
+				"getPractitionerByParseUser"
 			],
 			[
-				"addMove",
-				"addMovieMeta"
+				"getTeamMapsByParseProfile",
+				"getTeamMapsByParseProfile"
 			],
 			[
-				"updatePractitioner",
+				"",
+				"$(BUILD):"
+			],
+			[
+				"updateParseObject",
+				"updateParseObject"
+			],
+			[
+				"updatePractitoner",
 				"updatePractitioner"
 			],
 			[
@@ -998,10 +865,6 @@
 			[
 				"createPlanFrom",
 				"createPlanFromTemplate"
-			],
-			[
-				"",
-				"$$parse"
 			],
 			[
 				"createplanfrom",
@@ -1030,7 +893,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 254.0,
+	"side_bar_width": 302.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
