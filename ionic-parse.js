@@ -23,6 +23,22 @@ angular.module('tm.ionic-parse', ['ionic']).provider('Parse', function ParseProv
       // Delete from the $window scope to ensure that we use the deps injection
       delete $window.Parse;
       parse.initialize(options.applicationId, options.javaScriptKey);
+      parse.Object.prototype.getNgModel = function () {
+        var self = this, key, child;
+        for (key in self.attributes) {
+          child = self.get(key);
+          if (typeof child.getNgModel === 'function') {
+            self.set(key, child.getNgModel());
+          } else if (Array.isArray(child)) {
+            for (var i = 0; i < child.length; i++) {
+              if (typeof child[i].getNgModel === 'function') {
+                child[i] = child[i].getNgModel();
+              }
+            }
+          }
+        }
+        return angular.fromJson(angular.toJson(self));
+      };
       $ionicPlatform.ready(function () {
         if ($window.parsePlugin) {
           var bridge = $window.parsePlugin;
