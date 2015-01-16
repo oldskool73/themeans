@@ -1,5 +1,12 @@
 # TM Utils
 
+## Pushing changes
+grunt dist
+grunt build:subbower
+grunt publish:subbower
+cd out/clones/subbower/[moduleName]
+git push
+
 Simlar library to ui.utils.
 
 grunt build:bower

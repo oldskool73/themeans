@@ -463,14 +463,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "modules/ionic-parse/ionic-parse.js",
-			"settings":
-			{
-				"buffer_size": 2293,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -520,25 +512,27 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/anthonyjmay/themeans",
-		"/Users/anthonyjmay/themeans/modules",
-		"/Users/anthonyjmay/themeans/modules/ionic-parse",
-		"/Users/anthonyjmay/themeans/modules/ionic-parse-login"
+		"/Users/xaunlopez/Projects/code/themeans/themeans",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation"
 	],
 	"file_history":
 	[
-		"/Users/anthonyjmay/themeans/publish.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/Gruntfile.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/out/built/subbower/ionic-parse/bower.json",
 		"/Users/anthonyjmay/themeans/modules/ionic-parse-login/ionic-parse-login.js",
-		"/Users/anthonyjmay/themeans/package.json",
 		"/Users/anthonyjmay/themeans/Gruntfile.js",
-		"/Users/anthonyjmay/themeans/out/built/subbower/ionic-parse/bower.json",
-		"/Users/anthonyjmay/themeans/modules/utils.js",
 		"/Users/anthonyjmay/themeans/bower.json",
+		"/Users/anthonyjmay/themeans/package.json",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/common.js",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/publish.js",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/Gulpfile.js",
 		"/Users/anthonyjmay/themeans/node_modules/npm-publisher/lib/build.js",
 		"/Users/anthonyjmay/themeans/packages/parse-email/parse-email.js",
+		"/Users/anthonyjmay/themeans/publish.js",
 		"/Users/anthonyjmay/themeans/packages/utils.js",
 		"/Users/anthonyjmay/npm-publisher/package.json",
 		"/Users/anthonyjmay/npm-test/example.js",
@@ -651,10 +645,7 @@
 		"/Users/anthonyjmay/docta/http/app/scripts/services/geolocation.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/controllers/team.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioner.js",
-		"/Users/anthonyjmay/docta/http/Gruntfile.js",
-		"/Users/anthonyjmay/docta/docta.sublime-project",
-		"/Users/anthonyjmay/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/Users/anthonyjmay/docta/cloud-code/config/global.json"
+		"/Users/anthonyjmay/docta/http/Gruntfile.js"
 	],
 	"find":
 	{
@@ -692,7 +683,6 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"this",
 			"build",
 			"serve",
 			"fakeTargetTask",
@@ -819,7 +809,8 @@
 			"fileSystem",
 			"setTotal",
 			"var",
-			"setTotal"
+			"setTotal",
+			"getName"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -877,39 +868,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "modules/ionic-parse/ionic-parse.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2293,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1147,
-								1147
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 2.0,
-						"translation.y": 208.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
