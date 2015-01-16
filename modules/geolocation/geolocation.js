@@ -40,7 +40,7 @@ angular.module('tm.geolocation',[])
 
     this.getAddressFromLatLng = function (position) {
       var deferred = $q.defer();
-      
+
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB_d9eqLvlGAGf1K4a7zJ6cJgdp9JqOts8&latlng=' +
                 position.latitude + ',' +
                 position.longitude;
@@ -55,13 +55,26 @@ angular.module('tm.geolocation',[])
         }
         else
         {
-          if (data.status === "ZERO_RESULTS")
+          if (data.status === 'ZERO_RESULTS')
           {
-            deferred.reject("We couldn't find your position. Please enter your address:");
+            deferred.reject({
+              message: 'We couldn\'t find your position. Please enter your address:',
+              response: data
+            });
+          }
+          else if (data.status === 'OVER_QUERY_LIMIT')
+          {
+            deferred.reject({
+              message: 'Something went wrong, Please try again later.',
+              response: data
+            });
           }
           else
           {
-            deferred.reject("Something went wrong, Please try again.");
+            deferred.reject({
+              message: 'Something went wrong, Please try again later.',
+              response: data
+            });
           }
         }
       }, function (data, status) {
