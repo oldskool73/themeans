@@ -48,7 +48,7 @@ angular.module('tm.geolocation',[])
       $http.get(url).then(function (response) {
         var data = response.data;
 
-        if (data.status === 'OK')
+        if (data.statusText === 'OK')
         {
           var address_components = data.results[0];
           deferred.resolve(address_components);

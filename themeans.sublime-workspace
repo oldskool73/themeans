@@ -519,6 +519,8 @@
 	"file_history":
 	[
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/README.md",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp-util/lib/replaceExtension.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/Gruntfile.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
@@ -643,9 +645,7 @@
 		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/index.html",
 		"/Users/anthonyjmay/docta/http/app/views/practitioners.html",
 		"/Users/anthonyjmay/docta/http/app/scripts/services/geolocation.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/team.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioner.js",
-		"/Users/anthonyjmay/docta/http/Gruntfile.js"
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/team.js"
 	],
 	"find":
 	{
@@ -919,6 +919,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"read",
+				"README.md"
+			]
 		],
 		"width": 0.0
 	},
