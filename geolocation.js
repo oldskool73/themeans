@@ -32,7 +32,7 @@ angular.module('tm.geolocation', []).service('tmGeoLocation', [
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyB_d9eqLvlGAGf1K4a7zJ6cJgdp9JqOts8&latlng=' + position.latitude + ',' + position.longitude;
       $http.get(url).then(function (response) {
         var data = response.data;
-        if (data.statusText === 'OK') {
+        if (data.status === 'OK' || data.statusText === 'OK') {
           var address_components = data.results[0];
           deferred.resolve(address_components);
         } else {
