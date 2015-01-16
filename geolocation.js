@@ -37,9 +37,20 @@ angular.module('tm.geolocation', []).service('tmGeoLocation', [
           deferred.resolve(address_components);
         } else {
           if (data.status === 'ZERO_RESULTS') {
-            deferred.reject('We couldn\'t find your position. Please enter your address:');
+            deferred.reject({
+              message: 'We couldn\'t find your position. Please enter your address:',
+              response: data
+            });
+          } else if (data.status === 'OVER_QUERY_LIMIT') {
+            deferred.reject({
+              message: 'Something went wrong, Please try again later.',
+              response: data
+            });
           } else {
-            deferred.reject('Something went wrong, Please try again.');
+            deferred.reject({
+              message: 'Something went wrong, Please try again later.',
+              response: data
+            });
           }
         }
       }, function (data, status) {
