@@ -683,6 +683,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"out/clones/subbower",
 			"build",
 			"serve",
 			"fakeTargetTask",
@@ -809,8 +810,7 @@
 			"fileSystem",
 			"setTotal",
 			"var",
-			"setTotal",
-			"getName"
+			"setTotal"
 		],
 		"highlight": true,
 		"in_selection": false,
