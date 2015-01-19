@@ -10,8 +10,9 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
   // private object
   var options = { key: '' };
   // Public API for configuration
-  this.setGoogleApiKey = function (k) {
-    options.key = k;
+  this.configure = function (configOptions) {
+    // merges objects together
+    angular.extend(options, configOptions);
   };
   // Method for instantiating
   this.$get = [
