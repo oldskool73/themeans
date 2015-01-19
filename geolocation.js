@@ -29,6 +29,12 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
                 latitude: position.coords.latitude.toFixed(4),
                 longitude: position.coords.longitude.toFixed(4)
               });
+            }, function (err) {
+              // This error callback handles user deny permission to access location.
+              deferred.reject({
+                message: err.message,
+                response: err
+              });
             });
           }(deferred));
         } else {
