@@ -92,10 +92,15 @@ angular.module('tm.ionic-parse', [])
       return parse;
     };
 
-    this.configure = function(configOptions) {
+    this.configure = function (configOptions) {
+
       angular.extend(options, configOptions);
-      options.deps.push(ngParse);
-      this.$get = options.deps;
+
+      if(typeof configOptions.deps !== 'undefined')
+      {
+        options.deps.push(ngParse);
+        this.$get = options.deps;
+      }
     };
 
     options.deps.push(ngParse);
