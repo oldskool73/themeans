@@ -7,86 +7,103 @@
  * # localstorage
  * Service in the airplayPutioApp.
  */
-angular.module('tm.ionic-parse',['ionic'])
+angular.module('tm.ionic-parse', [])
   .provider('Parse', function ParseProvider(){
 
+    // $ionicPlatform injected as default to support backwards compatibility. Configure without to
+    // exclude for angular-web projects
     var options = {
-        applicationId: '',
-        javaScriptKey: '',
-        clientKey: ''
-      };
-
-    this.configure = function(configOptions) {
-      angular.extend(options, configOptions);
+      applicationId: '',
+      javaScriptKey: '',
+      clientKey: '',
+      deps: ['$q','$window', '$ionicPlatform']
     };
 
-    this.$get = (function(options){
+    var ngParse = function () {
 
-      return function($q, $window, $ionicPlatform) {
-        // AngularJS will instantiate a singleton by calling "new" on this function
+      var $q              = arguments[0],
+          $window         = arguments[1],
+          $ionicPlatform  = arguments[2],
+          self            = this,
+          parse           = $window.Parse;
 
-        var deferred = $q.defer(),
-            self = this;
+      // Delete from the $window scope to ensure that we use the deps injection
+      delete $window.Parse;
 
-        var parse = $window.Parse;
-        // Delete from the $window scope to ensure that we use the deps injection
-        delete $window.Parse;
+      parse.initialize(
+        options.applicationId,
+        options.javaScriptKey
+      );
 
-        parse.initialize(
-          options.applicationId,
-          options.javaScriptKey
-        );
 
-        parse.Object.prototype.getNgModel = function(){
-          var self = this,
-              key, child;
+      parse.Object.prototype.getNgModel = function(){
+        var self = this,
+            key, child;
 
-          for(key in self.attributes)
+        for(key in self.attributes)
+        {
+          child = self.get(key);
+
+          if(typeof child.getNgModel === 'function')
           {
-            child = self.get(key);
-
-            if(typeof child.getNgModel === 'function')
+            self.set(key,child.getNgModel());
+          }
+          else if(Array.isArray(child))
+          {
+            for(var i=0; i< child.length; i++)
             {
-              self.set(key,child.getNgModel());
-            }
-            else if(Array.isArray(child))
-            {
-              for(var i=0; i< child.length; i++)
+              if(typeof child[i].getNgModel === 'function')
               {
-                if(typeof child[i].getNgModel === 'function')
-                {
-                  child[i] = child[i].getNgModel();
-                }
+                child[i] = child[i].getNgModel();
               }
             }
           }
+        }
 
-          return angular.fromJson(angular.toJson(self));
-        };
+        return angular.fromJson(angular.toJson(self));
+      };
 
-        $ionicPlatform.ready(function(){
-          if($window.parsePlugin)
-          {
-            var bridge = $window.parsePlugin;
-            // Delete from the $window scope to ensure that we use the deps injection
-            delete $window.parsePlugin;
-            bridge.initialize(options.applicationId, options.clientKey, function()
-            {
-              deferred.resolve(bridge);
-            },function()
-            {
-              deferred.reject(bridge);
-            });
-          }
-        });
 
-        parse.nativeBridge = deferred.promise;
-
-        // onNotificationAPN...
-
+      if(!$ionicPlatform)
+      {
         return parse;
       }
 
-    })(options);
+      // parse initialize device on $ionicPlatform ready.
+      var deferred = $q.defer();
 
+      $ionicPlatform.ready(function(){
+        if($window.parsePlugin)
+        {
+          var bridge = $window.parsePlugin;
+          // Delete from the $window scope to ensure that we use the deps injection
+          delete $window.parsePlugin;
+          bridge.initialize(options.applicationId, options.clientKey, function()
+          {
+            deferred.resolve(bridge);
+          },function()
+          {
+            deferred.reject(bridge);
+          });
+        }
+      });
+
+      parse.nativeBridge = deferred.promise;
+      return parse;
+    };
+
+    this.configure = function(configOptions) {
+      angular.extend(options, configOptions);
+      options.deps.push(ngParse);
+      this.$get = options.deps;
+    };
+
+    options.deps.push(ngParse);
+    this.$get = options.deps;
+
+    return this;
   });
+
+
+
+
