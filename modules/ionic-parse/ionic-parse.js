@@ -19,7 +19,7 @@ angular.module('tm.ionic-parse',['ionic'])
     this.configure = function(configOptions) {
       angular.extend(options, configOptions);
     };
-      
+
     this.$get = (function(options){
 
       return function($q, $window, $ionicPlatform) {
@@ -30,7 +30,7 @@ angular.module('tm.ionic-parse',['ionic'])
 
         var parse = $window.Parse;
         // Delete from the $window scope to ensure that we use the deps injection
-        delete $window.Parse; 
+        delete $window.Parse;
 
         parse.initialize(
           options.applicationId,
@@ -44,7 +44,7 @@ angular.module('tm.ionic-parse',['ionic'])
           for(key in self.attributes)
           {
             child = self.get(key);
-            
+
             if(typeof child.getNgModel === 'function')
             {
               self.set(key,child.getNgModel());
@@ -81,10 +81,12 @@ angular.module('tm.ionic-parse',['ionic'])
         });
 
         parse.nativeBridge = deferred.promise;
-        
+
+        // onNotificationAPN...
+
         return parse;
       }
-      
+
     })(options);
 
   });

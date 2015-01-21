@@ -513,15 +513,17 @@
 	"expanded_folders":
 	[
 		"/Users/xaunlopez/Projects/code/themeans/themeans",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation"
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules"
 	],
 	"file_history":
 	[
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse/ionic-parse.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/README.md",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp-util/lib/replaceExtension.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/grunt/node_modules/grunt-legacy-util/test/fixtures/Gruntfile-execArgv.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/Gruntfile.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/demo/demo.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp-util/lib/replaceExtension.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/out/built/subbower/ionic-parse/bower.json",
@@ -642,10 +644,7 @@
 		"/Users/anthonyjmay/docta/http/app/scripts/services/practitioners.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioners.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/controllers/settings.js",
-		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/index.html",
-		"/Users/anthonyjmay/docta/http/app/views/practitioners.html",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/geolocation.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/team.js"
+		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/index.html"
 	],
 	"find":
 	{
@@ -683,6 +682,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			" event",
+			"event",
 			"out/clones/subbower",
 			"build",
 			"serve",
@@ -808,8 +809,6 @@
 			"write",
 			"thread",
 			"fileSystem",
-			"setTotal",
-			"var",
 			"setTotal"
 		],
 		"highlight": true,
@@ -922,6 +921,10 @@
 			[
 				"read",
 				"README.md"
+			],
+			[
+				"geo",
+				"modules/geolocation/geolocation.js"
 			]
 		],
 		"width": 0.0

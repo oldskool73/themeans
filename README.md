@@ -1,11 +1,15 @@
 # TM Utils
 
-## Pushing changes
-grunt dist
-grunt build:subbower
-grunt publish:subbower
-cd out/clones/subbower/[moduleName]
-git push
+## Installing a module
+`bower install --save https://github.com/amay0048/themeans.git#name-of-module-git-hash`
+
+## Update a module
+`grunt dist`
+`grunt build:subbower`
+`grunt publish:subbower`
+`cd out/clones/subbower/[moduleName]`
+`git push`
+
 
 Simlar library to ui.utils.
 
