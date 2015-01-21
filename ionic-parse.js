@@ -52,6 +52,7 @@ angular.module('tm.ionic-parse', ['ionic']).provider('Parse', function ParseProv
         }
       });
       parse.nativeBridge = deferred.promise;
+      // onNotificationAPN...
       return parse;
     };
   }(options);
