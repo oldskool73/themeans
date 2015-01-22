@@ -82,7 +82,7 @@ angular.module('tm.ionic-parse', []).provider('Parse', function ParseProvider() 
           for (var i = 0; i < attrs[key].length; i++) {
             var type = attrs[key][i].className, attrsObj = attrs[key][i];
             if (type && typeof attrsObj.getNgModel !== 'function') {
-              var Model = Parse.Object._classMap[type];
+              var Model = parse.Object._classMap[type];
               var value = new Model(attrsObj, { ngModel: true });
               tmp.push(value);
             } else {
@@ -93,7 +93,7 @@ angular.module('tm.ionic-parse', []).provider('Parse', function ParseProvider() 
         } else {
           var type = attrs[key].className, attrsObj = attrs[key];
           if (type && typeof attrsObj.getNgModel !== 'function') {
-            var Model = Parse.Object._classMap[type];
+            var Model = parse.Object._classMap[type];
             var value = new Model(attrsObj, { ngModel: true });
             this.attributes[key] = value;
           } else {
