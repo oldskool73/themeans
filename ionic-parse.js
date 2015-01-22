@@ -25,20 +25,87 @@ angular.module('tm.ionic-parse', []).provider('Parse', function ParseProvider() 
     delete $window.Parse;
     parse.initialize(options.applicationId, options.javaScriptKey);
     parse.Object.prototype.getNgModel = function () {
-      var self = this, key, child;
-      for (key in self.attributes) {
-        child = self.get(key);
+      var key, child, ret = angular.fromJson(this.toJSON());
+      for (key in this.attributes) {
+        child = this.get(key);
         if (typeof child.getNgModel === 'function') {
-          self.set(key, child.getNgModel());
+          ret[key] = child.getNgModel();
         } else if (Array.isArray(child)) {
+          ret[key] = [];
           for (var i = 0; i < child.length; i++) {
             if (typeof child[i].getNgModel === 'function') {
-              child[i] = child[i].getNgModel();
+              ret[key].push(child[i].getNgModel());
             }
+          }
+        } else {
+          ret[key] = this.get(key);
+        }
+      }
+      ret['className'] = this.className;
+      return ret;
+    };
+    parse.Object.prototype.getNgFormModel = function () {
+      var key, child, ret = angular.fromJson(this.toJSON());
+      ret['className'] = this.className;
+      return ret;
+    };
+    parse.Object.prototype.initialize = function (attrs, options) {
+      // break if there are no options
+      if (typeof options === 'undefined') {
+        return this;
+      } else if (typeof options.ngModel === 'undefined') {
+        return this;
+      } else {
+      }
+      var resetOpsQueue = true;
+      if (typeof options.resetOpsQueue !== 'undefined') {
+        resetOpsQueue = options.resetOpsQueue;
+      }
+      // amay0048: TODO - this should not use try/catch
+      try {
+        delete this.attributes.className;
+      } catch (e) {
+      }
+      attrs = angular.copy(attrs);
+      try {
+        delete attrs.className;
+      } catch (e) {
+      }
+      try {
+        delete this._opSetQueue[0].className;
+      } catch (e) {
+      }
+      var key, child, type, model, tmp;
+      for (key in attrs) {
+        if (Array.isArray(attrs[key])) {
+          tmp = [];
+          for (var i = 0; i < attrs[key].length; i++) {
+            var type = attrs[key][i].className, attrsObj = attrs[key][i];
+            if (type && typeof attrsObj.getNgModel !== 'function') {
+              var Model = Parse.Object._classMap[type];
+              var value = new Model(attrsObj, { ngModel: true });
+              tmp.push(value);
+            } else {
+              tmp.push(angular.copy(attrs[key]));
+            }
+          }
+          this.set(key, tmp);
+        } else {
+          var type = attrs[key].className, attrsObj = attrs[key];
+          if (type && typeof attrsObj.getNgModel !== 'function') {
+            var Model = Parse.Object._classMap[type];
+            var value = new Model(attrsObj, { ngModel: true });
+            this.attributes[key] = value;
+          } else {
+            this.attributes[key] = angular.copy(attrs[key]);
           }
         }
       }
-      return angular.fromJson(angular.toJson(self));
+      if (resetOpsQueue) {
+        debugger;
+        this._opSetQueue = [{}];
+      }
+      return this;
     };
     if (!$ionicPlatform) {
       return parse;
@@ -63,6 +130,8 @@ angular.module('tm.ionic-parse', []).provider('Parse', function ParseProvider() 
   this.configure = function (configOptions) {
     angular.extend(options, configOptions);
     if (typeof configOptions.deps !== 'undefined') {
+      // If the deps array has changed, we need to re-add
+      // the ngParse function and re-define this.$get
       options.deps.push(ngParse);
       this.$get = options.deps;
     }
