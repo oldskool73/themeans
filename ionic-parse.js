@@ -102,7 +102,7 @@ angular.module('tm.ionic-parse', []).provider('Parse', function ParseProvider() 
         }
       }
       if (resetOpsQueue) {
-        debugger;
+        // debugger;
         this._opSetQueue = [{}];
       }
       return this;
