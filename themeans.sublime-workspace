@@ -513,19 +513,21 @@
 	"expanded_folders":
 	[
 		"/Users/xaunlopez/Projects/code/themeans/themeans",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules"
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login"
 	],
 	"file_history":
 	[
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse/ionic-parse.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/README.md",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/grunt/node_modules/grunt-legacy-util/test/fixtures/Gruntfile-execArgv.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/Gruntfile.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/demo/demo.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp-util/lib/replaceExtension.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/out/built/subbower/ionic-parse/bower.json",
 		"/Users/anthonyjmay/themeans/modules/ionic-parse-login/ionic-parse-login.js",
 		"/Users/anthonyjmay/themeans/Gruntfile.js",
@@ -643,12 +645,11 @@
 		"/Users/anthonyjmay/docta/cloud-code/cloud/datalock.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/services/practitioners.js",
 		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioners.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/settings.js",
-		"/Users/anthonyjmay/docta/iOS/External/html/contact_search/index.html"
+		"/Users/anthonyjmay/docta/http/app/scripts/controllers/settings.js"
 	],
 	"find":
 	{
-		"height": 35.0
+		"height": 37.0
 	},
 	"find_in_files":
 	{
@@ -682,6 +683,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"onLoginSuccess",
+			"$ionicPopup",
+			");",
+			"parse",
+			"$ionicPlatform",
 			" event",
 			"event",
 			"out/clones/subbower",
@@ -804,12 +810,7 @@
 			"chunkThreads",
 			"chunkThread",
 			"complete",
-			"threads",
-			"getFileEntry",
-			"write",
-			"thread",
-			"fileSystem",
-			"setTotal"
+			"threads"
 		],
 		"highlight": true,
 		"in_selection": false,

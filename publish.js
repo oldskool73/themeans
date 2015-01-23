@@ -30,6 +30,12 @@ module.exports = function() {
           "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse"
         };
         break;
+      case 'md-parse-login':
+      meme[name].dependencies = {
+        "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse",
+        "angular-material": "master"
+      };
+      break;
     }
 
     return memo;
