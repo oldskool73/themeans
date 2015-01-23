@@ -129,7 +129,7 @@ angular.module('tm.ionic-parse', [])
               if(type &&
                   typeof attrsObj.getNgModel !== 'function')
               {
-                var Model = Parse.Object._classMap[type];
+                var Model = parse.Object._classMap[type];
                 var value = new Model(attrsObj, {ngModel:true});
                 tmp.push(value);
               }
@@ -148,7 +148,7 @@ angular.module('tm.ionic-parse', [])
             if(type && 
                 typeof attrsObj.getNgModel !== 'function')
             {
-              var Model = Parse.Object._classMap[type];
+              var Model = parse.Object._classMap[type];
               var value = new Model(attrsObj, {ngModel:true});
               this.attributes[key] = value;
             }
@@ -161,7 +161,7 @@ angular.module('tm.ionic-parse', [])
 
         if(resetOpsQueue)
         {
-          debugger;
+          // debugger;
           this._opSetQueue = [{}];
         }
         return this;
