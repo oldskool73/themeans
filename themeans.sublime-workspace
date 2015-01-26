@@ -514,14 +514,19 @@
 	[
 		"/Users/xaunlopez/Projects/code/themeans/themeans",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login"
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login"
 	],
 	"file_history":
 	[
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse/ionic-parse.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/bower.json",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/README.md",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login/md-parse-login.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp/bin/gulp.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse/ionic-parse.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/grunt/node_modules/grunt-legacy-util/test/fixtures/Gruntfile-execArgv.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/Gruntfile.js",
@@ -642,10 +647,7 @@
 		"/Users/anthonyjmay/filter-io/chrome-putio/app/styles/main.css",
 		"/Users/anthonyjmay/filter-io/putio/app/scripts/services/Videos.js",
 		"/Users/anthonyjmay/filter-io/chrome-putio/chrome-putio",
-		"/Users/anthonyjmay/docta/cloud-code/cloud/datalock.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/services/practitioners.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/practitioners.js",
-		"/Users/anthonyjmay/docta/http/app/scripts/controllers/settings.js"
+		"/Users/anthonyjmay/docta/cloud-code/cloud/datalock.js"
 	],
 	"find":
 	{

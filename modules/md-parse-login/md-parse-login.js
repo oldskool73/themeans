@@ -232,7 +232,7 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
             error: function(user, error) {
               if(error.code === 100)
               {
-                $scope.message = 'Please check your internet connnection and try again.';
+                $scope.showSimpleToast('Please check your internet connnection and try again.');
               }
               $scope.showSimpleToast(error.message);
             }
