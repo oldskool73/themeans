@@ -7,8 +7,8 @@
  * # tmMdSidenav
     ## Configures md-sidenav to adjust to window height, and allows for dynamic md classes.
  */
-angular.module('tm.md-sidenav')
-  .directive('tmMdSidenav', function () {
+angular.module('tm.md-sidenav', ['ngMaterial'])
+  .directive('mdSidenav', function () {
     var mainTmpl = '<section layout="row" flex '+
       'class="side-nav-section" '+
       'style="display:inline-block; float:left;height:{{windowHeight}}"> '+
