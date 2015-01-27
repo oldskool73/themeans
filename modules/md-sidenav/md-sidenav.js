@@ -25,7 +25,7 @@ angular.module('tm.md-sidenav')
           '</a> '+
         '</md-toolbar> '+
       '</md-sidenav> '+
-    '</section> '+
+    '</section>';
 
     return {
       controller: function ($scope, $window){

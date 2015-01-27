@@ -12,5 +12,7 @@ angular.module('tm.utils', [
   'tm.consolelog',
   'tm.localstorage',
   'tm.ionic-parse',
-  'tm.ionic-parse-login'
+  'tm.ionic-parse-login',
+  'tm.md-parse-login',
+  'tm.md-sidenav'
 ]);
