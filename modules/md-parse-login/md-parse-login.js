@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc directive
- * @name tmscannerApp.directive:parseLogin
+ * @name themeans.directive:parseLogin
  * @description
  * # Parse Login directive using angular matierial design library.
     ## Complete with create account and reset password.
@@ -54,9 +54,8 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
         '<p '+
           'layout="row" '+
           'layout-align="center center" '+
-          'id="forgot-password" '+
-          'style="cursor: pointer;"> '+
-          '<a ng-click="setFormModal(\'reset\')"> '+
+          'id="forgot-password"> '+
+          '<a style=\"cursor: pointer;\" ng-click="setFormModal(\'reset\')"> '+
             'Forgot password '+
           '</a> '+
         '</p> '+

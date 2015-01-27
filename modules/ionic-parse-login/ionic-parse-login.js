@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc directive
- * @name tmscannerApp.directive:parseLogin
+ * @name themeans.directive:parseLogin
  * @description
  * # parseLogin
  */
@@ -152,7 +152,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
         };
 
         $scope.loginFormOnSubmit = function(){
-          
+
           $ionicLoading.show({
             template: 'Loading...',
             duration: 10000
@@ -179,7 +179,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
           });
 
         };
-        
+
         $scope.resetPasswordModal = $ionicModal.fromTemplate(resetTmpl, {
           scope: $scope,
           animation: $scope.modalAnimation
@@ -228,7 +228,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
           $scope.createAccountModal.show();
         };
         $scope.createFormOnSubmit = function(){
-          
+
           $ionicLoading.show({
             template: 'Loading...',
             duration: 10000
@@ -238,7 +238,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
           user.set('username', $scope.user.username);
           user.set('password', $scope.user.password);
           user.set('email', $scope.user.email);
-           
+
           user.signUp(null, {
             success: function(user) {
               // Hooray! Let them use the app now.
