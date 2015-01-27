@@ -42,7 +42,11 @@ angular.module('tm.md-sidenav', ['ngMaterial'])
 
           return $scope.windowHeight = ($window.innerHeight - offset) +'px';
         };
-        $scope.initializeWindowSize();
+
+        // Fixes issue with there being no offsetHeight on the element onload.
+        angular.element(document).ready(function (){
+          $scope.initializeWindowSize();
+        });
 
         // resize the nav element on window resize.
         return angular.element($window).bind('resize', function() {
