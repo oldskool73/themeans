@@ -19,7 +19,7 @@ angular.module('tm.localstorage',[])
         var ret;
         try
         {
-          ret = angular.fromJson($window.localStorage[key])
+          ret = angular.fromJson($window.localStorage[key]);
         }
         catch(e)
         {
@@ -32,6 +32,14 @@ angular.module('tm.localstorage',[])
       },
       getObject: function(key, defaultValue) {
         return angular.fromJson($window.localStorage[key]) || defaultValue || {};
+      },
+      getKeys: function(){
+        var keys = [], i;
+        for (i = 0; i < $window.localStorage.length; ++i)
+        {
+          keys.push($window.localStorage.getItem($window.localStorage.key(i)));
+        }
+        return keys;
       }
-    }
+    };
   });

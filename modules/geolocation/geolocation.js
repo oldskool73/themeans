@@ -79,7 +79,7 @@ angular.module('tm.geolocation',[])
         return deferred.promise;
       };
       return this;
-    }
+    };
 
   });
 
