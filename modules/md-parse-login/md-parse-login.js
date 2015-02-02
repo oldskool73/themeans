@@ -17,7 +17,7 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
       'ng-switch on="formModal"> '+
       // LOGIN
       '<md-content '+
-        'style="width: 50%;" '+
+        // 'style="width: 50%;" '+
         'class="{{mdContentClass}} login" '+
         'ng-switch-when="login"> '+
         '<md-toolbar class="{{mdToolbarClass}}"> '+
@@ -71,7 +71,7 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
 
       // CREATE ACCOUNT
       '<md-content '+
-        'style="width: 50%;" '+
+        // 'style="width: 50%;" '+
         'class="{{mdContentClass}} create-account" '+
         'ng-switch-when="create"> '+
         '<md-toolbar class="{{mdToolbarClass}}"> '+
@@ -122,7 +122,7 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
 
       // RESET PASSWORD
       '<md-content '+
-        'style="width: 50%;" '+
+        // 'style="width: 50%;" '+
         'class="{{mdContentClass}} reset-password" '+
         'ng-switch-when="reset"> '+
         '<md-toolbar class="{{mdToolbarClass}}"> '+
