@@ -162,6 +162,7 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
       template: mainTmpl,
       restrict: 'E',
       scope:{
+        user:'=',
         containerLayout:'=',
         containerLayoutAlign:'=',
         mdContentClass:'=',
@@ -189,7 +190,10 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
       },
       controller: function ($scope, $location, Parse, $mdToast, $mdDialog) {
 
-        $scope.user = {};
+        // Set the user object in controller for better control, this is a backup.
+        if (typeof $scope.user === 'undefined'){
+          $scope.user = {};
+        }
 
         $scope.toastPosition = {
           bottom: false,
@@ -258,9 +262,11 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
 
         $scope.createFormOnSubmit = function(){
           var user = new Parse.User();
-          user.set('username', $scope.user.username);
-          user.set('password', $scope.user.password);
-          user.set('email', $scope.user.email);
+          var keys = Object.keys($scope.user);
+
+          for (var i = 0; i < keys.length; i++){
+            user.set(keys[i], $scope.user[keys[i]])
+          }
 
           user.signUp(null, {
             success: function(user) {
@@ -279,7 +285,6 @@ angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
         };
       },
       link: function postLink(scope, element, attrs) {
-        // element.text('this is the parseLogin directive');
       }
     };
   });
