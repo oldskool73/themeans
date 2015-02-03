@@ -9,39 +9,17 @@
 angular.module('tm.md-parse-login', [
   'tm.ionic-parse',
   'ngMaterial'
-]).directive('mdParseLogin', function () {
-  var mainTmpl = '<div ' + 'layout="{{containerLayout}}" ' + 'layout-align="{{containerLayoutAlign}}" ' + 'layout-fill ' + 'ng-switch on="formModal"> ' + '<md-content ' + 'class="{{mdContentClass}} login" ' + 'ng-switch-when="login"> ' + '<md-toolbar class="{{mdToolbarClass}}"> ' + '<h2 class="{{mdToolbarToolsClass}}"> ' + '<span>{{loginToolbarText}}</span> ' + '</h2> ' + '</md-toolbar> ' + '<form ng-submit="loginFormOnSubmit($event)"> ' + '<div ' + 'style="padding: 20px" ' + 'layout="{{loginInputsContainerLayout}}" ' + 'layout-sm="{{loginInputsContainerLayoutSm}}"> ' + '<md-input-container layout-fill> ' + '<label>Username</label> ' + '<input ' + 'type="text" ' + 'ng-model="user.username"> ' + '</md-input-container> ' + '<md-input-container layout-fill> ' + '<label>Password</label> ' + '<input ' + 'type="password" ' + 'ng-model="user.password"> ' + '</md-input-container> ' + '</div> ' + '<div style="padding: 20px; padding-bottom:0"> ' + '<md-button ' + 'style="width:100%" ' + 'class="{{loginButtonClass}}"> ' + '{{loginButtonText}} ' + '</md-button> ' + '</div> ' + '</form> ' + '<p ' + 'layout="row" ' + 'layout-align="center center" ' + 'id="forgot-password"> ' + '<a style="cursor: pointer;" ng-click="setFormModal(\'reset\')"> ' + 'Forgot password ' + '</a> ' + '</p> ' + '<div style="padding: 20px;padding-top:0"> ' + '<md-button ' + 'class="{{createButtonClass}}" ' + 'style="width:100%" ' + 'ng-click="setFormModal(\'create\')"> ' + '{{createButtonText}} ' + '</md-button> ' + '</div> ' + '</md-content> ' + '<md-content ' + 'class="{{mdContentClass}} create-account" ' + 'ng-switch-when="create"> ' + '<md-toolbar class="{{mdToolbarClass}}"> ' + '<h2 class="{{mdToolbarToolsClass}}"> ' + '<span class="md-flex">{{createToolbarText}}</span> ' + '<md-button ' + 'style="width:20%;position:absolute;right:15px;top:16px;color:white;" ' + 'class="{{backButtonClass}}" ' + 'ng-click="setFormModal(\'login\')"> ' + '{{backButtonText}} ' + '</md-button> ' + '</h2> ' + '</md-toolbar> ' + '<form ng-submit="createFormOnSubmit($event)"> ' + '<div ' + 'style="padding: 20px" ' + 'layout="{{createInputsContainerLayout}}" ' + 'layout-sm="{{createInputsContainerLayoutSm}}" ' + 'layout-align="{{createInputsContainerLayoutAlign}}"> ' + '<md-input-container layout-fill> ' + '<label>Username</label> ' + '<input ' + 'type="text" ' + 'ng-model="user.username"> ' + '</md-input-container> ' + '<md-input-container layout-fill> ' + '<label>Email</label> ' + '<input ' + 'ng-model="user.email" ' + 'type="email"> ' + '</md-input-container> ' + '<md-input-container layout-fill> ' + '<label>Password</label> ' + '<input ' + 'ng-model="user.password" ' + 'type="password"> ' + '</md-input-container> ' + '</div> ' + '<div style="padding: 20px;"> ' + '<md-button ' + 'style="width:100%" ' + 'class="{{submitButtonClass}}"> ' + '{{submitButtonText}} ' + '</md-button> ' + '</div> ' + '</form> ' + '</md-content> ' + '<md-content ' + 'class="{{mdContentClass}} reset-password" ' + 'ng-switch-when="reset"> ' + '<md-toolbar class="{{mdToolbarClass}}"> ' + '<h2 class="{{mdToolbarToolsClass}}"> ' + '<span>{{resetToolbarText}}</span> ' + '<md-button ' + 'style="width:20%;position:absolute;right:15px;top:16px;color:white;" ' + 'class="{{backButtonClass}}" ' + 'ng-click="setFormModal(\'login\')"> ' + '{{backButtonText}} ' + '</md-button> ' + '</h2> ' + '</md-toolbar> ' + '<form ng-submit="loginFormOnSubmit($event)"> ' + '<div ' + 'style="padding: 20px" ' + 'class="row" ' + 'layout="{{resetInputsContainerLayout}}" ' + 'layout-sm="{{resetInputsContainerLayoutSm}}"> ' + '<md-input-container layout-fill> ' + '<label>Email</label> ' + '<input type="email" ng-model="user.email"> ' + '</md-input-container> ' + '</div> ' + '<div style="padding: 20px;"> ' + '<md-button ' + 'style="width:100%" ' + 'class="{{submitButtonClass}}"> ' + '{{submitButtonText}} ' + '</md-button> ' + '</div> ' + '</form> ' + '</md-content> ' + '</div>';
-  return {
-    template: mainTmpl,
-    restrict: 'E',
-    scope: {
-      user: '=',
-      containerLayout: '=',
-      containerLayoutAlign: '=',
-      mdContentClass: '=',
-      mdToolbarClass: '=',
-      mdToolbarToolsClass: '=',
-      submitButtonClass: '=',
-      submitButtonText: '=',
-      backButtonClass: '=',
-      backButtonText: '=',
-      loginInputsContainerLayout: '=',
-      loginInputsContainerLayoutSm: '=',
-      loginButtonClass: '=',
-      loginButtonText: '=',
-      loginToolbarText: '=',
-      createButtonClass: '=',
-      createButtonText: '=',
-      createInputsContainerLayout: '=',
-      createInputsContainerLayoutSm: '=',
-      createInputsContainerLayoutAlign: '=',
-      createToolbarText: '=',
-      resetInputsContainerLayout: '=',
-      resetInputsContainerLayoutSm: '=',
-      resetToolbarText: '=',
-      onLoginSuccess: '='
-    },
-    controller: [
+]).directive('mdParseLogin', [
+  '$compile',
+  function ($compile) {
+    var mdParseLogin = new Function();
+    mdParseLogin.prototype.link = function (scope, element, attrs) {
+      var mainTmpl = '<div ' + scope.mainContainerAttributes + ' ng-switch on="formModal"> ' + '<md-content ' + scope.loginMdContentAttributes + ' class="{{mdContentClass}} login" ' + 'ng-switch-when="login"> ' + '<md-toolbar class="{{mdToolbarClass}}"> ' + '<h2 class="{{mdToolbarToolsClass}}"> ' + '<span>{{loginToolbarText}}</span> ' + '</h2> ' + '</md-toolbar> ' + '<form ng-submit="loginFormOnSubmit($event)"> ' + '<div ' + 'style="padding: 20px" ' + scope.loginInputsAttributes + '>' + '<md-input-container layout-fill> ' + '<label>Username</label> ' + '<input ' + 'type="text" ' + 'ng-model="user.username"> ' + '</md-input-container> ' + '<md-input-container layout-fill> ' + '<label>Password</label> ' + '<input ' + 'type="password" ' + 'ng-model="user.password"> ' + '</md-input-container> ' + '</div> ' + '<div style="padding: 20px; padding-bottom:0"> ' + '<md-button ' + 'style="width:100%" ' + 'class="{{loginButtonClass}}"> ' + '{{loginButtonText}} ' + '</md-button> ' + '</div> ' + '</form> ' + '<p ' + 'layout="row" ' + 'layout-align="center center" ' + 'id="forgot-password"> ' + '<a style="cursor: pointer;" ng-click="setFormModal(\'reset\')"> ' + 'Forgot password ' + '</a> ' + '</p> ' + '<div style="padding: 20px;padding-top:0"> ' + '<md-button ' + 'class="{{createButtonClass}}" ' + 'style="width:100%" ' + 'ng-click="setFormModal(\'create\')"> ' + '{{createButtonText}} ' + '</md-button> ' + '</div> ' + '</md-content> ' + '<md-content ' + scope.createMdContentAttributes + ' class="{{mdContentClass}} create-account" ' + 'ng-switch-when="create"> ' + '<md-toolbar class="{{mdToolbarClass}}"> ' + '<h2 class="{{mdToolbarToolsClass}}"> ' + '<span class="md-flex">{{createToolbarText}}</span> ' + '<md-button ' + 'style="width:20%;position:absolute;right:15px;top:16px;color:white;" ' + 'class="{{backButtonClass}}" ' + 'ng-click="setFormModal(\'login\')"> ' + '{{backButtonText}} ' + '</md-button> ' + '</h2> ' + '</md-toolbar> ' + '<form ng-submit="createFormOnSubmit($event)"> ' + '<div ' + 'style="padding: 20px" ' + scope.createInputsAttributes + '>' + '<md-input-container layout-fill> ' + '<label>Username</label> ' + '<input ' + 'type="text" ' + 'ng-model="user.username"> ' + '</md-input-container> ' + '<md-input-container layout-fill> ' + '<label>Email</label> ' + '<input ' + 'ng-model="user.email" ' + 'type="email"> ' + '</md-input-container> ' + '<md-input-container layout-fill> ' + '<label>Password</label> ' + '<input ' + 'ng-model="user.password" ' + 'type="password"> ' + '</md-input-container> ' + '</div> ' + '<div style="padding: 20px;"> ' + '<md-button ' + 'style="width:100%" ' + 'class="{{submitButtonClass}}"> ' + '{{submitButtonText}} ' + '</md-button> ' + '</div> ' + '</form> ' + '</md-content> ' + '<md-content ' + scope.resetMdContentAttributes + ' class="{{mdContentClass}} reset-password" ' + 'ng-switch-when="reset"> ' + '<md-toolbar class="{{mdToolbarClass}}"> ' + '<h2 class="{{mdToolbarToolsClass}}"> ' + '<span>{{resetToolbarText}}</span> ' + '<md-button ' + 'style="width:20%;position:absolute;right:15px;top:16px;color:white;" ' + 'class="{{backButtonClass}}" ' + 'ng-click="setFormModal(\'login\')"> ' + '{{backButtonText}} ' + '</md-button> ' + '</h2> ' + '</md-toolbar> ' + '<form ng-submit="loginFormOnSubmit($event)"> ' + '<div ' + 'style="padding: 20px" ' + scope.resetInputsAttributes + '>' + '<md-input-container layout-fill> ' + '<label>Email</label> ' + '<input type="email" ng-model="user.email"> ' + '</md-input-container> ' + '</div> ' + '<div style="padding: 20px;"> ' + '<md-button ' + 'style="width:100%" ' + 'class="{{submitButtonClass}}"> ' + '{{submitButtonText}} ' + '</md-button> ' + '</div> ' + '</form> ' + '</md-content> ' + '</div>';
+      var el = angular.element(mainTmpl), compiled = $compile(el);
+      element.append(el);
+      compiled(scope);
+    };
+    mdParseLogin.prototype.controller = [
       '$scope',
       '$location',
       'Parse',
@@ -121,8 +99,33 @@ angular.module('tm.md-parse-login', [
           });
         };
       }
-    ],
-    link: function postLink(scope, element, attrs) {
-    }
-  };
-});
+    ];
+    mdParseLogin.prototype.restrict = 'E';
+    mdParseLogin.prototype.scope = {
+      user: '=',
+      mainContainerAttributes: '=',
+      mdContentClass: '=',
+      mdToolbarClass: '=',
+      mdToolbarToolsClass: '=',
+      submitButtonClass: '=',
+      submitButtonText: '=',
+      backButtonClass: '=',
+      backButtonText: '=',
+      loginMdContentAttributes: '=',
+      loginInputsAttributes: '=',
+      loginButtonClass: '=',
+      loginButtonText: '=',
+      loginToolbarText: '=',
+      createMdContentAttributes: '=',
+      createInputsAttributes: '=',
+      createButtonClass: '=',
+      createButtonText: '=',
+      createToolbarText: '=',
+      resetMdContentAttributes: '=',
+      resetInputsAttributes: '=',
+      resetToolbarText: '=',
+      onLoginSuccess: '='
+    };
+    return new mdParseLogin();
+  }
+]);
