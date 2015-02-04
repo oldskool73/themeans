@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"local",
+				"localStorage"
+			],
+			[
 				"module",
 				"moduleName"
 			],
@@ -514,17 +518,20 @@
 	[
 		"/Users/xaunlopez/Projects/code/themeans/themeans",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login"
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/localstorage"
 	],
 	"file_history":
 	[
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/localstorage/localstorage.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login/md-parse-login.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-sidenav/md-sidenav.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-sidenav/README.md",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/grunt-contrib-watch/node_modules/tiny-lr/lib/client.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/bower.json",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/README.md",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/publish.js",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login/md-parse-login.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp/bin/gulp.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse/ionic-parse.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/geolocation/geolocation.js",
@@ -532,7 +539,6 @@
 		"/Users/xaunlopez/Projects/code/themeans/themeans/Gruntfile.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/demo/demo.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/node_modules/angular-ui-publisher/node_modules/gulp-util/lib/replaceExtension.js",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/out/built/subbower/ionic-parse/bower.json",
 		"/Users/anthonyjmay/themeans/modules/ionic-parse-login/ionic-parse-login.js",
 		"/Users/anthonyjmay/themeans/Gruntfile.js",
@@ -643,11 +649,7 @@
 		"/Users/anthonyjmay/filter-io/chrome-putio/app/manifest.json",
 		"/Users/anthonyjmay/filter-io/chrome-putio/package.json",
 		"/Users/anthonyjmay/filter-io/chrome-putio/bower.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/dist/scripts/popup.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/styles/main.css",
-		"/Users/anthonyjmay/filter-io/putio/app/scripts/services/Videos.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/chrome-putio",
-		"/Users/anthonyjmay/docta/cloud-code/cloud/datalock.js"
+		"/Users/anthonyjmay/filter-io/chrome-putio/dist/scripts/popup.js"
 	],
 	"find":
 	{
@@ -685,6 +687,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"template",
+			"tmscannerApp",
+			"message",
 			"onLoginSuccess",
 			"$ionicPopup",
 			");",
@@ -809,10 +814,7 @@
 			"splitDownloadIntoThreads",
 			"chunkThreads",
 			"createThreads",
-			"chunkThreads",
-			"chunkThread",
-			"complete",
-			"threads"
+			"chunkThreads"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1000,7 +1002,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 254.0,
+	"side_bar_width": 243.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

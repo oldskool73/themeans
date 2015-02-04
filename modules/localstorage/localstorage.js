@@ -40,6 +40,12 @@ angular.module('tm.localstorage',[])
           keys.push($window.localStorage.getItem($window.localStorage.key(i)));
         }
         return keys;
+      },
+      removeItem: function(key) {
+        $window.localStorage.removeItem(key);
+      },
+      clear: function () {
+        $window.localStorage.clear();
       }
     };
   });
