@@ -132,6 +132,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
       template: mainTmpl,
       restrict: 'E',
       scope:{
+        user:'=',
         headerBarClass:'@',
       	signInButtonClass:'@',
         signInButtonText:'@',
@@ -142,22 +143,23 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
       	resetButtonClass:'@',
         resetButtonText:'@',
         modalAnimation:'@',
-        onLoginSuccess:'='
+        onLoginSuccess:'=',
+        createTmplUrl:'=',
+        selectionOnClickCallback:'='
       },
       controller: function ($scope, $location, $ionicPopup, $ionicModal, $ionicLoading, Parse) {
-
-        $scope.user = {
-          username: '',
-          password: ''
-        };
-
+        if (typeof $scope.user === 'undefined')
+        {
+          $scope.user = {
+            username: '',
+            password: ''
+          };
+        }
         $scope.loginFormOnSubmit = function(){
-
           $ionicLoading.show({
             template: 'Loading...',
             duration: 10000
           });
-
           Parse.User.logIn($scope.user.username, $scope.user.password, {
             success: function(user) {
               // Do stuff after successful login.
@@ -170,30 +172,28 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
               {
                 message = 'Please check your internet connnection and try again.';
               }
-
               $ionicLoading.hide();
               $ionicPopup.alert({
                 title: message
               });
             }
           });
-
         };
 
         $scope.resetPasswordModal = $ionicModal.fromTemplate(resetTmpl, {
           scope: $scope,
           animation: $scope.modalAnimation
         });
+
         $scope.forgotPasswordOnClick = function () {
           $scope.resetPasswordModal.show();
         };
-        $scope.resetFormOnSubmit = function(){
 
+        $scope.resetFormOnSubmit = function(){
           $ionicLoading.show({
             template: 'Loading...',
             duration: 10000
           });
-
           Parse.User.requestPasswordReset($scope.user.email, {
             success: function() {
               // Password reset request was sent successfully
@@ -219,26 +219,45 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
           });
 
         };
-
-        $scope.createAccountModal = $ionicModal.fromTemplate(createTmpl, {
-          scope: $scope,
-          animation: $scope.modalAnimation
-        });
+        // Pass in a template url to customise create account modal or leave undefined.
+        if ($scope.createTmplUrl)
+        {
+          $ionicModal.fromTemplateUrl($scope.createTmplUrl, {
+            scope: $scope,
+            animation: $scope.modalAnimation
+          }).then(function (modal){
+            $scope.createAccountModal = modal;
+          });
+        }
+        else
+        {
+          $ionicModal.fromTemplate(createTmpl, {
+            scope: $scope,
+            animation: $scope.modalAnimation
+          }).then(function (modal){
+            $scope.createAccountModal = modal;
+          });
+        }
         $scope.createAccountOnClick = function () {
           $scope.createAccountModal.show();
         };
+        // When customising create account template, this function gives options to send data
+        // 'on click' back to the controller, for any extra tabs or button.
+        $scope.selectionOnClick = function ($event, option){
+          $scope.selectionOnClickCallback($event, option);
+        };
         $scope.createFormOnSubmit = function(){
-
           $ionicLoading.show({
             template: 'Loading...',
             duration: 10000
           });
-
           var user = new Parse.User();
-          user.set('username', $scope.user.username);
-          user.set('password', $scope.user.password);
-          user.set('email', $scope.user.email);
+          var keys = Object.keys($scope.user);
 
+          for (var i = 0; i < keys.length; i++)
+          {
+            user.set(keys[i], $scope.user[keys[i]]);
+          }
           user.signUp(null, {
             success: function(user) {
               // Hooray! Let them use the app now.
@@ -259,11 +278,9 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
               });
             }
           });
-
         };
       },
       link: function postLink(scope, element, attrs) {
-        // element.text('this is the parseLogin directive');
       }
     };
   });
