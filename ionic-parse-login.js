@@ -1,7 +1,7 @@
 'use strict';
 /**
  * @ngdoc directive
- * @name tmscannerApp.directive:parseLogin
+ * @name themeans.directive:parseLogin
  * @description
  * # parseLogin
  */
@@ -13,6 +13,7 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
     template: mainTmpl,
     restrict: 'E',
     scope: {
+      user: '=',
       headerBarClass: '@',
       signInButtonClass: '@',
       signInButtonText: '@',
@@ -23,7 +24,9 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
       resetButtonClass: '@',
       resetButtonText: '@',
       modalAnimation: '@',
-      onLoginSuccess: '='
+      onLoginSuccess: '=',
+      createTmplUrl: '=',
+      selectionOnClickCallback: '='
     },
     controller: [
       '$scope',
@@ -33,10 +36,12 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
       '$ionicLoading',
       'Parse',
       function ($scope, $location, $ionicPopup, $ionicModal, $ionicLoading, Parse) {
-        $scope.user = {
-          username: '',
-          password: ''
-        };
+        if (typeof $scope.user === 'undefined') {
+          $scope.user = {
+            username: '',
+            password: ''
+          };
+        }
         $scope.loginFormOnSubmit = function () {
           $ionicLoading.show({
             template: 'Loading...',
@@ -89,12 +94,29 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
             }
           });
         };
-        $scope.createAccountModal = $ionicModal.fromTemplate(createTmpl, {
-          scope: $scope,
-          animation: $scope.modalAnimation
-        });
+        // Pass in a template url to customise create account modal or leave undefined.
+        if ($scope.createTmplUrl) {
+          $ionicModal.fromTemplateUrl($scope.createTmplUrl, {
+            scope: $scope,
+            animation: $scope.modalAnimation
+          }).then(function (modal) {
+            $scope.createAccountModal = modal;
+          });
+        } else {
+          $ionicModal.fromTemplate(createTmpl, {
+            scope: $scope,
+            animation: $scope.modalAnimation
+          }).then(function (modal) {
+            $scope.createAccountModal = modal;
+          });
+        }
         $scope.createAccountOnClick = function () {
           $scope.createAccountModal.show();
+        };
+        // When customising create account template, this function gives options to send data
+        // 'on click' back to the controller, for any extra tabs or button.
+        $scope.selectionOnClick = function ($event, option) {
+          $scope.selectionOnClickCallback($event, option);
         };
         $scope.createFormOnSubmit = function () {
           $ionicLoading.show({
@@ -102,9 +124,10 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
             duration: 10000
           });
           var user = new Parse.User();
-          user.set('username', $scope.user.username);
-          user.set('password', $scope.user.password);
-          user.set('email', $scope.user.email);
+          var keys = Object.keys($scope.user);
+          for (var i = 0; i < keys.length; i++) {
+            user.set(keys[i], $scope.user[keys[i]]);
+          }
           user.signUp(null, {
             success: function (user) {
               // Hooray! Let them use the app now.
