@@ -9,7 +9,7 @@
  ** Sends messages to parse users.
     *** Requires angular.factories for Parse.Object MessageThread and Message definitions ***
  */
-angular.module('tm.messages', ['tm.ionic-parse', 'tm.localstorage'])
+angular.module('tm.parse-messages', ['tm.ionic-parse', 'tm.localstorage'])
   .service('tmMessages', function ( Parse, $q, $timeout, tmLocalStorage, MessageThread, Message ) {
 
     var _self         = this;
