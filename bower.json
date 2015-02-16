@@ -1,26 +1,8 @@
 {
-	"name": "themeans-utils",
-	"version": "0.0.1",
-	"authors": [
-		"anthony@themeans.com.au"
-	],
-	"description": "Themeans",
-	"keywords": [
-	],
-	"license": "MIT",
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
-	],
-	"dependencies": {
-		"angular":"~1.3.0"
-	},
-	"devDependencies": {
-		"angular-sanitize":"~1.2.0",
-		"angular-route":"~1.2.0",
-		"angular-touch":"~1.2.0"
-	}
+  "name": "themeans-parse-messages",
+  "version": "0.0.1",
+  "main": ["./parse-messages.js"],
+  "dependencies": {
+    "angular": "~1.3.0"
+  }
 }
