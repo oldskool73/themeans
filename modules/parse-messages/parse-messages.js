@@ -178,14 +178,24 @@ angular.module('tm.parse-messages', ['tm.ionic-parse', 'tm.localstorage'])
       .then(function (thread){
         if (thread)
         {
-          addMessageToThread(thread[0], message);
+          addMessageToThread(thread[0], message)
+          .then(function (){
+
+            deferred.resolve();
+
+          }, fail);
         }
         else
         {
           createThread(threadUsers)
           .then(function (thread){
 
-            addMessageToThread(thread, message);
+            addMessageToThread(thread, message)
+            .then(function (){
+
+              deferred.resolve();
+
+            }, fail);
 
           }, fail);
         }
