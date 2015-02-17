@@ -178,26 +178,14 @@ angular.module('tm.parse-messages', ['tm.ionic-parse', 'tm.localstorage'])
       .then(function (thread){
         if (thread)
         {
-          addMessageToThread(thread[0], message)
-          .then(function (message){
-
-            _self.sendPushNotification(message);
-            deferred.resolve();
-
-          }, fail);
+          addMessageToThread(thread[0], message);
         }
         else
         {
           createThread(threadUsers)
           .then(function (thread){
 
-            addMessageToThread(thread, message)
-            .then(function (message){
-
-              _self.sendPushNotification(message);
-              deferred.resolve();
-
-            }, fail);
+            addMessageToThread(thread, message);
 
           }, fail);
         }
