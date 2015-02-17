@@ -200,6 +200,7 @@ angular.module('tm.parse-messages', [
     function addMessageToThread(thread, message) {
       var deferred = $q.defer(), relation = thread.relation('messages');
       message = new Message(message);
+      message.set('thread', thread);
       message.save().then(function (message) {
         relation.add(message);
         thread.save().then(function () {
