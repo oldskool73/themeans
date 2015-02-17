@@ -276,6 +276,8 @@ angular.module('tm.parse-messages', ['tm.ionic-parse', 'tm.localstorage'])
         relation  = thread.relation('messages');
         message   = new Message(message);
 
+      message.set('thread', thread);
+
       message
       .save()
       .then(function (message){
