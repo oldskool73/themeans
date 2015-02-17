@@ -137,10 +137,14 @@ angular.module('tm.parse-messages', [
       threadUsers = threadUsers.concat.apply([], threadUsers);
       checkForExistingThread(threadUsers).then(function (thread) {
         if (thread) {
-          addMessageToThread(thread[0], message);
+          addMessageToThread(thread[0], message).then(function () {
+            deferred.resolve();
+          }, fail);
         } else {
           createThread(threadUsers).then(function (thread) {
-            addMessageToThread(thread, message);
+            addMessageToThread(thread, message).then(function () {
+              deferred.resolve();
+            }, fail);
           }, fail);
         }
       }, fail);
