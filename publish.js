@@ -21,7 +21,7 @@ module.exports = function() {
       case 'ionic-parse':
         memo[name].dependencies = {
           "angular":"~1.3.0",
-          "parse": "1.3.1",
+          "parse": "1.3.4",
           "parse-angular-patch": "master"
         };
         break;
