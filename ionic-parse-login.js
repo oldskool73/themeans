@@ -26,7 +26,8 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
       modalAnimation: '@',
       onLoginSuccess: '=',
       createTmplUrl: '=',
-      selectionOnClickCallback: '='
+      selectionOnClickCallback: '=',
+      booleanVariable: '='
     },
     controller: [
       '$scope',
