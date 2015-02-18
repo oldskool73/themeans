@@ -144,8 +144,7 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
         resetButtonText:'@',
         modalAnimation:'@',
         onLoginSuccess:'=',
-        createTmplUrl:'=',
-        selectionOnClickCallback:'='
+        createTmplUrl:'='
       },
       controller: function ($scope, $location, $ionicPopup, $ionicModal, $ionicLoading, Parse) {
         if (typeof $scope.user === 'undefined')
@@ -241,11 +240,6 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
         $scope.createAccountOnClick = function () {
           $scope.createAccountModal.show();
         };
-        // When customising create account template, this function gives options to send data
-        // 'on click' back to the controller, for any extra tabs or button.
-        $scope.selectionOnClick = function ($event, option){
-          $scope.selectionOnClickCallback($event, option);
-        };
         $scope.createFormOnSubmit = function(){
           $ionicLoading.show({
             template: 'Loading...',
@@ -279,8 +273,6 @@ angular.module('tm.ionic-parse-login',['tm.ionic-parse'])
             }
           });
         };
-      },
-      link: function postLink(scope, element, attrs) {
       }
     };
   });
