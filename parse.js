@@ -6,7 +6,7 @@
  * # localstorage
  * Service in the airplayPutioApp.
  */
-angular.module('tm.ionic-parse', []).provider('Parse', function ParseProvider() {
+angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
   // $ionicPlatform injected as default to support backwards compatibility. Configure without to
   // exclude for angular-web projects
   var options = {

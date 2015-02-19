@@ -1,10 +1,8 @@
 {
-  "name": "themeans-ionic-parse",
+  "name": "themeans-parse",
   "version": "0.0.1",
-  "main": ["./ionic-parse.js"],
+  "main": ["./parse.js"],
   "dependencies": {
-    "angular": "~1.3.0",
-    "parse": "1.3.4",
-    "parse-angular-patch": "master"
+    "angular": "~1.3.0"
   }
 }
