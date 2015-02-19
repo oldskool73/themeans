@@ -15,7 +15,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
     mdParseLogin.prototype.link = function(scope, element, attrs){
       var mainTmpl = '<div '+
         scope.mainContainerAttributes+
-        ' ng-switch on="formModal"> '+
+        ' ng-switch on="formType"> '+
         // LOGIN
         '<md-content '+
           scope.loginMdContentAttributes+
@@ -55,7 +55,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             'layout="row" '+
             'layout-align="center center" '+
             'id="forgot-password"> '+
-            '<a style=\"cursor: pointer;\" ng-click="setFormModal(\'reset\')"> '+
+            '<a style=\"cursor: pointer;\" ng-click="switchFormOnClick(\'reset\')"> '+
               'Forgot password '+
             '</a> '+
           '</p> '+
@@ -63,7 +63,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             '<md-button '+
               'class="{{createButtonClass}}" '+
               'style="width:100%" '+
-              'ng-click="setFormModal(\'create\')"> '+
+              'ng-click="switchFormOnClick(\'create\')"> '+
               '{{createButtonText}} '+
             '</md-button> '+
          '</div> '+
@@ -80,7 +80,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               '<md-button '+
                 'style="width:20%;position:absolute;right:15px;top:16px;color:white;" '+
                 'class="{{backButtonClass}}" '+
-                'ng-click="setFormModal(\'login\')"> '+
+                'ng-click="switchFormOnClick(\'login\')"> '+
                 '{{backButtonText}} '+
               '</md-button> '+
            '</h2> '+
@@ -129,7 +129,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               '<md-button '+
                 'style="width:20%;position:absolute;right:15px;top:16px;color:white;" '+
                 'class="{{backButtonClass}}" '+
-                'ng-click="setFormModal(\'login\')"> '+
+                'ng-click="switchFormOnClick(\'login\')"> '+
                 '{{backButtonText}} '+
               '</md-button> '+
             '</h2> '+
@@ -187,9 +187,20 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
           $mdToast.show($mdToast.simple().content(toastContent).position($scope.getToastPosition()).hideDelay(1500));
         };
         // default for ng-switch.
-        $scope.formModal = 'login';
-        $scope.setFormModal = function (val) {
-          $scope.formModal = val;
+        $scope.formType = 'login';
+        $scope.switchFormOnClick = function (val) {
+          // If customCreateDialog boolean is scoped, it will switch to a $mdDialog modal.
+          if ($scope.createCustomDialog && val === 'create'){
+            $mdDialog.show({
+              controller: $scope.createCustomDialogCtrl,
+              templateUrl: $scope.createCustomDialogUrl,
+              locals: {
+                parentDirectiveScope : $scope
+              }
+            });
+            return;
+          }
+          $scope.formType = val;
         };
         $scope.loginFormOnSubmit = function () {
           Parse.User.logIn($scope.user.username, $scope.user.password, {
@@ -266,6 +277,9 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       resetMdContentAttributes: '=',
       resetInputsAttributes: '=',
       resetToolbarText: '=',
+      createCustomDialog: '=',
+      createCustomDialogUrl: '=',
+      createCustomDialogCtrl: '=',
       onLoginSuccess: '='
     };
 
