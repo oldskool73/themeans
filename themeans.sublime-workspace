@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"send",
+				"sendPushNotification"
+			],
+			[
 				"local",
 				"localStorage"
 			],
@@ -518,13 +522,17 @@
 	[
 		"/Users/xaunlopez/Projects/code/themeans/themeans",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/localstorage"
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login"
 	],
 	"file_history":
 	[
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/parse-messages/parse-messages.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/dist/sub/parse-messages/parse-messages.js",
+		"/Users/xaunlopez/Projects/code/themeans/themeans/dist/main/tm-utils.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/localstorage/localstorage.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-parse-login/md-parse-login.js",
-		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/ionic-parse-login/ionic-parse-login.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-sidenav/md-sidenav.js",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/md-sidenav/README.md",
 		"/Users/xaunlopez/Projects/code/themeans/themeans/modules/utils.js",
@@ -646,10 +654,7 @@
 		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/template.js",
 		"/Users/anthonyjmay/filter-io/putio/app.app/Contents/Resources/public/views/main.html",
 		"/Users/anthonyjmay/filter-io/chrome-putio/app/scripts/chromereload.js",
-		"/Users/anthonyjmay/filter-io/chrome-putio/app/manifest.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/package.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/bower.json",
-		"/Users/anthonyjmay/filter-io/chrome-putio/dist/scripts/popup.js"
+		"/Users/anthonyjmay/filter-io/chrome-putio/app/manifest.json"
 	],
 	"find":
 	{
@@ -687,6 +692,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"creemApp",
+			"mdDialog",
 			"template",
 			"tmscannerApp",
 			"message",
@@ -812,8 +819,6 @@
 			"error.",
 			"error",
 			"splitDownloadIntoThreads",
-			"chunkThreads",
-			"createThreads",
 			"chunkThreads"
 		],
 		"highlight": true,
@@ -879,7 +884,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 26.0
 	},
 	"input":
 	{
@@ -915,7 +920,7 @@
 	"project": "themeans.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 48.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -936,11 +941,15 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"~/Projects/code/themeans/creem/web/creem-web.sublime-project"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{
@@ -1002,7 +1011,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 243.0,
+	"side_bar_width": 253.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

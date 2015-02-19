@@ -11,8 +11,8 @@ angular.module('tm.utils', [
   'tm.geolocation',
   'tm.consolelog',
   'tm.localstorage',
-  'tm.ionic-parse',
+  'tm.parse',
   'tm.ionic-parse-login',
   'tm.md-parse-login',
-  'tm.md-sidenav'
+  'tm.parse-messages'
 ]);

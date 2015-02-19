@@ -7,7 +7,7 @@
  * # localstorage
  * Service in the airplayPutioApp.
  */
-angular.module('tm.ionic-parse', [])
+angular.module('tm.parse', [])
   .provider('Parse', function ParseProvider(){
 
     // $ionicPlatform injected as default to support backwards compatibility. Configure without to
@@ -145,7 +145,7 @@ angular.module('tm.ionic-parse', [])
             var type = attrs[key].className,
                 attrsObj = attrs[key];
 
-            if(type && 
+            if(type &&
                 typeof attrsObj.getNgModel !== 'function')
             {
               var Model = parse.Object._classMap[type];
