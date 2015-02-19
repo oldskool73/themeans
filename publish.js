@@ -18,7 +18,7 @@ module.exports = function() {
     };
 
     switch(name){
-      case 'ionic-parse':
+      case 'parse':
         memo[name].dependencies = {
           "angular":"~1.3.0",
           "parse": "1.3.4",
@@ -27,12 +27,12 @@ module.exports = function() {
         break;
       case 'ionic-parse-login':
         memo[name].dependencies = {
-          "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse"
+          "themeans-parse": "https://github.com/amay0048/themeans.git#bower-parse"
         };
         break;
       case 'md-parse-login':
       memo[name].dependencies = {
-        "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse",
+        "themeans-parse": "https://github.com/amay0048/themeans.git#bower-parse",
         "angular-material": "master"
       };
       break;
