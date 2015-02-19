@@ -9,7 +9,7 @@
     *** Requires angular.factories for Parse.Object MessageThread and Message definitions ***
  */
 angular.module('tm.parse-messages', [
-  'tm.ionic-parse',
+  'tm.parse',
   'tm.localstorage'
 ]).service('tmMessages', [
   'Parse',
