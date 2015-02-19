@@ -49,7 +49,7 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
           Parse.User.logIn($scope.user.username, $scope.user.password, {
             success: function (user) {
               // Do stuff after successful login.
-              $ionicLoading.hide();
+              // NOTE: call $ionicLoading.hide() in controller onLoginSuccess.
               $scope.onLoginSuccess(user);
             },
             error: function (user, error) {
@@ -124,9 +124,9 @@ angular.module('tm.ionic-parse-login', ['tm.ionic-parse']).directive('ionicParse
           }
           user.signUp(null, {
             success: function (user) {
+              $scope.createAccountModal.remove();
               // Hooray! Let them use the app now.
-              $ionicLoading.hide();
-              $scope.createAccountModal.hide();
+              // NOTE: call $ionicLoading.hide() in controller onLoginSuccess.
               $scope.onLoginSuccess(user);
             },
             error: function (user, error) {
