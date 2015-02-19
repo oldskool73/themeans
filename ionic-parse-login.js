@@ -109,6 +109,10 @@ angular.module('tm.ionic-parse-login', ['tm.parse']).directive('ionicParseLogin'
             $scope.createAccountModal = modal;
           });
         }
+        // TODO: not sure if this is doing anything.
+        $scope.$on('$destroy', function () {
+          $scope.createAccountModal.remove();
+        });
         $scope.createAccountOnClick = function () {
           $scope.createAccountModal.show();
         };
@@ -124,6 +128,7 @@ angular.module('tm.ionic-parse-login', ['tm.parse']).directive('ionicParseLogin'
           }
           user.signUp(null, {
             success: function (user) {
+              // TODO: Test that this is working without fail, I have a feeling its not 100%.
               $scope.createAccountModal.remove();
               // Hooray! Let them use the app now.
               // NOTE: call $ionicLoading.hide() in controller onLoginSuccess.
