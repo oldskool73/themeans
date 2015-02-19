@@ -27,12 +27,12 @@ module.exports = function() {
         break;
       case 'ionic-parse-login':
         memo[name].dependencies = {
-          "themeans-parse": "https://github.com/amay0048/themeans.git#bower-parse"
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse"
         };
         break;
       case 'md-parse-login':
       memo[name].dependencies = {
-        "themeans-parse": "https://github.com/amay0048/themeans.git#bower-parse",
+        "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
         "angular-material": "master"
       };
       break;

@@ -7,7 +7,7 @@
  * # Parse Login directive using angular matierial design library.
     ## Complete with create account and reset password.
  */
-angular.module('tm.md-parse-login', ['tm.ionic-parse', 'ngMaterial'])
+angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
   .directive('mdParseLogin', function ($compile){
 
     var mdParseLogin = new Function();
