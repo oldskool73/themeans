@@ -7,7 +7,7 @@
     ## Complete with create account and reset password.
  */
 angular.module('tm.md-parse-login', [
-  'tm.ionic-parse',
+  'tm.parse',
   'ngMaterial'
 ]).directive('mdParseLogin', [
   '$compile',

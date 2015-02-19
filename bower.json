@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": ["./md-parse-login.js"],
   "dependencies": {
-    "themeans-ionic-parse": "https://github.com/amay0048/themeans.git#bower-ionic-parse",
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
     "angular-material": "master"
   }
 }
