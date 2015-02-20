@@ -19,7 +19,7 @@ module.exports = function() {
 
   if(npmpub && fs.existsSync(__dirname + '/dist/npm'))
   {
-    modulesName = fs.readdirSync(__dirname + '/dist/npm'); 
+    modulesName = fs.readdirSync(__dirname + '/dist/npm');
   }
 
   function makingComponentData(memo, name){
@@ -48,7 +48,7 @@ module.exports = function() {
         };
         break;
       case 'parse-messages':
-        meme[name].dependencies = {
+        memo[name].dependencies = {
           "angular-md5": "~0.1.7"
         };
         break;
