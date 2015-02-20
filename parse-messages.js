@@ -10,7 +10,8 @@
  */
 angular.module('tm.parse-messages', [
   'tm.parse',
-  'tm.localstorage'
+  'tm.localstorage',
+  'angular-md5'
 ]).service('tmMessages', [
   'Parse',
   '$q',
@@ -18,7 +19,8 @@ angular.module('tm.parse-messages', [
   'tmLocalStorage',
   'MessageThread',
   'Message',
-  function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message) {
+  'md5',
+  function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5) {
     var _self = this;
     this.getThreads = function () {
       var deferred = $q.defer(), query = new Parse.Query(MessageThread);
@@ -156,13 +158,14 @@ angular.module('tm.parse-messages', [
     };
     function checkForExistingThread(users) {
       var deferred = $q.defer(), query = new Parse.Query(MessageThread);
-      // xaun: containsAll query is not strict enough. Aslong as all users passed in are
-      //       apart of the thread, it will return true.
-      query.containsAll('users', users);
+      var userIds = [];
+      for (var i = 0; i < users.length; i++) {
+        userIds.push(users[i].id);
+      }
+      query.equalTo('userIdsHash', hashUserIds(userIds));
       query.find({
         success: function (response) {
           if (response.length > 1) {
-            // xaun: leaving handling this scenario out for now.
             deferred.reject({ message: 'There are duplicate threads. Please contact system admin.' });
           }
           if (!response.length) {
@@ -177,16 +180,16 @@ angular.module('tm.parse-messages', [
       return deferred.promise;
     }
     function createThread(threadUsers) {
-      var deferred = $q.defer(), messageThread = null, threadACL = new Parse.ACL();
-      // TODO: this shoudln't be necessary, sometimes there
-      // are other users when a new thread is instantiated
-      messageThread = new MessageThread({ users: [] });
+      var deferred = $q.defer(), threadACL = new Parse.ACL(), userIds = [];
+      var messageThread = new MessageThread({ users: [] });
       for (var i = 0; i < threadUsers.length; i++) {
         threadACL.setReadAccess(threadUsers[i].id, true);
         threadACL.setWriteAccess(threadUsers[i].id, true);
         messageThread.get('users').push(threadUsers[i]);
+        userIds.push(threadUsers[i].id);
       }
       messageThread.setACL(threadACL);
+      messageThread.set('userIdsHash', hashUserIds(userIds));
       messageThread.save({
         success: function (response) {
           deferred.resolve(response);
@@ -196,6 +199,9 @@ angular.module('tm.parse-messages', [
         }
       });
       return deferred.promise;
+    }
+    function hashUserIds(userIds) {
+      return md5.createHash(userIds.sort().join(''));
     }
     function addMessageToThread(thread, message) {
       var deferred = $q.defer(), relation = thread.relation('messages');
