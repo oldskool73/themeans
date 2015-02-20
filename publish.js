@@ -31,11 +31,16 @@ module.exports = function() {
         };
         break;
       case 'md-parse-login':
-      memo[name].dependencies = {
-        "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
-        "angular-material": "master"
-      };
-      break;
+        memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "angular-material": "master"
+        };
+        break;
+      case 'parse-messages':
+        meme[name].dependencies = {
+          "angular-md5": "~0.1.7"
+        };
+        break;
     }
 
     return memo;
