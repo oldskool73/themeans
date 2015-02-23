@@ -46,7 +46,7 @@ If you're adding a module also run
 ### To add a module
 Creat a new branch to add a match the module name
 
-`git checkout -b bower-[module-name]`
+`git checkout -b npm-[module-name]`
 
 Push the new branch (this branch will be used by the code to checkout then commit the new module)
 
