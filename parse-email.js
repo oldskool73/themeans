@@ -8,3 +8,5 @@ function foo(){
 
 // export (expose) foo to other modules as foobar
 exports.foobar = foo;
+define("parse-email/parse-email", function(){});
+
