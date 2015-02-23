@@ -1,5 +1,3 @@
-# The Means Core Library
-
 ```
           ▄▄▄▄▄▄▄             ▄▓▀                                               
     ▄▓▓▓▓▓▓▓███▀▀▀▀████▓▓▓▓▓▓▓▓▌    ▄▀▓▓▓                                       
@@ -18,58 +16,55 @@
                                    ▀▀▀                                          
 ```
 
-# TM Utils
+# The Means Core Library
 
-## Installing a module
-`bower install --save https://github.com/amay0048/themeans.git#name-of-module-git-hash`
+## Bower
+### Installing a module in a project
+`bower install --save https://github.com/themeans/themeans.git#name-of-module-git-hash`
 
-## Update a module
+### To add a module
+Creat a new branch to add a match the module name
+
+`git checkout -b bower-[module-name]`
+
+Push the new branch (this branch will be used by the code to checkout then commit the new module)
+
+### Update a module
 `grunt dist`
 `grunt build:subbower`
 `grunt publish:subbower`
 `cd out/clones/subbower/[moduleName]`
 `git push`
 
+If you're adding a module also run
+`git push --tags`
 
-Simlar library to ui.utils.
+## NPM
+### Installing a package
+`npm install --save https://github.com/themeans/themeans.git#name-of-module-git-hash`
 
-grunt build:bower
-# or
-grunt build:gh-pages
-# or
-grunt publish:bower
-# or
-grunt publish:gh-pages
+### To add a module
+Creat a new branch to add a match the module name
 
-## Demo
-http://amay0048.github.io/utils/
+`git checkout -b bower-[module-name]`
 
-## Dependencies
-- required:
-	[TODO]
-- optional
-	[TODO]
+Push the new branch (this branch will be used by the code to checkout then commit the new module)
 
-See `bower.json` and `index.html` in the `gh-pages` branch for a full list / more details
+### Update a module
+`grunt dist`
+`grunt build:subpackage`
+`grunt publish:subpackage`
+`cd out/clones/subpackage/[moduleName]`
+`git push`
 
-## Install
-1. download the files
-	1. Bower
-		1. add `"utils": "latest"` to your `bower.json` file then run `bower install` OR run `bower install utils`
-2. include the files in your app
-	1. `.min.js`
-3. include the module in angular (i.e. in `app.js`) - `amay0048.utils`
-
-See the `gh-pages` branch, files `bower.json` and `index.html` for a full example.
-
+If you're adding a package also run
+`git push --tags`
 
 ## Documentation
-See the `.js` file top comments for usage examples and documentation
-https://github.com/amay0048/utils/blob/master/.js
-
+[TODO]
 
 ## Development
-
+[TODO - Needs update]
 1. `git checkout gh-pages`
 	1. run `npm install && bower install`
 	2. write your code then run `grunt`

@@ -21,7 +21,7 @@
     "grunt-ngmin": "0.0.3",
     "grunt-requirejs": "^0.4.2",
     "load-grunt-tasks": "~0.2.0",
-    "npm-publisher": "amay0048/npm-publisher"
+    "npm-publisher": "themeans/npm-publisher"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
