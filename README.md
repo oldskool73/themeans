@@ -1,3 +1,5 @@
+# The Means Core Library
+
 ```
           ▄▄▄▄▄▄▄             ▄▓▀                                               
     ▄▓▓▓▓▓▓▓███▀▀▀▀████▓▓▓▓▓▓▓▓▌    ▄▀▓▓▓                                       
@@ -15,8 +17,6 @@
                      ▀▀▀▀        █▓▓▓▓▓▓                                        
                                    ▀▀▀                                          
 ```
-
-# The Means Core Library
 
 ## Bower
 ### Installing a module in a project
