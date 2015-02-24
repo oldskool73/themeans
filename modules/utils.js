@@ -14,5 +14,6 @@ angular.module('tm.utils', [
   'tm.parse',
   'tm.ionic-parse-login',
   'tm.md-parse-login',
-  'tm.parse-messages'
+  'tm.parse-messages',
+  'tm.jquery-tags'
 ]);

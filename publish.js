@@ -52,6 +52,11 @@ module.exports = function() {
           "angular-md5": "~0.1.7"
         };
         break;
+      case 'jquery-tags':
+        memo[name].dependencies = {
+          "jQuery-Tags-Input": "https://github.com/xoxco/jQuery-Tags-Input.git#master"
+        };
+        break;
     }
 
     return memo;
