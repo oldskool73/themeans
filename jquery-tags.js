@@ -5,7 +5,7 @@
  * @description
  * # tagsInput
  */
-angular.module('tm.jquery-tags', ['jQuery-Tags-Input']).directive('tmTagsInput', function () {
+angular.module('tm.jquery-tags', []).directive('tmTagsInput', function () {
   return {
     restrict: 'A',
     scope: {
