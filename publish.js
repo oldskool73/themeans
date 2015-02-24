@@ -57,6 +57,15 @@ module.exports = function() {
     return memo;
   }
 
+  function makingPackageData(memo, name){
+    memo[name] = {
+      name: 'themeans-' + name,
+      main: './' + name + '.js'
+    };
+
+    return memo;
+  }
+
   if(process.mainModule.filename.indexOf('npm-publisher') >= 0)
   {
     return {
@@ -70,14 +79,13 @@ module.exports = function() {
       // gh-pages js dependencies
       // js : ['dist/tm-utils.js'],
 
-
       // HACK...
       main_dist_dir: 'npm',
 
-      bowerData : { main: './LKHJLKJHLKJHLKJH.js'},
+      bowerData : {},
 
       // The sub-components
-      subcomponents : modulesName.reduce(makingComponentData, {}),
+      subcomponents : modulesName.reduce(makingPackageData, {}),
       // HACK...
       sub_dist_dir: 'npm'
     };

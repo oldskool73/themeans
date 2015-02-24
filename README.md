@@ -41,7 +41,7 @@ If you're adding a module also run
 
 ## NPM
 ### Installing a package
-`npm install --save https://github.com/themeans/themeans.git#name-of-module-git-hash`
+`npm install --save themeans/themeans#name-of-package-branch`
 
 ### To add a module
 Creat a new branch to add a match the module name
