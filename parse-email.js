@@ -1,4 +1,4 @@
-(function (global) {
+if(typeof Parse.requie === "undefined"){Parse.require = require;}(function (global) {
     function require(file, parentModule) {
         if ({}.hasOwnProperty.call(require.cache, file))
             return require.cache[file];
