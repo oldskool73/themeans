@@ -68,6 +68,14 @@ module.exports = function() {
       main: './' + name + '.js'
     };
 
+    // switch(name){
+    //   case 'parse-email':
+    //     memo[name].dependencies = {
+    //       "mustache": "^1.1.0"
+    //     };
+    //     break;
+    // }
+
     return memo;
   }
 

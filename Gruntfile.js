@@ -12,7 +12,8 @@ module.exports = function (grunt) {
   grunt.registerTask('dist', ['dist:main', 'dist:sub', 'dist:npm', 'dist:demo']);
   grunt.registerTask('dist:main', ['concat:tmp', 'concat:modules', 'clean:rm_tmp', 'uglify:main']);
   grunt.registerTask('dist:sub', ['ngmin', 'uglify:sub']);
-  grunt.registerTask('dist:npm', ['requirejs', 'uglify:npm']);
+  // grunt.registerTask('dist:npm', ['cjsify','replace:npm','uglify:npm']);
+  grunt.registerTask('dist:npm', ['cjsify','replace:npm']);
   grunt.registerTask('dist:demo', ['concat:html_doc', 'copy']);
 
 
@@ -27,7 +28,6 @@ module.exports = function (grunt) {
       var src = './node_modules/angular-ui-publisher';
       if(['package','subpackage'].indexOf(this.args[0]) >= 0)
       {
-        console.log('FOO');
         src = './node_modules/npm-publisher';
       }
 
@@ -60,26 +60,29 @@ module.exports = function (grunt) {
 
   // HACK TO LIST ALL THE MODULE NAMES
   var packageNames = grunt.file.expand({ cwd: 'packages' }, ['*','!utils.js']);
-  function requireJsConfig(memo, moduleName){
+  function commonJsConfig(memo, moduleName){
 
     //First set up the common build layer.
-    memo.push({
-      //module names are relative to baseUrl
-      name: moduleName+'/'+moduleName,
-      //List common dependencies here. Only need to list
-      //top level dependencies, "include" will find
-      //nested dependencies.
-      // include: [
-      //   'jquery',
-      //   'app/lib',
-      //   'app/controller/Base',
-      //   'app/model/Base'
-      // ]
-    });
+    memo[moduleName] = {
+      src:['packages/'+moduleName+'/'+moduleName+'.js'],
+      dest: 'dist/npm/'+moduleName+'/'+moduleName+'.js'
+    };
 
     return memo;
   }
   //
+
+  function npmReplaceConfig(memo, moduleName){
+
+    memo.push({
+      expand:true, 
+      flatten:true, 
+      src: ['dist/npm/'+moduleName+'/*.js'], 
+      dest: 'dist/npm/'+moduleName+'/'
+    });
+
+    return memo;
+  }
 
 
   // HACK TO MAKE TRAVIS WORK
@@ -227,19 +230,28 @@ module.exports = function (grunt) {
         ]
       }
     },
-    requirejs: {
-      std: {
+    cjsify: packageNames.reduce(commonJsConfig, {
+      options: {
+        // Task-specific options go here.
+        export: 'exports'
+      }
+    }),
+    replace:{
+      npm: {
         options: {
-          baseUrl: 'packages',
-          dir: 'dist/npm',
-          optimize: 'none',
-          modules: packageNames.reduce(requireJsConfig, [])
-        }
+          patterns: [
+            {
+              match: '}.call(this, this));',
+              replacement: '}.call(this, module));'
+            }
+          ],
+          usePrefix: false
+        },
+        files: packageNames.reduce(npmReplaceConfig, [])
       }
     },
     ngmin: moduleNames.reduce(ngMinModulesConfig, {}),
     changelog: { options: { dest: 'CHANGELOG.md' } }
   });
 
-  grunt.loadNpmTasks('grunt-requirejs');
 };

@@ -9,6 +9,7 @@
     "angular-ui-publisher": "1.2.7",
     "express": "~3.4.4",
     "grunt": "~0.4.1",
+    "grunt-cjsify": "git://github.com/themeans/grunt-cjsify",
     "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-connect": "~0.5.0",
@@ -19,8 +20,10 @@
     "grunt-conventional-changelog": "~1.0.0",
     "grunt-karma": "~0.6.2",
     "grunt-ngmin": "0.0.3",
-    "grunt-requirejs": "^0.4.2",
+    "grunt-parsejsify": "git://github.com/themeans/grunt-parsejsify",
+    "grunt-replace": "^0.8.0",
     "load-grunt-tasks": "~0.2.0",
+    "mustache": "^1.1.0",
     "npm-publisher": "themeans/npm-publisher"
   },
   "scripts": {
