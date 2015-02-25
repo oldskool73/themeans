@@ -30,11 +30,13 @@ Creat a new branch to add a match the module name
 Publish the new branch (this branch will be used by the code to checkout then commit the new module)
 
 ### Update a module
-`grunt dist`
-`grunt build:subbower`
-`grunt publish:subbower`
-`cd out/clones/subbower/[moduleName]`
-`git push`
+```
+grunt dist
+grunt build:subbower
+grunt publish:subbower
+cd out/clones/subbower/[moduleName]
+git push
+```
 
 If you're adding a module also run
 `git push --tags`
@@ -51,11 +53,13 @@ Creat a new branch to add a match the module name
 Push the new branch (this branch will be used by the code to checkout then commit the new module)
 
 ### Update a module
-`grunt dist`
-`grunt build:subpackage`
-`grunt publish:subpackage`
-`cd out/clones/subpackage/[moduleName]`
-`git push`
+```
+grunt dist
+grunt build:subpackage
+grunt publish:subpackage
+cd out/clones/subpackage/[moduleName]
+git push
+```
 
 If you're adding a package also run
 `git push --tags`
