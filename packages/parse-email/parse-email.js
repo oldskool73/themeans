@@ -10,7 +10,7 @@ module.exports = function(request, response, options){
   Mandrill.initialize('X7_fibq-tCUbHXVe4cfNVw');
 
   var fs       = Parse.require('fs');
-  var Mustache = require('cloud/node_modules/mustache/mustache');
+  var Mustache = require('mustache');
   var template = fs.readFileSync(configObject.templateFile, 'utf8');
 
   var html = Mustache.render(template, dataObject);
