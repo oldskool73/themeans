@@ -6,10 +6,10 @@ module.exports = function(request, response, options){
 
   var deferred      = new Parse.Promise();
 
-  var Mandrill = require('mandrill');
+  var Mandrill = Parse.require('mandrill');
   Mandrill.initialize('X7_fibq-tCUbHXVe4cfNVw');
 
-  var fs       = require('fs');
+  var fs       = Parse.require('fs');
   var Mustache = require('cloud/node_modules/mustache/mustache');
   var template = fs.readFileSync(configObject.templateFile, 'utf8');
 
