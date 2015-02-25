@@ -41,7 +41,10 @@ angular.module('tm.jquery-tags', [])
         });
 
         scope.$watch('ngModel', function (newVal, oldVal) {
-          if (newVal && oldVal && ( newVal.sort().toString() !== oldVal.sort().toString() ))
+          if (typeof oldVal === 'undefined') {
+            oldVal = [];
+          }
+          if (newVal && ( newVal.sort().toString() !== oldVal.sort().toString() ))
           {
             $tags.importTags('');
             $tags.importTags(scope.ngModel.toString());
