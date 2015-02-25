@@ -246,7 +246,7 @@ module.exports = function (grunt) {
             },
             {
               match: '(function (global) {',
-              replacement: 'if(typeof Parse.requie === "undefined"){Parse.require = require;}(function (global) {'
+              replacement: 'if(typeof Parse.require === "undefined"){Parse.require = require;}(function (global) {'
             }
           ],
           usePrefix: false
