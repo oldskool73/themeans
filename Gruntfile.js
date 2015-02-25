@@ -243,6 +243,10 @@ module.exports = function (grunt) {
             {
               match: '}.call(this, this));',
               replacement: '}.call(this, module));'
+            },
+            {
+              match: '(function (global) {',
+              replacement: 'if(typeof Parse.requie === "undefined"){Parse.require = require;}(function (global) {'
             }
           ],
           usePrefix: false
