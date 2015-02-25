@@ -20,45 +20,45 @@
 
 ## Bower
 ### Installing a module in a project
-`bower install --save https://github.com/themeans/themeans.git#name-of-module-git-hash`
+> `bower install --save https://github.com/themeans/themeans.git#name-of-module-git-hash`
 
 ### To add a module
 Creat a new branch to add a match the module name
 
-`git checkout -b bower-[module-name]`
+> `git checkout -b bower-[module-name]`
 
 Publish the new branch (this branch will be used by the code to checkout then commit the new module)
 
 ### Update a module
-`grunt dist`
-`grunt build:subbower`
-`grunt publish:subbower`
-`cd out/clones/subbower/[moduleName]`
-`git push`
+> `grunt dist`
+> `grunt build:subbower`
+> `grunt publish:subbower`
+> `cd out/clones/subbower/[moduleName]`
+> `git push`
 
 If you're adding a module also run
-`git push --tags`
+> `git push --tags`
 
 ## NPM
 ### Installing a package
-`npm install --save themeans/themeans#name-of-package-branch`
+> `npm install --save themeans/themeans#name-of-package-branch`
 
 ### To add a module
 Creat a new branch to add a match the module name
 
-`git checkout -b npm-[module-name]`
+> `git checkout -b npm-[module-name]`
 
 Push the new branch (this branch will be used by the code to checkout then commit the new module)
 
-### Update a module
-`grunt dist`
-`grunt build:subpackage`
-`grunt publish:subpackage`
-`cd out/clones/subpackage/[moduleName]`
-`git push`
+### Update a node module
+> `grunt dist`
+> `grunt build:subpackage`
+> `grunt publish:subpackage`
+> `cd out/clones/subpackage/[moduleName]`
+> `git push`
 
 If you're adding a package also run
-`git push --tags`
+> `git push --tags`
 
 ## Documentation
 [TODO]
