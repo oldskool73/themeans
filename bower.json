@@ -1,0 +1,10 @@
+{
+  "name": "themeans-parse-profiles-service",
+  "version": "0.0.1",
+  "main": ["./parse-profiles-service.js"],
+  "dependencies": {
+    "angular-md5": "~0.1.7",
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+    "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
+  }
+}
