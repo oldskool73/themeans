@@ -1,0 +1,9 @@
+{
+  "name": "themeans-parse-accounts-service",
+  "version": "0.0.1",
+  "main": ["./parse-accounts-service.js"],
+  "dependencies": {
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+    "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
+  }
+}
