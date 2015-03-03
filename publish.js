@@ -52,6 +52,19 @@ module.exports = function() {
           "angular-md5": "~0.1.7"
         };
         break;
+      case 'parse-profiles-service':
+        memo[name].dependencies = {
+          "angular-md5": "~0.1.7",
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
+        };
+        break;
+      case 'parse-accounts-service':
+        memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
+        };
+        break;
       case 'jquery-tags':
         memo[name].dependencies = {
           "jQuery-Tags-Input": "https://github.com/xoxco/jQuery-Tags-Input.git#master"
