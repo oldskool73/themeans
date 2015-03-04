@@ -28,7 +28,7 @@ angular.module('tm.jquery-tags', [])
             if(typeof $el.val === 'function')
             {
               scope.$evalAsync(function(){
-                scope.ngModel = new Array($el.val().toLowerCase());
+                scope.ngModel = new Array($el.val().toLowerCase().split(','));
               });
             }
           },

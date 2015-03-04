@@ -20,53 +20,55 @@ angular.module('tm.parseProfiles',[
   })
   .service('tmProfiles', function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5 ) {
 
-    this.getProfileById = function(profileId, returnParseObject){
+    function getProfileById(profileId, edit){
       var deferred      = $q.defer(),
           profilesQuery = new Parse.Query(Profile),
-          ngProfile;
+          ngProfile, cacheKey = 'profile:display:'+profileId;
+
+      if(edit)
+      {
+        cacheKey = 'profile:edit:'+profileId;
+      }
 
       $timeout(function (){
-        var cache = tmLocalStorage.getObject(profileId);
+        var cache = tmLocalStorage.getObject(cacheKey);
         deferred.notify(cache);
       }, 0);
 
       profilesQuery.get(profileId, {
         success: function(parseProfile) {
-          tmLocalStorage.setObject(profileId, parseProfile);
-          ngProfile = tmLocalStorage.getObject(profileId);
-
-          // Gives back parse object setting faster pointers.
-          if (returnParseObject) {
-            return deferred.resolve({
-              ngProfile: ngProfile,
-              parseProfile: parseProfile
-            });
+          var model = parseProfile.getNgModel();
+          if(edit)
+          {
+            model = parseProfile.getNgFormModel();
           }
+          tmLocalStorage.setObject(cacheKey, model);
+          ngProfile = tmLocalStorage.getObject(cacheKey);
           deferred.resolve(ngProfile);
         },
         error: function(response, err){
-          if (err === null)
-          {
-            deferred.reject({
-              message: 'Could not find profile, please contact system admin.'
-            });
-          }
           deferred.reject(err);
         }
       });
       return deferred.promise;
+    }
+
+    this.getProfileByIdForEditing = function(profileId){
+      return getProfileById(profileId, true);
     };
 
-    this.updateProfile = function(profileModel){
+    this.getProfileByIdForDisplay = function(profileId){
+      return getProfileById(profileId, false);
+    };
+
+    this.updateProfile = function(ngProfile){
       var deferred  = $q.defer(),
-          profile   = new Profile();
+          profile   = new Profile(ngProfile, {
+            ngModel:true,
+            resetOpsQueue:false
+          });
 
-      if (profileModel.skills)
-      {
-        profileModel.skills = profileModel.skills[0].split(',');
-      }
-
-      profile.save(profileModel, {
+      profile.save(null, {
         success: function(profile){
           tmLocalStorage.setObject(profile.id, profile);
           profile = tmLocalStorage.getObject(profile.id);
