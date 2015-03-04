@@ -88,6 +88,11 @@ angular.module('tm.parseProfiles',[
           follower     = user.get('profile'),
           hash         = md5.createHash([following.id, follower.id].sort().join(''));
 
+      following = new Profile(following, {
+        ngModel: true,
+        resetOpsQueue: false
+      });
+
       follow.set('follower', follower);
       follow.set('following', following);
       follow.set('profileIdsHash', hash);
@@ -98,7 +103,7 @@ angular.module('tm.parseProfiles',[
       follow.save()
       .then(function () {
         deferred.resolve();
-      }, function (response, err) {
+      }, function (err) {
         deferred.reject(err);
       });
       return deferred.promise;
