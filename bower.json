@@ -1,6 +1,6 @@
 {
   "name": "themeans-parse-messages",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": ["./parse-messages.js"],
   "dependencies": {
     "angular-md5": "~0.1.7"
