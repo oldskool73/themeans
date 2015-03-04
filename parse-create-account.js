@@ -49,7 +49,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 return deferred;
             };
             this.afterUserSave = function (user) {
-                var deferred = Parse.Promise;
+                var deferred = new Parse.Promise();
                 setProfileUserPointer(user).then(function (profile) {
                     setSettingsUserPointer(user).then(function (settings) {
                         deferred.resolve(profile, settings);
