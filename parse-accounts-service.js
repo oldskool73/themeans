@@ -9,11 +9,18 @@
 angular.module('tm.parseAccounts', [
   'tm.parse',
   'tm.localstorage'
+]).factory('Settings', [
+  'Parse',
+  function (Parse) {
+    return Parse.Object.extend('Settings');
+  }
 ]).service('tmAccounts', [
   '$q',
+  '$timeout',
+  'Settings',
   'Parse',
   'tmLocalStorage',
-  function ($q, Parse, tmLocalStorage) {
+  function ($q, $timeout, Settings, Parse, tmLocalStorage) {
     // Returns an array of role names that the passed in Parse User belongs to.
     this.getUserRoles = function (user) {
       var deferred = $q.defer(), queryRoles = new Parse.Query(Parse.Role);
@@ -39,6 +46,51 @@ angular.module('tm.parseAccounts', [
       query.get(userId, {
         success: function (response) {
           deferred.resolve(response);
+        },
+        error: function (response, err) {
+          deferred.reject(err);
+        }
+      });
+      return deferred.promise;
+    };
+    function getSettingsById(settingsId, edit) {
+      var deferred = $q.defer(), settingsQuery = new Parse.Query(Settings), ngSettings, cacheKey = 'settings:display:' + settingsId;
+      if (edit) {
+        cacheKey = 'settings:edit:' + settingsId;
+      }
+      $timeout(function () {
+        var cache = tmLocalStorage.getObject(cacheKey);
+        deferred.notify(cache);
+      }, 0);
+      settingssQuery.get(settingsId, {
+        success: function (parseSettings) {
+          var model = parseSettings.getNgModel();
+          if (edit) {
+            model = parseSettings.getNgFormModel();
+          }
+          tmLocalStorage.setObject(cacheKey, model);
+          ngSettings = tmLocalStorage.getObject(cacheKey);
+          deferred.resolve(ngSettings);
+        },
+        error: function (response, err) {
+          deferred.reject(err);
+        }
+      });
+      return deferred.promise;
+    }
+    this.getSettingsByIdForEditing = function (settingsId) {
+      return getSettingsById(settingsId, true);
+    };
+    this.getSettingsByIdForDisplay = function (settingsId) {
+      return getSettingsById(settingsId, false);
+    };
+    this.updateSettings = function (ngSettings) {
+      var deferred = $q.defer(), settings = new Settings();
+      settings.save(settingsModel, {
+        success: function (settings) {
+          tmLocalStorage.setObject(settings.id, settings);
+          settings = tmLocalStorage.getObject(settings.id);
+          deferred.resolve(settings);
         },
         error: function (response, err) {
           deferred.reject(err);
