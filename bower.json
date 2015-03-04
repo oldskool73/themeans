@@ -1,6 +1,6 @@
 {
   "name": "themeans-md-parse-login",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": ["./md-parse-login.js"],
   "dependencies": {
     "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
