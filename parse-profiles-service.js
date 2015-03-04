@@ -78,6 +78,10 @@ angular.module('tm.parseProfiles', [
       return deferred.promise;
     };
     this.followProfile = function (following, user) {
+      following = new Profile(following, {
+        ngModel: true,
+        resetOpsQueue: false
+      });
       var deferred = $q.defer(), follow = new Follow(), followACL = new Parse.ACL(), follower = user.get('profile'), hash = md5.createHash([
           following.id,
           follower.id
@@ -90,14 +94,13 @@ angular.module('tm.parseProfiles', [
       follow.setACL(followACL);
       follow.save().then(function () {
         deferred.resolve();
-      }, function (response, err) {
+      }, function (err) {
         deferred.reject(err);
       });
       return deferred.promise;
     };
     this.unfollowProfile = function (profileIds) {
-      var deferred = $q.defer(), query = new Parse.Query(Follow), hash;
-      hash = hash = md5.createHash(profileIds.sort().join(''));
+      var deferred = $q.defer(), query = new Parse.Query(Follow), hash = md5.createHash(profileIds.sort().join(''));
       query.equalTo('profileIdsHash', hash);
       query.find({
         success: function (response) {
