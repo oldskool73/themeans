@@ -62,7 +62,7 @@ angular.module('tm.parseAccounts', [
         var cache = tmLocalStorage.getObject(cacheKey);
         deferred.notify(cache);
       }, 0);
-      settingssQuery.get(settingsId, {
+      settingsQuery.get(settingsId, {
         success: function (parseSettings) {
           var model = parseSettings.getNgModel();
           if (edit) {
@@ -85,8 +85,11 @@ angular.module('tm.parseAccounts', [
       return getSettingsById(settingsId, false);
     };
     this.updateSettings = function (ngSettings) {
-      var deferred = $q.defer(), settings = new Settings();
-      settings.save(settingsModel, {
+      var deferred = $q.defer(), settings = new Settings(ngSettings, {
+          ngModel: true,
+          resetOpsQueue: false
+        });
+      settings.save(null, {
         success: function (settings) {
           tmLocalStorage.setObject(settings.id, settings);
           settings = tmLocalStorage.getObject(settings.id);
