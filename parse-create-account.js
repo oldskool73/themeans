@@ -36,12 +36,10 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
             this.beforeUserSave = function (user) {
                 var deferred = new Parse.Promise();
                 createProfile(user).then(function (profile) {
-                    createProfileSettings(profile).then(function (settings) {
-                        var parseSettings = settings;
-                        setSettingsPointerToProfile(profile, parseSettings).then(function () {
-                            user.set('profile', profile);
-                            deferred.resolve(user);
-                        }, fail);
+                    user.set('profile', profile);
+                    createSettings(user).then(function (settings) {
+                        user.set('settings', settings);
+                        deferred.resolve(user);
                     }, fail);
                 }, fail);
                 function fail(err) {
@@ -50,7 +48,15 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 }
                 return deferred;
             };
-            this.afterUserSave = setProfileUserPointer;
+            this.afterUserSave = function (user) {
+                var deferred = Parse.Promise;
+                setProfileUserPointer(user).then(function (profile) {
+                    setSettingsUserPointer(user).then(function (settings) {
+                        deferred.resolve(profile, settings);
+                    }, deferred.reject);
+                }, deferred.reject);
+                return deferred;
+            };
             function createProfile(user) {
                 var Profile = Parse.Object.extend('Profile'), profile = new Profile(), deferred = new Parse.Promise();
                 beforeProfileSave(profile, user).then(function (profile) {
@@ -67,10 +73,9 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 });
                 return deferred;
             }
-            function createProfileSettings(parseProfile) {
+            function createSettings(user) {
                 var Settings = Parse.Object.extend('Settings'), settings = new Settings(), deferred = new Parse.Promise();
                 beforeSettingsSave(settings).then(function (settings) {
-                    settings.set('profile', parseProfile);
                     settings.save({
                         success: function (response) {
                             deferred.resolve(response);
@@ -84,23 +89,23 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 });
                 return deferred;
             }
-            function setSettingsPointerToProfile(parseProfile, parseSettings) {
-                var deferred = new Parse.Promise();
-                parseProfile.set('settings', parseSettings);
-                parseProfile.save({
+            function setProfileUserPointer(parseUser) {
+                var deferred = new Parse.Promise(), parseProfile = parseUser.get('profile');
+                parseProfile.set('user', parseUser);
+                parseProfile.save(null, {
                     success: function (response) {
                         deferred.resolve(response);
                     },
-                    error: function (response, err) {
-                        deferred.reject(err);
+                    error: function (response, error) {
+                        deferred.reject(error);
                     }
                 });
                 return deferred;
             }
-            function setProfileUserPointer(parseUser, parseProfile) {
-                var deferred = new Parse.Promise();
-                parseProfile.set('user', parseUser);
-                parseProfile.save(null, {
+            function setSettingsUserPointer(parseUser) {
+                var deferred = new Parse.Promise(), parseSettings = parseUser.get('settings');
+                parseSettings.set('user', parseUser);
+                parseSettings.save(null, {
                     success: function (response) {
                         deferred.resolve(response);
                     },
