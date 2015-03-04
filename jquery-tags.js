@@ -25,7 +25,7 @@ angular.module('tm.jquery-tags', []).directive('tmTagsInput', function () {
           onChange: function ($el) {
             if (typeof $el.val === 'function') {
               scope.$evalAsync(function () {
-                scope.ngModel = new Array($el.val().toLowerCase());
+                scope.ngModel = new Array($el.val().toLowerCase().split(','));
               });
             }
           },
