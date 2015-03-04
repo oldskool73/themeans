@@ -14,19 +14,13 @@ function createAccount(Parse, beforeProfileSave, beforeSettingsSave){
 
     createProfile(user)
     .then(function(profile) {
-      createProfileSettings(profile)
+      user.set('profile', profile);
+
+      createSettings(user)
       .then(function(settings) {
-
-        var parseSettings = settings;
-
-        setSettingsPointerToProfile(profile, parseSettings)
-        .then(function(){
-
-          user.set('profile', profile);
-
-          deferred.resolve(user);
-
-        }, fail);
+        user.set('settings', settings);
+        
+        deferred.resolve(user);
 
       }, fail);
 
@@ -40,7 +34,17 @@ function createAccount(Parse, beforeProfileSave, beforeSettingsSave){
     return deferred;
   };
 
-  this.afterUserSave = setProfileUserPointer;
+  this.afterUserSave = function(user){
+    var deferred = Parse.Promise;
+
+    setProfileUserPointer(user).then(function(profile){
+      setSettingsUserPointer(user).then(function(settings){
+        deferred.resolve(profile,settings);
+      },deferred.reject);
+    },deferred.reject);
+
+    return deferred;
+  };
 
 
   function createProfile(user) {
@@ -66,7 +70,7 @@ function createAccount(Parse, beforeProfileSave, beforeSettingsSave){
     return deferred;
   }
 
-  function createProfileSettings(parseProfile) {
+  function createSettings(user) {
 
     var Settings = Parse.Object.extend('Settings'),
         settings = new Settings(),
@@ -74,7 +78,6 @@ function createAccount(Parse, beforeProfileSave, beforeSettingsSave){
 
     beforeSettingsSave(settings)
     .then(function (settings){
-      settings.set('profile', parseProfile);
       settings.save({
         success: function (response) {
           deferred.resolve(response);
@@ -90,27 +93,29 @@ function createAccount(Parse, beforeProfileSave, beforeSettingsSave){
     return deferred;
   }
 
-  function setSettingsPointerToProfile(parseProfile, parseSettings) {
-    var deferred = new Parse.Promise();
+  function setProfileUserPointer(parseUser) {
+    var deferred = new Parse.Promise(),
+      parseProfile = parseUser.get('profile');
 
-    parseProfile.set('settings', parseSettings);
-    parseProfile.save({
+    parseProfile.set('user', parseUser);
+    parseProfile.save(null, {
       success: function (response) {
         deferred.resolve(response);
       },
-      error: function (response, err) {
-        deferred.reject(err);
+      error: function (response, error) {
+        deferred.reject(error);
       }
     });
 
     return deferred;
   }
 
-  function setProfileUserPointer(parseUser, parseProfile) {
-    var deferred = new Parse.Promise();
+  function setSettingsUserPointer(parseUser) {
+    var deferred = new Parse.Promise(),
+      parseSettings = parseUser.get('settings');
 
-    parseProfile.set('user', parseUser);
-    parseProfile.save(null, {
+    parseSettings.set('user', parseUser);
+    parseSettings.save(null, {
       success: function (response) {
         deferred.resolve(response);
       },

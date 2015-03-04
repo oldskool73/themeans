@@ -53,6 +53,21 @@ angular.module('tm.parseAccounts',[
       });
       return deferred.promise;
     };
+
+    this.getUserSettings = function(userId){
+      var deferred = $q.defer(),
+          query    = new Parse.Query(Parse.User);
+
+      query.get(userId, {
+        success: function(response){
+          deferred.resolve(response);
+        },
+        error: function(response, err){
+          deferred.reject(err);
+        }
+      });
+      return deferred.promise;
+    };
   });
 
 
