@@ -10,22 +10,36 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
   .directive('ionicParseLogin', function () {
 
     var mainTmpl = '<form ng-submit="loginFormOnSubmit($event)">'+
-      '<div class="list">'+
+      '<div class="list {{listContainerClass}}">'+
         '<label class="item item-input">'+
-          '<span class="input-label">'+
+          '<i '+
+            'class="icon placeholder-icon {{userIconClass}}"'+
+            'ng-if="userIconClass.length">'+
+          '</i>'+
+          '<span '+
+            'ng-if="displayLabels()" '+
+            'class="input-label">'+
             'Username'+
           '</span>'+
           '<input '+
             'type="text" '+
+            'placeholder="Username" '+
             'ng-model="user.username">'+
         '</label>'+
 
         '<label class="item item-input">'+
-          '<span class="input-label">'+
+          '<i '+
+            'class="icon placeholder-icon {{passIconClass}}"'+
+            'ng-if="passIconClass.length">'+
+          '</i>'+
+          '<span '+
+            'ng-if="displayLabels()" '+
+            'class="input-label">'+
             'Password'+
           '</span>'+
           '<input '+
             'type="password" '+
+            'placeholder="Password" '+
             'ng-model="user.password">'+
         '</label>'+
       '</div>'+
@@ -47,7 +61,7 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
       '</p>'+
       '<button '+
         'class="button button-block {{createAccountButtonClass}}" '+
-		    'ng-click="createAccountOnClick($event)">'+
+        'ng-click="createAccountOnClick($event)">'+
         '{{createAccountButtonText}}'+
       '</button>'+
     '</div>';
@@ -133,18 +147,23 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
       restrict: 'E',
       scope:{
         user:'=',
+        onLoginSuccess:'=',
+        displayLabels:'&',
+
         headerBarClass:'@',
-      	signInButtonClass:'@',
+        signInButtonClass:'@',
         signInButtonText:'@',
-      	createAccountButtonClass:'@',
+        createAccountButtonClass:'@',
         createAccountButtonText:'@',
-      	createButtonClass:'@',
+        createButtonClass:'@',
         createButtonText:'@',
-      	resetButtonClass:'@',
+        resetButtonClass:'@',
         resetButtonText:'@',
         modalAnimation:'@',
-        onLoginSuccess:'=',
-        createTmplUrl:'='
+        listContainerClass:'@',
+        userIconClass:'@',
+        passIconClass:'@',
+        createTmplUrl:'@'
       },
       controller: function ($scope, $location, $ionicPopup, $ionicModal, $ionicLoading, Parse) {
         if (typeof $scope.user === 'undefined')
@@ -154,6 +173,7 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
             password: ''
           };
         }
+
         $scope.loginFormOnSubmit = function(){
           $ionicLoading.show({
             template: 'Loading...',
@@ -230,11 +250,9 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
         }
         else
         {
-          $ionicModal.fromTemplate(createTmpl, {
+          $scope.createAccountModal = $ionicModal.fromTemplate(createTmpl, {
             scope: $scope,
             animation: $scope.modalAnimation
-          }).then(function (modal){
-            $scope.createAccountModal = modal;
           });
         }
         // TODO: not sure if this is doing anything.
