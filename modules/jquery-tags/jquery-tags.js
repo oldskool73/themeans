@@ -28,12 +28,13 @@ angular.module('tm.jquery-tags', [])
             if(typeof $el.val === 'function')
             {
               scope.$evalAsync(function(){
-                scope.ngModel = new Array($el.val().toLowerCase().split(','));
+                scope.ngModel = $el.val().toLowerCase().split(',');
               });
             }
           },
           interactive: true,
           defaultText: scope.defaultText,
+          delimiter: [','],
           removeWithBackspace: true,
           minChars: scope.minChars,
           maxChars: scope.maxChars,
