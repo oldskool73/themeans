@@ -67,7 +67,7 @@ module.exports = function() {
         break;
       case 'jquery-tags':
         memo[name].dependencies = {
-          "jQuery-Tags-Input": "https://github.com/xoxco/jQuery-Tags-Input.git#master"
+          "jQuery-Tags-Input": "https://github.com/themeans/jQuery-Tags-Input.git#master"
         };
         break;
     }
