@@ -68,8 +68,8 @@ angular.module('tm.parseProfiles', [
         });
       profile.save(null, {
         success: function (profile) {
-          tmLocalStorage.setObject('profile:' + profile.id, profile);
-          profile = tmLocalStorage.getObject('profile:' + profile.id);
+          tmLocalStorage.setObject('profile:edit' + profile.id, profile.getNgFormModel());
+          profile = tmLocalStorage.getObject('profile:edit' + profile.id);
           deferred.resolve(profile);
         },
         error: function (response, err) {
@@ -108,7 +108,9 @@ angular.module('tm.parseProfiles', [
       query.find({
         success: function (response) {
           if (!response.length) {
-            return deferred.reject('Something went wrong, please contact system admin');
+            console.error('No Parse Follow object found.');
+            deferred.reject({ message: 'Please contact support' });
+            return;
           }
           // On the slim chance there are duplicates..
           for (var i = 0; i < response.length; i++) {
