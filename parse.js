@@ -86,7 +86,7 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
               var value = new Model(attrsObj, { ngModel: true });
               tmp.push(value);
             } else {
-              tmp.push(angular.copy(attrs[key]));
+              tmp.push(angular.copy(attrsObj));
             }
           }
           this.set(key, tmp);
