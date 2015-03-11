@@ -30,12 +30,13 @@ angular.module('tm.parseAccounts',[
             roles.push(response[i].get('name'));
           }
 
-          tmLocalStorage.setObject(user.id+'-roles', roles);
-          roles = tmLocalStorage.getObject(user.id+'-roles');
+          tmLocalStorage.setObject('user:roles:'+user.id, roles);
+          roles = tmLocalStorage.getObject('user:roles:'+user.id, []);
 
           deferred.resolve(roles);
         },
         error: function (response, err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -51,6 +52,7 @@ angular.module('tm.parseAccounts',[
           deferred.resolve(response);
         },
         error: function(response, err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -62,8 +64,7 @@ angular.module('tm.parseAccounts',[
           settingsQuery = new Parse.Query(Settings),
           ngSettings, cacheKey = 'settings:display:'+settingsId;
 
-      if(edit)
-      {
+      if(edit){
         cacheKey = 'settings:edit:'+settingsId;
       }
 
@@ -75,8 +76,7 @@ angular.module('tm.parseAccounts',[
       settingsQuery.get(settingsId, {
         success: function(parseSettings) {
           var model = parseSettings.getNgModel();
-          if(edit)
-          {
+          if (edit) {
             model = parseSettings.getNgFormModel();
           }
           tmLocalStorage.setObject(cacheKey, model);
@@ -84,6 +84,7 @@ angular.module('tm.parseAccounts',[
           deferred.resolve(ngSettings);
         },
         error: function(response, err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -101,8 +102,8 @@ angular.module('tm.parseAccounts',[
     this.updateSettings = function(ngSettings){
       var deferred  = $q.defer(),
           settings   = new Settings(ngSettings,{
-            ngModel:true,
-            resetOpsQueue:false
+            ngModel: true,
+            resetOpsQueue: false
           });
 
       settings.save(null, {
@@ -112,6 +113,7 @@ angular.module('tm.parseAccounts',[
           deferred.resolve(settings);
         },
         error: function(response, err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });

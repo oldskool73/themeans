@@ -25,8 +25,7 @@ angular.module('tm.parseProfiles',[
           profilesQuery = new Parse.Query(Profile),
           ngProfile, cacheKey = 'profile:display:'+profileId;
 
-      if(edit)
-      {
+      if (edit) {
         cacheKey = 'profile:edit:'+profileId;
       }
 
@@ -38,8 +37,7 @@ angular.module('tm.parseProfiles',[
       profilesQuery.get(profileId, {
         success: function(parseProfile) {
           var model = parseProfile.getNgModel();
-          if(edit)
-          {
+          if (edit) {
             model = parseProfile.getNgFormModel();
           }
           tmLocalStorage.setObject(cacheKey, model);
@@ -47,6 +45,7 @@ angular.module('tm.parseProfiles',[
           deferred.resolve(ngProfile);
         },
         error: function(response, err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -70,11 +69,12 @@ angular.module('tm.parseProfiles',[
 
       profile.save(null, {
         success: function(profile){
-          tmLocalStorage.setObject(profile.id, profile);
-          profile = tmLocalStorage.getObject(profile.id);
+          tmLocalStorage.setObject('profile:'+profile.id, profile);
+          profile = tmLocalStorage.getObject('profile:'+profile.id);
           deferred.resolve(profile);
         },
         error: function(response, err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -103,10 +103,12 @@ angular.module('tm.parseProfiles',[
       followACL.setWriteAccess(user, true);
       follow.setACL(followACL);
 
-      follow.save()
+      follow
+      .save()
       .then(function () {
         deferred.resolve();
       }, function (err) {
+        console.error('Parse Error: ', err.code, err.message);
         deferred.reject(err);
       });
       return deferred.promise;
@@ -134,12 +136,14 @@ angular.module('tm.parseProfiles',[
             follow.destroy({
               success: function () {},
               error: function (response, err) {
+                console.error('Parse Error: ', err.code, err.message);
                 deferred.reject(err);
               }
             });
           }
         },
         error: function (response, err) {
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -162,6 +166,7 @@ angular.module('tm.parseProfiles',[
           deferred.resolve(true);
         },
         error: function (err) {
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -174,7 +179,7 @@ angular.module('tm.parseProfiles',[
           rolesQuery = new Parse.Query(Parse.Role);
 
       $timeout(function (){
-        var cache = tmLocalStorage.getObject('profiles');
+        var cache = tmLocalStorage.getObject('profiles', []);
         deferred.notify(cache);
       }, 0);
 
@@ -209,13 +214,15 @@ angular.module('tm.parseProfiles',[
             profiles.push(response[i].get('profile'));
           }
           tmLocalStorage.setObject('profiles', profiles);
-          profiles = tmLocalStorage.getObject('profiles');
+          profiles = tmLocalStorage.getObject('profiles', []);
           deferred.resolve(profiles);
 
         }, function (err){
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         });
       }, function (err){
+        console.error('Parse Error: ', err.code, err.message);
         deferred.reject(err);
       });
 
