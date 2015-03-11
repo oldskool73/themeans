@@ -129,7 +129,9 @@ angular.module('tm.parseProfiles',[
       query.find({
         success: function (response) {
           if (!response.length) {
-            return deferred.reject('Something went wrong, please contact system admin');
+            console.error('No Parse Follow object found.');
+            deferred.reject({ message: 'Please contact support' });
+            return;
           }
           // On the slim chance there are duplicates..
           for (var i = 0; i < response.length; i++) {
