@@ -240,7 +240,8 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
           user.signUp(null, {
             success: function (user) {
               // Hooray! Let them use the app now.
-              $scope.onLoginSuccess(user);
+              // passes back boolean for any existing / new controller logic
+              $scope.onLoginSuccess(user, true);
             },
             error: function (user, error) {
               if (error.code === 100) {
