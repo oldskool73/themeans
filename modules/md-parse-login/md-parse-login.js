@@ -134,7 +134,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               '</md-button> '+
             '</h2> '+
           '</md-toolbar> '+
-          '<form ng-submit="loginFormOnSubmit($event)"> '+
+          '<form ng-submit="resetFormOnSubmit($event)"> '+
             '<div '+
               'style="padding: 20px" '+
               scope.resetInputsAttributes+'>'+
