@@ -135,7 +135,7 @@ angular.module('tm.parse', [])
               }
               else
               {
-                tmp.push(angular.copy(attrs[key]));
+                tmp.push(angular.copy(attrsObj));
               }
             }
             this.set(key,tmp);
