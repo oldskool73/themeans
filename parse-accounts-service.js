@@ -31,11 +31,12 @@ angular.module('tm.parseAccounts', [
           for (var i = 0; i < response.length; i++) {
             roles.push(response[i].get('name'));
           }
-          tmLocalStorage.setObject(user.id + '-roles', roles);
-          roles = tmLocalStorage.getObject(user.id + '-roles');
+          tmLocalStorage.setObject('user:roles:' + user.id, roles);
+          roles = tmLocalStorage.getObject('user:roles:' + user.id, []);
           deferred.resolve(roles);
         },
         error: function (response, err) {
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -48,6 +49,7 @@ angular.module('tm.parseAccounts', [
           deferred.resolve(response);
         },
         error: function (response, err) {
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -73,6 +75,7 @@ angular.module('tm.parseAccounts', [
           deferred.resolve(ngSettings);
         },
         error: function (response, err) {
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
@@ -96,6 +99,7 @@ angular.module('tm.parseAccounts', [
           deferred.resolve(settings);
         },
         error: function (response, err) {
+          console.error('Parse Error: ', err.code, err.message);
           deferred.reject(err);
         }
       });
