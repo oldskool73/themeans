@@ -71,8 +71,8 @@ angular.module('tm.parseProfiles',[
 
       profile.save(null, {
         success: function(profile){
-          tmLocalStorage.setObject('profile:'+profile.id, profile);
-          profile = tmLocalStorage.getObject('profile:'+profile.id);
+          tmLocalStorage.setObject('profile:edit'+profile.id, profile.getNgFormModel());
+          profile = tmLocalStorage.getObject('profile:edit'+profile.id);
           deferred.resolve(profile);
         },
         error: function(response, err){
