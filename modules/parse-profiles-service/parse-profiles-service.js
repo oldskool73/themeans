@@ -18,25 +18,26 @@ angular.module('tm.parseProfiles',[
   .factory('Follow',function (Parse){
     return Parse.Object.extend('Follow');
   })
-  .service('tmProfiles', function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5 ) {
+  .service('tmProfiles', function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, CACHEKEYS ) {
 
     function getProfileById(profileId, edit){
       var deferred      = $q.defer(),
           profilesQuery = new Parse.Query(Profile),
-          ngProfile, cacheKey = 'profile:display:'+profileId;
+          cacheKey      = CACHEKEYS['profile'] + profileId,
+          ngProfile, model, cache;
 
       if (edit) {
-        cacheKey = 'profile:edit:'+profileId;
+        cacheKey = CACHEKEYS['profile:edit'] + profileId;
       }
 
       $timeout(function (){
-        var cache = tmLocalStorage.getObject(cacheKey);
+        cache = tmLocalStorage.getObject(cacheKey);
         deferred.notify(cache);
       }, 0);
 
       profilesQuery.get(profileId, {
         success: function(parseProfile) {
-          var model = parseProfile.getNgModel();
+          model = parseProfile.getNgModel();
           if (edit) {
             model = parseProfile.getNgFormModel();
           }
@@ -71,8 +72,8 @@ angular.module('tm.parseProfiles',[
 
       profile.save(null, {
         success: function(profile){
-          tmLocalStorage.setObject('profile:edit'+profile.id, profile.getNgFormModel());
-          profile = tmLocalStorage.getObject('profile:edit'+profile.id);
+          tmLocalStorage.setObject(CACHEKEYS['profile:edit']+profile.id, profile.getNgFormModel());
+          profile = tmLocalStorage.getObject(CACHEKEYS['profile:edit']+profile.id);
           deferred.resolve(profile);
         },
         error: function(response, err){
@@ -188,16 +189,18 @@ angular.module('tm.parseProfiles',[
     };
 
     // Query for all other profiles with the Role of role argument string.
-    this.getNeighbouringRoleSpecificProfiles = function(user, role) {
+    this.getNeighbouringRoleSpecificProfiles = function(roleKey) {
       var deferred   = $q.defer(),
-          rolesQuery = new Parse.Query(Parse.Role);
+          user       = Parse.User.current() || {},
+          rolesQuery = new Parse.Query(Parse.Role),
+          cache;
 
       $timeout(function (){
-        var cache = tmLocalStorage.getObject('profiles', []);
+        cache = tmLocalStorage.getObject(CACHEKEYS['candidates'], []);
         deferred.notify(cache);
       }, 0);
 
-      rolesQuery.equalTo('name', role);
+      rolesQuery.equalTo('name', roleKey);
 
       rolesQuery
       .find()
@@ -210,12 +213,12 @@ angular.module('tm.parseProfiles',[
           });
           return;
         }
-        var relation      = response[0].relation(role+'s'),
+        var relation      = response[0].relation(roleKey+'s'),
             relationQuery = relation.query();
 
-        // Just incase at any point a user can have both a business and user account.
-        // They will not appear in the list of profiles.
-        relationQuery.notEqualTo(role, user);
+        if (user.id) {
+          relationQuery.notEqualTo(roleKey, user);
+        }
 
         relationQuery.include('profile');
 
@@ -227,8 +230,8 @@ angular.module('tm.parseProfiles',[
           {
             profiles.push(response[i].get('profile'));
           }
-          tmLocalStorage.setObject('profiles', profiles);
-          profiles = tmLocalStorage.getObject('profiles', []);
+          tmLocalStorage.setObject(CACHEKEYS['candidates'], profiles);
+          profiles = tmLocalStorage.getObject(CACHEKEYS['candidates'], []);
           deferred.resolve(profiles);
 
         }, function (err){
