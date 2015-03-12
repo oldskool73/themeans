@@ -39,7 +39,7 @@ angular.module('tm.parse-messages', [
 
     return Message;
   })
-  .service('tmMessages', function ( Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5 ) {
+  .service('tmMessages', function ( Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, CACHEKEYS ) {
 
     // this.setMessagesStatusCount = function (){
     //   var threadCounts      = [],
@@ -111,15 +111,15 @@ angular.module('tm.parse-messages', [
     function getThreads(edit, getCachedUnreadCount) {
       var deferred    = $q.defer(),
           query       = new Parse.Query(MessageThread),
-          cacheKey    = 'message:threads:display',
+          cacheKey    = CACHEKEYS['messagethreads'],
           ngThreads, cachedCount, cachedThreads;
 
       if (edit) {
-        cacheKey = 'message:threads:edit';
+        cacheKey = CACHEKEYS['messagethreads:edit'];
       }
 
       $timeout(function (){
-        cachedThreads = tmLocalStorage.getObject(cacheKey);
+        cachedThreads = tmLocalStorage.getObject(cacheKey, []);
         deferred.notify(cachedThreads);
       }, 0);
 
@@ -129,16 +129,16 @@ angular.module('tm.parse-messages', [
         success: function (parseThreads){
           ngThreads = getThreadRecipients(parseThreads, edit);
 
-          if (getCachedUnreadCount){
-            for (var i = 0; i < ngThreads.length; i++) {
+          // if (getCachedUnreadCount){
+          //   for (var i = 0; i < ngThreads.length; i++) {
 
-              cachedCount = tmLocalStorage.get(':thread:unread:count:'+ngThreads[i].objectId, 0);
-              ngThreads[i].unreadCount = cachedCount;
-            }
-          }
+          //     cachedCount = tmLocalStorage.get(':thread:unread:count:'+ngThreads[i].objectId, 0);
+          //     ngThreads[i].unreadCount = cachedCount;
+          //   }
+          // }
 
-          tmLocalStorage.setObject('message:threads', ngThreads);
-          ngThreads = tmLocalStorage.getObject('message:threads');
+          tmLocalStorage.setObject(cacheKey, ngThreads);
+          ngThreads = tmLocalStorage.getObject(cacheKey, []);
 
           deferred.resolve(ngThreads);
         },
@@ -190,11 +190,11 @@ angular.module('tm.parse-messages', [
 
     function getMessagesFromThread(threadId, edit) {
       var deferred = $q.defer(),
-          cacheKey = 'thread:messages:display:'+threadId,
+          cacheKey = 'messagethread:messages' + threadId,
           relation, query, ngMessages, cache;
 
       if (edit) {
-        cacheKey = 'thread:messages:edit:'+threadId;
+        cacheKey = 'messagethread:messages:edit' + threadId;
       }
 
       $timeout(function (){
