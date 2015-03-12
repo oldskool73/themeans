@@ -49,7 +49,7 @@ angular.module('tm.parseAccounts',[
       return deferred.promise;
     };
 
-    // Returns an array of role names that the passed in Parse User belongs to.
+    // Returns an array of role names strings that this Parse User belongs to.
     this.getUserRoles = function(user){
       var deferred   = $q.defer(),
           queryRoles = new Parse.Query(Parse.Role);

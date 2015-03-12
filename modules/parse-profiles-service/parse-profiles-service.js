@@ -187,8 +187,8 @@ angular.module('tm.parseProfiles',[
       return deferred.promise;
     };
 
-    // Query for all other profiles with the Role of "User".
-    this.getNeighbourUserProfiles = function(user) {
+    // Query for all other profiles with the Role of role argument string.
+    this.getNeighbouringRoleSpecificProfiles = function(user, role) {
       var deferred   = $q.defer(),
           rolesQuery = new Parse.Query(Parse.Role);
 
@@ -197,7 +197,7 @@ angular.module('tm.parseProfiles',[
         deferred.notify(cache);
       }, 0);
 
-      rolesQuery.equalTo('name', 'user');
+      rolesQuery.equalTo('name', role);
 
       rolesQuery
       .find()
@@ -210,12 +210,12 @@ angular.module('tm.parseProfiles',[
           });
           return;
         }
-        var relation      = response[0].relation('users'),
+        var relation      = response[0].relation(role),
             relationQuery = relation.query();
 
         // Just incase at any point a user can have both a business and user account.
         // They will not appear in the list of profiles.
-        relationQuery.notEqualTo('users', user);
+        relationQuery.notEqualTo(role, user);
 
         relationQuery.include('profile');
 
