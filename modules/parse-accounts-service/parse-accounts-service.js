@@ -14,7 +14,7 @@ angular.module('tm.parseAccounts',[
   .factory('Settings',function (Parse){
     return Parse.Object.extend('Settings');
   })
-  .provider('Parse', function ParseProvider(){
+  .provider('tmAccounts', function () {
 
     var options = {
       settingsCacheKey: 'User/Settings',

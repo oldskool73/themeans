@@ -18,7 +18,7 @@ angular.module('tm.parseProfiles',[
   .factory('Follow',function (Parse){
     return Parse.Object.extend('Follow');
   })
-  .provider('Parse', function ParseProvider(){
+  .provider('tmProfiles', function () {
 
     var options = {
       profileCacheKey: 'User/Profile',
