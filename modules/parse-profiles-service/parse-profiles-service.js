@@ -210,7 +210,7 @@ angular.module('tm.parseProfiles',[
           });
           return;
         }
-        var relation      = response[0].relation(role),
+        var relation      = response[0].relation(role+'s'),
             relationQuery = relation.query();
 
         // Just incase at any point a user can have both a business and user account.
