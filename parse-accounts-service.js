@@ -141,6 +141,7 @@ angular.module('tm.parseAccounts', [
         });
         return deferred.promise;
       };
+      return this;
     }
   ];
   return this;
