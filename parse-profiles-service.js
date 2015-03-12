@@ -155,24 +155,24 @@ angular.module('tm.parseProfiles', [
       });
       return deferred.promise;
     };
-    // Query for all other profiles with the Role of "User".
-    this.getNeighbourUserProfiles = function (user) {
+    // Query for all other profiles with the Role of role argument string.
+    this.getNeighbouringRoleSpecificProfiles = function (user, role) {
       var deferred = $q.defer(), rolesQuery = new Parse.Query(Parse.Role);
       $timeout(function () {
         var cache = tmLocalStorage.getObject('profiles', []);
         deferred.notify(cache);
       }, 0);
-      rolesQuery.equalTo('name', 'user');
+      rolesQuery.equalTo('name', role);
       rolesQuery.find().then(function (response) {
         if (response.length > 1) {
           console.error('Roles Error: There are duplicate roles in the database.');
           deferred.reject({ message: 'Something went wrong, please contact system admin.' });
           return;
         }
-        var relation = response[0].relation('users'), relationQuery = relation.query();
+        var relation = response[0].relation(role), relationQuery = relation.query();
         // Just incase at any point a user can have both a business and user account.
         // They will not appear in the list of profiles.
-        relationQuery.notEqualTo('users', user);
+        relationQuery.notEqualTo(role, user);
         relationQuery.include('profile');
         relationQuery.find().then(function (response) {
           var profiles = [];
