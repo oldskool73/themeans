@@ -169,7 +169,7 @@ angular.module('tm.parseProfiles', [
           deferred.reject({ message: 'Something went wrong, please contact system admin.' });
           return;
         }
-        var relation = response[0].relation(role), relationQuery = relation.query();
+        var relation = response[0].relation(role + 's'), relationQuery = relation.query();
         // Just incase at any point a user can have both a business and user account.
         // They will not appear in the list of profiles.
         relationQuery.notEqualTo(role, user);
