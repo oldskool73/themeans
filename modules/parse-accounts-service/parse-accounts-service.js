@@ -14,7 +14,7 @@ angular.module('tm.parseAccounts',[
   .factory('Settings',function (Parse){
     return Parse.Object.extend('Settings');
   })
-  .service('tmAccounts', function ( $q, $timeout, Settings, Parse, tmLocalStorage, CACHEDKEYS ) {
+  .service('tmAccounts', function ( $q, $timeout, Settings, Parse, tmLocalStorage, CACHEKEYS ) {
     var _self = this;
     // Checks that account & roles are functioning properly.
     this.userAuthentication = function(user){
@@ -53,7 +53,7 @@ angular.module('tm.parseAccounts',[
     this.getUserRoles = function(user){
       var deferred    = $q.defer(),
           queryRoles  = new Parse.Query(Parse.Role),
-          cacheKey    = CACHEDKEYS['roles:user'] + user.id;
+          cacheKey    = CACHEKEYS['roles:user'] + user.id;
 
       queryRoles.equalTo('users', user);
       queryRoles.find({
@@ -106,11 +106,11 @@ angular.module('tm.parseAccounts',[
     function getSettingsById(settingsId, edit){
       var deferred      = $q.defer(),
           settingsQuery = new Parse.Query(Settings),
-          cacheKey = CACHEDKEYS['settings'] + settingsId,
+          cacheKey = CACHEKEYS['settings'] + settingsId,
           ngSettings;
 
       if(edit){
-        cacheKey = CACHEDKEYS['settings:edit'] + settingsId;
+        cacheKey = CACHEKEYS['settings:edit'] + settingsId;
       }
 
       $timeout(function (){
@@ -152,7 +152,7 @@ angular.module('tm.parseAccounts',[
             ngModel: true,
             resetOpsQueue: false
           }),
-          cacheKey  = CACHEDKEYS['settings:edit'] + settings.id;
+          cacheKey  = CACHEKEYS['settings:edit'] + settings.id;
 
       settings.save(null, {
         success: function(settings){
