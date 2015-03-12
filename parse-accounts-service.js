@@ -20,8 +20,8 @@ angular.module('tm.parseAccounts', [
   'Settings',
   'Parse',
   'tmLocalStorage',
-  'CACHEDKEYS',
-  function ($q, $timeout, Settings, Parse, tmLocalStorage, CACHEDKEYS) {
+  'CACHEKEYS',
+  function ($q, $timeout, Settings, Parse, tmLocalStorage, CACHEKEYS) {
     var _self = this;
     // Checks that account & roles are functioning properly.
     this.userAuthentication = function (user) {
@@ -47,7 +47,7 @@ angular.module('tm.parseAccounts', [
     };
     // Returns an array of role names strings that this Parse User belongs to.
     this.getUserRoles = function (user) {
-      var deferred = $q.defer(), queryRoles = new Parse.Query(Parse.Role), cacheKey = CACHEDKEYS['roles:user'] + user.id;
+      var deferred = $q.defer(), queryRoles = new Parse.Query(Parse.Role), cacheKey = CACHEKEYS['roles:user'] + user.id;
       queryRoles.equalTo('users', user);
       queryRoles.find({
         success: function (response) {
@@ -84,9 +84,9 @@ angular.module('tm.parseAccounts', [
       return deferred.promise;
     };
     function getSettingsById(settingsId, edit) {
-      var deferred = $q.defer(), settingsQuery = new Parse.Query(Settings), cacheKey = CACHEDKEYS['settings'] + settingsId, ngSettings;
+      var deferred = $q.defer(), settingsQuery = new Parse.Query(Settings), cacheKey = CACHEKEYS['settings'] + settingsId, ngSettings;
       if (edit) {
-        cacheKey = CACHEDKEYS['settings:edit'] + settingsId;
+        cacheKey = CACHEKEYS['settings:edit'] + settingsId;
       }
       $timeout(function () {
         var cache = tmLocalStorage.getObject(cacheKey);
@@ -119,7 +119,7 @@ angular.module('tm.parseAccounts', [
       var deferred = $q.defer(), settings = new Settings(ngSettings, {
           ngModel: true,
           resetOpsQueue: false
-        }), cacheKey = CACHEDKEYS['settings:edit'] + settings.id;
+        }), cacheKey = CACHEKEYS['settings:edit'] + settings.id;
       settings.save(null, {
         success: function (settings) {
           tmLocalStorage.setObject(cacheKey, settings);
