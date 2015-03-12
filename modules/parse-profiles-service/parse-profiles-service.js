@@ -18,82 +18,95 @@ angular.module('tm.parseProfiles',[
   .factory('Follow',function (Parse){
     return Parse.Object.extend('Follow');
   })
-  .service('tmProfiles', function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, CACHEKEYS ) {
+  .provider('Parse', function ParseProvider(){
 
-    function getProfileById(profileId, edit){
-      var deferred      = $q.defer(),
+    var options = {
+      profileCacheKey: 'User/Profile',
+      profileEditCacheKey: 'User/Profile/Edit',
+      profilesCacheKey: 'User/Profiles'
+    };
+
+    this.configure = function (configOptions) {
+      angular.extend(options, configOptions);
+    };
+
+    this.$get = ['$q', 'Profile', 'Follow', 'Parse', 'tmLocalStorage', '$timeout', 'md5',
+    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5 ) {
+  
+      function getProfileById(profileId, edit){
+        var deferred      = $q.defer(),
           profilesQuery = new Parse.Query(Profile),
-          cacheKey      = CACHEKEYS['profile'] + profileId,
+          cacheKey      = options.profileCacheKey,
           ngProfile, model, cache;
-
-      if (edit) {
-        cacheKey = CACHEKEYS['profile:edit'] + profileId;
-      }
-
-      $timeout(function (){
-        cache = tmLocalStorage.getObject(cacheKey);
-        deferred.notify(cache);
-      }, 0);
-
-      profilesQuery.get(profileId, {
-        success: function(parseProfile) {
-          model = parseProfile.getNgModel();
-          if (edit) {
-            model = parseProfile.getNgFormModel();
+  
+        if (edit) {
+          cacheKey = options.profileEditCacheKey;
+        }
+  
+        $timeout(function (){
+          cache = tmLocalStorage.getObject(cacheKey);
+          deferred.notify(cache);
+        }, 0);
+  
+        profilesQuery.get(profileId, {
+          success: function(parseProfile) {
+            model = parseProfile.getNgModel();
+            if (edit) {
+              model = parseProfile.getNgFormModel();
+            }
+            tmLocalStorage.setObject(cacheKey, model);
+            ngProfile = tmLocalStorage.getObject(cacheKey);
+            deferred.resolve(ngProfile);
+          },
+          error: function(response, err){
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
           }
-          tmLocalStorage.setObject(cacheKey, model);
-          ngProfile = tmLocalStorage.getObject(cacheKey);
-          deferred.resolve(ngProfile);
-        },
-        error: function(response, err){
-          console.error('Parse Error: ', err);
-          deferred.reject({
-            message: 'Please try again in a few moments, or contact support.'
-          });
-        }
-      });
-      return deferred.promise;
-    }
-
-    this.getProfileByIdForEditing = function(profileId){
-      return getProfileById(profileId, true);
-    };
-
-    this.getProfileByIdForDisplay = function(profileId){
-      return getProfileById(profileId, false);
-    };
-
-    this.updateProfile = function(ngProfile){
-      var deferred  = $q.defer(),
-          profile   = new Profile(ngProfile, {
-            ngModel:true,
-            resetOpsQueue:false
-          }),
-          cacheKey  = CACHEKEYS['profile:edit'] + profile.id;
-
-      profile.save(null, {
-        success: function(profile){
-          tmLocalStorage.setObject(cacheKey, profile.getNgFormModel());
-          profile = tmLocalStorage.getObject(cacheKey);
-          deferred.resolve(profile);
-        },
-        error: function(response, err){
-          console.error('Parse Error: ', err);
-          deferred.reject({
-            message: 'Please try again in a few moments, or contact support.'
-          });
-        }
-      });
-      return deferred.promise;
-    };
-
-    this.followProfile = function(following, user) {
-      following = new Profile(following, {
-        ngModel: true,
-        resetOpsQueue: false
-      });
-
-      var deferred     = $q.defer(),
+        });
+        return deferred.promise;
+      }
+  
+      this.getProfileByIdForEditing = function(profileId){
+        return getProfileById(profileId, true);
+      };
+  
+      this.getProfileByIdForDisplay = function(profileId){
+        return getProfileById(profileId, false);
+      };
+  
+      this.updateProfile = function(ngProfile){
+        var deferred  = $q.defer(),
+            profile   = new Profile(ngProfile, {
+              ngModel:true,
+              resetOpsQueue:false
+            }),
+            cacheKey  = options.profileEditCacheKey;
+  
+        profile.save(null, {
+          success: function(profile){
+            tmLocalStorage.setObject(cacheKey, profile.getNgFormModel());
+            profile = tmLocalStorage.getObject(cacheKey);
+            deferred.resolve(profile);
+          },
+          error: function(response, err){
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
+          }
+        });
+        return deferred.promise;
+      };
+  
+      this.followProfile = function(following, user) {
+        following = new Profile(following, {
+          ngModel: true,
+          resetOpsQueue: false
+        });
+  
+        var deferred     = $q.defer(),
           follow       = new Follow(),
           followACL    = new Parse.ACL(),
           follower     = user.get('profile'),
@@ -101,155 +114,158 @@ angular.module('tm.parseProfiles',[
             following.id,
             follower.id
           ].sort().join(''));
-
-      follow.set('follower', follower);
-      follow.set('following', following);
-      follow.set('profileIdsHash', hash);
-      followACL.setPublicReadAccess(true);
-      followACL.setWriteAccess(user, true);
-      follow.setACL(followACL);
-
-      follow
-      .save()
-      .then(function () {
-        deferred.resolve();
-      }, function (err) {
-        console.error('Parse Error: ', err);
-        deferred.reject({
-          message: 'Please try again in a few moments, or contact support.'
+  
+        follow.set('follower', follower);
+        follow.set('following', following);
+        follow.set('profileIdsHash', hash);
+        followACL.setPublicReadAccess(true);
+        followACL.setWriteAccess(user, true);
+        follow.setACL(followACL);
+  
+        follow
+        .save()
+        .then(function () {
+          deferred.resolve();
+        }, function (err) {
+          console.error('Parse Error: ', err);
+          deferred.reject({
+            message: 'Please try again in a few moments, or contact support.'
+          });
         });
-      });
-      return deferred.promise;
-    };
-
-    this.unfollowProfile = function(profileIds) {
-      var deferred = $q.defer(),
-          query    = new Parse.Query(Follow),
-          hash     = md5.createHash(profileIds.sort().join(''));
-
-      query.equalTo('profileIdsHash', hash);
-      query.find({
-        success: function (response) {
-          if (!response.length) {
-            console.error('No Parse Follow object found.');
-            deferred.reject({ message: 'Please contact support' });
-            return;
-          }
-          // On the slim chance there are duplicates..
-          for (var i = 0; i < response.length; i++) {
-            obliterate(response[i]);
-            if (i === response.length - 1) {
-              deferred.resolve();
+        return deferred.promise;
+      };
+  
+      this.unfollowProfile = function(profileIds) {
+        var deferred = $q.defer(),
+            query    = new Parse.Query(Follow),
+            hash     = md5.createHash(profileIds.sort().join(''));
+  
+        query.equalTo('profileIdsHash', hash);
+        query.find({
+          success: function (response) {
+            if (!response.length) {
+              console.error('No Parse Follow object found.');
+              deferred.reject({ message: 'Please contact support' });
+              return;
             }
-          }
-          function obliterate(follow) {
-            follow.destroy({
-              success: function () {},
-              error: function (response, err) {
-                console.error('Parse Error: ', err);
-                deferred.reject({
-                  message: 'Please try again in a few moments, or contact support.'
-                });
+            // On the slim chance there are duplicates..
+            for (var i = 0; i < response.length; i++) {
+              obliterate(response[i]);
+              if (i === response.length - 1) {
+                deferred.resolve();
               }
+            }
+            function obliterate(follow) {
+              follow.destroy({
+                success: function () {},
+                error: function (response, err) {
+                  console.error('Parse Error: ', err);
+                  deferred.reject({
+                    message: 'Please try again in a few moments, or contact support.'
+                  });
+                }
+              });
+            }
+          },
+          error: function (response, err) {
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
             });
           }
-        },
-        error: function (response, err) {
-          console.error('Parse Error: ', err);
-          deferred.reject({
-            message: 'Please try again in a few moments, or contact support.'
-          });
-        }
-      });
-      return deferred.promise;
-    };
-
-    this.checkIfFollowExists = function(profileIds) {
-      var deferred = $q.defer(),
-          query    = new Parse.Query(Follow),
-          hash;
-
-      hash = md5.createHash(profileIds.sort().join(''));
-
-      query.equalTo('profileIdsHash', hash);
-      query.find({
-        success: function (response) {
-          if (!response.length) {
-            return deferred.resolve(false);
+        });
+        return deferred.promise;
+      };
+  
+      this.checkIfFollowExists = function(profileIds) {
+        var deferred = $q.defer(),
+            query    = new Parse.Query(Follow),
+            hash;
+  
+        hash = md5.createHash(profileIds.sort().join(''));
+  
+        query.equalTo('profileIdsHash', hash);
+        query.find({
+          success: function (response) {
+            if (!response.length) {
+              return deferred.resolve(false);
+            }
+            deferred.resolve(true);
+          },
+          error: function (err) {
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
           }
-          deferred.resolve(true);
-        },
-        error: function (err) {
-          console.error('Parse Error: ', err);
-          deferred.reject({
-            message: 'Please try again in a few moments, or contact support.'
-          });
-        }
-      });
-      return deferred.promise;
-    };
-
-    // Query for all other profiles with the Role of role argument string.
-    this.getNeighbouringRoleSpecificProfiles = function(roleKey) {
-      var deferred   = $q.defer(),
+        });
+        return deferred.promise;
+      };
+  
+      // Query for all other profiles with the Role of role argument string.
+      this.getNeighbouringRoleSpecificProfiles = function(roleKey) {
+        var deferred   = $q.defer(),
           user       = Parse.User.current() || {},
           rolesQuery = new Parse.Query(Parse.Role),
-          cacheKey   = CACHEKEYS['candidates'],
+          cacheKey   = profilesCacheKey,
           cache;
-
-      $timeout(function (){
-        cache = tmLocalStorage.getObject(cacheKey, []);
-        deferred.notify(cache);
-      }, 0);
-
-      rolesQuery.equalTo('name', roleKey);
-
-      rolesQuery
-      .find()
-      .then(function (response){
-        if (response.length > 1)
-        {
-          console.error('Roles Error: There are duplicate roles in the database.');
-          deferred.reject({
-            message: 'Something went wrong, please contact system admin.'
-          });
-          return;
-        }
-        var relation      = response[0].relation(roleKey+'s'),
-            relationQuery = relation.query();
-
-        if (user.id) {
-          relationQuery.notEqualTo(roleKey, user);
-        }
-
-        relationQuery.include('profile');
-
-        relationQuery
+  
+        $timeout(function (){
+          cache = tmLocalStorage.getObject(cacheKey, []);
+          deferred.notify(cache);
+        }, 0);
+  
+        rolesQuery.equalTo('name', roleKey);
+  
+        rolesQuery
         .find()
         .then(function (response){
-          var profiles = [];
-          for (var i = 0; i < response.length; i++)
+          if (response.length > 1)
           {
-            profiles.push(response[i].get('profile'));
+            console.error('Roles Error: There are duplicate roles in the database.');
+            deferred.reject({
+              message: 'Something went wrong, please contact system admin.'
+            });
+            return;
           }
-          tmLocalStorage.setObject(cacheKey, profiles);
-          profiles = tmLocalStorage.getObject(cacheKey, []);
-          deferred.resolve(profiles);
-
+          var relation      = response[0].relation(roleKey+'s'),
+              relationQuery = relation.query();
+  
+          if (user.id) {
+            relationQuery.notEqualTo(roleKey, user);
+          }
+  
+          relationQuery.include('profile');
+  
+          relationQuery
+          .find()
+          .then(function (response){
+            var profiles = [];
+            for (var i = 0; i < response.length; i++)
+            {
+              profiles.push(response[i].get('profile'));
+            }
+            tmLocalStorage.setObject(cacheKey, profiles);
+            profiles = tmLocalStorage.getObject(cacheKey, []);
+            deferred.resolve(profiles);
+  
+          }, function (err){
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
+          });
         }, function (err){
           console.error('Parse Error: ', err);
-          deferred.reject({
-            message: 'Please try again in a few moments, or contact support.'
-          });
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
         });
-      }, function (err){
-        console.error('Parse Error: ', err);
-          deferred.reject({
-            message: 'Please try again in a few moments, or contact support.'
-          });
-      });
+  
+        return deferred.promise;
+      };
+  
+    }];
 
-      return deferred.promise;
-    };
-
+    return this;
   });
