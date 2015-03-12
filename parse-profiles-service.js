@@ -66,11 +66,11 @@ angular.module('tm.parseProfiles', [
       var deferred = $q.defer(), profile = new Profile(ngProfile, {
           ngModel: true,
           resetOpsQueue: false
-        });
+        }), cacheKey = CACHEKEYS['profile:edit'] + profile.id;
       profile.save(null, {
         success: function (profile) {
-          tmLocalStorage.setObject(CACHEKEYS['profile:edit'] + profile.id, profile.getNgFormModel());
-          profile = tmLocalStorage.getObject(CACHEKEYS['profile:edit'] + profile.id);
+          tmLocalStorage.setObject(cacheKey, profile.getNgFormModel());
+          profile = tmLocalStorage.getObject(cacheKey);
           deferred.resolve(profile);
         },
         error: function (response, err) {
@@ -158,9 +158,9 @@ angular.module('tm.parseProfiles', [
     };
     // Query for all other profiles with the Role of role argument string.
     this.getNeighbouringRoleSpecificProfiles = function (roleKey) {
-      var deferred = $q.defer(), user = Parse.User.current() || {}, rolesQuery = new Parse.Query(Parse.Role), cache;
+      var deferred = $q.defer(), user = Parse.User.current() || {}, rolesQuery = new Parse.Query(Parse.Role), cacheKey = CACHEKEYS['candidates'], cache;
       $timeout(function () {
-        cache = tmLocalStorage.getObject(CACHEKEYS['candidates'], []);
+        cache = tmLocalStorage.getObject(cacheKey, []);
         deferred.notify(cache);
       }, 0);
       rolesQuery.equalTo('name', roleKey);
@@ -180,8 +180,8 @@ angular.module('tm.parseProfiles', [
           for (var i = 0; i < response.length; i++) {
             profiles.push(response[i].get('profile'));
           }
-          tmLocalStorage.setObject(CACHEKEYS['candidates'], profiles);
-          profiles = tmLocalStorage.getObject(CACHEKEYS['candidates'], []);
+          tmLocalStorage.setObject(cacheKey, profiles);
+          profiles = tmLocalStorage.getObject(cacheKey, []);
           deferred.resolve(profiles);
         }, function (err) {
           console.error('Parse Error: ', err);
