@@ -166,7 +166,7 @@ angular.module('tm.parseProfiles', [
       };
       // Query for all other profiles with the Role of role argument string.
       this.getNeighbouringRoleSpecificProfiles = function (roleKey) {
-        var deferred = $q.defer(), user = Parse.User.current() || {}, rolesQuery = new Parse.Query(Parse.Role), cacheKey = profilesCacheKey, cache;
+        var deferred = $q.defer(), user = Parse.User.current() || {}, rolesQuery = new Parse.Query(Parse.Role), cacheKey = options.profilesCacheKey, cache;
         $timeout(function () {
           cache = tmLocalStorage.getObject(cacheKey, []);
           deferred.notify(cache);
@@ -201,6 +201,7 @@ angular.module('tm.parseProfiles', [
         });
         return deferred.promise;
       };
+      return this;
     }
   ];
   return this;
