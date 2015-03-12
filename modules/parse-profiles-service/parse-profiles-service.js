@@ -207,7 +207,7 @@ angular.module('tm.parseProfiles',[
         var deferred   = $q.defer(),
           user       = Parse.User.current() || {},
           rolesQuery = new Parse.Query(Parse.Role),
-          cacheKey   = profilesCacheKey,
+          cacheKey   = options.profilesCacheKey,
           cache;
   
         $timeout(function (){
@@ -261,10 +261,10 @@ angular.module('tm.parseProfiles',[
               message: 'Please try again in a few moments, or contact support.'
             });
         });
-  
         return deferred.promise;
       };
-  
+
+      return this;
     }];
 
     return this;
