@@ -4,6 +4,6 @@
   "main": ["./md-parse-login.js"],
   "dependencies": {
     "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
-    "angular-material": "master"
+    "angular-material": "*"
   }
 }
