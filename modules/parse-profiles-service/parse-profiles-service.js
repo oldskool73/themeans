@@ -12,26 +12,39 @@ angular.module('tm.parseProfiles',[
     'tm.parse',
     'tm.localstorage'
   ])
-  .factory('Profile',function (Parse){
+  .factory('Profile', function (Parse) {
     return Parse.Object.extend('Profile');
   })
-  .factory('Follow',function (Parse){
+  .factory('Follow', function (Parse) {
     return Parse.Object.extend('Follow');
+  })
+  .factory('Connection', function (Parse) {
+    return Parse.Object.extend('Connection');
   })
   .provider('tmProfiles', function () {
 
     var options = {
       profileCacheKey: 'User/Profile',
       profileEditCacheKey: 'User/Profile/Edit',
-      profilesCacheKey: 'User/Profiles'
+      profilesCacheKey: 'User/Profiles',
+      connectionsCacheKey: 'User/Connections',
+      connectionsEditCacheKey: 'User/Connections/Edit'
     };
 
     this.configure = function (configOptions) {
       angular.extend(options, configOptions);
     };
 
-    this.$get = ['$q', 'Profile', 'Follow', 'Parse', 'tmLocalStorage', '$timeout', 'md5',
-    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5 ) {
+    this.$get = [
+      '$q',
+      'Profile',
+      'Follow',
+      'Parse',
+      'tmLocalStorage',
+      '$timeout',
+      'md5',
+      'Connection',
+    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection ) {
 
       function getProfileById(profileId, edit){
         var deferred      = $q.defer(),
@@ -135,16 +148,25 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       };
 
-      this.unfollowProfile = function(profileIds) {
+      this.destroyProfileRelation = function(profileIds, classNameSwitch) {
+        var classObject;
+        switch (classNameSwitch) {
+          case 'Follow':
+            classObject = Follow;
+            break;
+          case 'Connection':
+            classObject = Connection;
+            break;
+        }
         var deferred = $q.defer(),
-            query    = new Parse.Query(Follow),
+            query    = new Parse.Query(classObject),
             hash     = md5.createHash(profileIds.sort().join(''));
 
         query.equalTo('profileIdsHash', hash);
         query.find({
           success: function (response) {
             if (!response.length) {
-              console.error('No Parse Follow object found.');
+              console.error('No Parse '+classNameSwitch+' object found.');
               deferred.reject({ message: 'Please contact support' });
               return;
             }
@@ -177,12 +199,12 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       };
 
-      this.checkIfFollowExists = function(profileIds) {
+      this.checkIfFollowExists = function(profileIdsArray) {
         var deferred = $q.defer(),
             query    = new Parse.Query(Follow),
             hash;
 
-        hash = md5.createHash(profileIds.sort().join(''));
+        hash = md5.createHash(profileIdsArray.sort().join(''));
 
         query.equalTo('profileIdsHash', hash);
         query.find({
@@ -200,6 +222,118 @@ angular.module('tm.parseProfiles',[
           }
         });
         return deferred.promise;
+      };
+
+      // Creates a two way relation between two Parse Profiles. The request must be accepted
+      // from one side of the request, acting like a friending. But on the other side of the
+      // request, it is connected immediately, acting like a following. The profile which a
+      // a request for connection is required is determined by a passed in Parse Role.
+      this.connectWithProfile = function(ngReceiverProfile, senderParseUser, sendRequest) {
+        var deferred        = $q.defer(),
+          senderUserId    = senderParseUser.id,
+          senderProfile   = senderParseUser.get('profile'),
+          receiverUserId  = ngReceiverProfile.user.objectId,
+          receiverProfile = new Profile(),
+          connection      = new Connection(),
+          ACL             = new Parse.ACL(),
+          hash            = md5.createHash([
+            senderProfile.id,
+            ngReceiverProfile.objectId
+          ].sort().join(''));
+
+        receiverProfile.id = ngReceiverProfile.objectId;
+
+        ACL.setReadAccess(senderUserId, true);
+        ACL.setWriteAccess(senderUserId, true);
+        ACL.setReadAccess(receiverUserId, true);
+        ACL.setWriteAccess(receiverUserId, true);
+        connection.setACL(ACL);
+
+        connection.set('sender', senderProfile);
+        connection.set('receiver', receiverProfile);
+        connection.set('profileIdsHash', hash);
+        connection.set('requestStatus', 'accepted');
+        if (sendRequest) {
+          connection.set('requestStatus', 'pending');
+        }
+        connection.save({
+          success: function () {
+            deferred.resolve();
+          },
+          error: function (err) {
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
+          }
+        });
+        return deferred.promise;
+      };
+
+      this.checkIfConnectionExists = function(profileIdsArray){
+        var deferred = $q.defer(),
+            query    = new Parse.Query(Connection),
+            hash     = md5.createHash(profileIdsArray.sort().join(''));
+
+        query.equalTo('profileIdsHash', hash);
+        query.find({
+          success: function (response) {
+            if (!response.length) {
+              return deferred.resolve(false);
+            }
+            deferred.resolve(true);
+          },
+          error: function (err) {
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
+          }
+        });
+        return deferred.promise;
+      };
+
+      function getConnections(user, edit) {
+        var deferred = $q.defer(),
+            query    = new Parse.Query(Connection),
+            cacheKey = options.connectionsCacheKey;
+
+        if (edit) {
+          cacheKey = options.connectionsEditCacheKey;
+        }
+
+        query.include('receiver');
+        query.include('sender');
+        query.find({
+          success: function (response) {
+            var ngArray = [], connections;
+            for (var i = 0; i < response.length; i++) {
+              if (edit) {
+                ngArray.push(response[i].getNgFormModel());
+                continue;
+              }
+              ngArray.push(response[i].getNgModel());
+            }
+            tmLocalStorage.setObject(cacheKey, ngArray);
+            connections = tmLocalStorage.getObject(cacheKey, []);
+            deferred.resolve(connections);
+          },
+          error: function (err) {
+            console.error('Parse Error: ', err);
+            deferred.reject({
+              message: 'Something went wrong, please contact system admin.'
+            });
+          }
+        });
+        return deferred.promise;
+      }
+
+      this.getConnectionsForDisplay = function (user) {
+        return getConnections(user, false);
+      };
+
+      this.getConnectionsForEdit = function (user) {
+        return getConnections(user, true);
       };
 
       // Query for all other profiles with the Role of role argument string.
