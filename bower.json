@@ -1,0 +1,9 @@
+{
+  "name": "themeans-md-parse-image-picker",
+  "version": "0.0.2",
+  "main": ["./md-parse-image-picker.js"],
+  "dependencies": {
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+    "angular-material": "*"
+  }
+}
