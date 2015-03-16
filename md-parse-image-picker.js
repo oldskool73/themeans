@@ -5,7 +5,7 @@
  * @description
  * # parseImageUpload
  */
-angular.module('tm.md-parse-login', [
+angular.module('tm.md-parse-image-picker', [
   'tm.parse',
   'ngMaterial'
 ]).directive('parseImagePicker', [
