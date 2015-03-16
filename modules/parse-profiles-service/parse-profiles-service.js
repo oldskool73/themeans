@@ -32,22 +32,22 @@ angular.module('tm.parseProfiles',[
 
     this.$get = ['$q', 'Profile', 'Follow', 'Parse', 'tmLocalStorage', '$timeout', 'md5',
     function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5 ) {
-  
+
       function getProfileById(profileId, edit){
         var deferred      = $q.defer(),
           profilesQuery = new Parse.Query(Profile),
           cacheKey      = options.profileCacheKey,
           ngProfile, model, cache;
-  
+
         if (edit) {
           cacheKey = options.profileEditCacheKey;
         }
-  
+
         $timeout(function (){
           cache = tmLocalStorage.getObject(cacheKey);
           deferred.notify(cache);
         }, 0);
-  
+
         profilesQuery.get(profileId, {
           success: function(parseProfile) {
             model = parseProfile.getNgModel();
@@ -67,15 +67,15 @@ angular.module('tm.parseProfiles',[
         });
         return deferred.promise;
       }
-  
+
       this.getProfileByIdForEditing = function(profileId){
         return getProfileById(profileId, true);
       };
-  
+
       this.getProfileByIdForDisplay = function(profileId){
         return getProfileById(profileId, false);
       };
-  
+
       this.updateProfile = function(ngProfile){
         var deferred  = $q.defer(),
             profile   = new Profile(ngProfile, {
@@ -83,7 +83,7 @@ angular.module('tm.parseProfiles',[
               resetOpsQueue:false
             }),
             cacheKey  = options.profileEditCacheKey;
-  
+
         profile.save(null, {
           success: function(profile){
             tmLocalStorage.setObject(cacheKey, profile.getNgFormModel());
@@ -99,13 +99,13 @@ angular.module('tm.parseProfiles',[
         });
         return deferred.promise;
       };
-  
+
       this.followProfile = function(following, user) {
         following = new Profile(following, {
           ngModel: true,
           resetOpsQueue: false
         });
-  
+
         var deferred     = $q.defer(),
           follow       = new Follow(),
           followACL    = new Parse.ACL(),
@@ -114,14 +114,14 @@ angular.module('tm.parseProfiles',[
             following.id,
             follower.id
           ].sort().join(''));
-  
+
         follow.set('follower', follower);
         follow.set('following', following);
         follow.set('profileIdsHash', hash);
         followACL.setPublicReadAccess(true);
         followACL.setWriteAccess(user, true);
         follow.setACL(followACL);
-  
+
         follow
         .save()
         .then(function () {
@@ -134,12 +134,12 @@ angular.module('tm.parseProfiles',[
         });
         return deferred.promise;
       };
-  
+
       this.unfollowProfile = function(profileIds) {
         var deferred = $q.defer(),
             query    = new Parse.Query(Follow),
             hash     = md5.createHash(profileIds.sort().join(''));
-  
+
         query.equalTo('profileIdsHash', hash);
         query.find({
           success: function (response) {
@@ -176,14 +176,14 @@ angular.module('tm.parseProfiles',[
         });
         return deferred.promise;
       };
-  
+
       this.checkIfFollowExists = function(profileIds) {
         var deferred = $q.defer(),
             query    = new Parse.Query(Follow),
             hash;
-  
+
         hash = md5.createHash(profileIds.sort().join(''));
-  
+
         query.equalTo('profileIdsHash', hash);
         query.find({
           success: function (response) {
@@ -201,7 +201,7 @@ angular.module('tm.parseProfiles',[
         });
         return deferred.promise;
       };
-  
+
       // Query for all other profiles with the Role of role argument string.
       this.getNeighbouringRoleSpecificProfiles = function(roleKey) {
         var deferred   = $q.defer(),
@@ -209,14 +209,14 @@ angular.module('tm.parseProfiles',[
           rolesQuery = new Parse.Query(Parse.Role),
           cacheKey   = options.profilesCacheKey,
           cache;
-  
+
         $timeout(function (){
           cache = tmLocalStorage.getObject(cacheKey, []);
           deferred.notify(cache);
         }, 0);
-  
+
         rolesQuery.equalTo('name', roleKey);
-  
+
         rolesQuery
         .find()
         .then(function (response){
@@ -230,25 +230,28 @@ angular.module('tm.parseProfiles',[
           }
           var relation      = response[0].relation(roleKey+'s'),
               relationQuery = relation.query();
-  
+
           if (user.id) {
             relationQuery.notEqualTo(roleKey, user);
           }
-  
+
           relationQuery.include('profile');
-  
+
           relationQuery
           .find()
           .then(function (response){
             var profiles = [];
             for (var i = 0; i < response.length; i++)
             {
+              if (!response[i].get('profile')) {
+                continue;
+              }
               profiles.push(response[i].get('profile'));
             }
             tmLocalStorage.setObject(cacheKey, profiles);
             profiles = tmLocalStorage.getObject(cacheKey, []);
             deferred.resolve(profiles);
-  
+
           }, function (err){
             console.error('Parse Error: ', err);
             deferred.reject({
