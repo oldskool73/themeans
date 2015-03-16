@@ -10,144 +10,163 @@
 angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
   .directive('mdParseLogin', function ($compile){
 
-    var mdParseLogin = new Function();
+    var mdParseLogin = function(){
+      return this;
+    };
 
     mdParseLogin.prototype.link = function(scope, element, attrs){
       var mainTmpl = '<div '+
-        scope.mainContainerAttributes+
+        scope.defaults.mainContainerAttributes+
         ' ng-switch on="formType"> '+
         // LOGIN
+        '<md-toolbar '+
+          'ng-if="!hideHeader" '+
+          'ng-switch-when="login" '+
+          'class="{{defaults.mdToolbarClass}}"> '+
+          '<div class="md-toolbar-tools">'+
+            '<span>'+
+              '{{defaults.loginToolbarText}}'+
+            '</span>'+
+          '</div>'+
+        '</md-toolbar> '+
         '<md-content '+
-          scope.loginMdContentAttributes+
-          ' class="{{mdContentClass}} login" '+
+          scope.defaults.loginMdContentAttributes+
+          ' class="{{defaults.mdContentClass}} login" '+
           'ng-switch-when="login"> '+
-          '<md-toolbar class="{{mdToolbarClass}}"> '+
-            '<h2 class="{{mdToolbarToolsClass}}"> '+
-              '<span>{{loginToolbarText}}</span> '+
-            '</h2> '+
-          '</md-toolbar> '+
           '<form ng-submit="loginFormOnSubmit($event)"> '+
             '<div '+
-              'style="padding: 20px" '+
-              scope.loginInputsAttributes+'>'+
+              scope.defaults.loginInputsAttributes+'>'+
               '<md-input-container layout-fill> '+
                 '<label>Username</label> '+
                 '<input '+
+                  'required '+
                   'type="text" '+
                   'ng-model="user.username"> '+
               '</md-input-container> '+
               '<md-input-container layout-fill> '+
                 '<label>Password</label> '+
                 '<input '+
+                  'required '+
                   'type="password" '+
                   'ng-model="user.password"> '+
               '</md-input-container> '+
             '</div> '+
-            '<div style="padding: 20px; padding-bottom:0"> '+
-              '<md-button '+
-                'style="width:100%" '+
-                'class="{{loginButtonClass}}"> '+
-                '{{loginButtonText}} '+
+            '<div '+
+              'layout="row" '+
+              'layout-align="center center">'+
+              '<md-button flex '+
+                'class="{{defaults.loginButtonClass}}"> '+
+                '{{defaults.loginButtonText}} '+
               '</md-button> '+
             '</div> '+
           '</form> '+
           '<p '+
             'layout="row" '+
-            'layout-align="center center" '+
-            'id="forgot-password"> '+
-            '<a style=\"cursor: pointer;\" ng-click="switchFormOnClick(\'reset\')"> '+
+            'layout-align="center center">'+
+            '<a ng-click="switchFormOnClick(\'reset\')"> '+
               'Forgot password '+
             '</a> '+
           '</p> '+
-          '<div style="padding: 20px;padding-top:0"> '+
-            '<md-button '+
-              'class="{{createButtonClass}}" '+
-              'style="width:100%" '+
+          '<div '+
+            'layout="row" '+
+            'layout-align="center center">'+
+            '<md-button flex '+
+              'ng-bind="defaults.createButtonText" '+
+              'class="{{defaults.createButtonClass}}" '+
               'ng-click="switchFormOnClick(\'create\')"> '+
-              '{{createButtonText}} '+
             '</md-button> '+
          '</div> '+
         '</md-content> '+
 
         // CREATE ACCOUNT
+        '<md-toolbar '+
+          'ng-if="!hideHeader" '+
+          'ng-switch-when="create" '+
+          'class="{{defaults.mdToolbarClass}}"> '+
+          '<div class="md-toolbar-tools">'+
+            '<span> '+
+              '{{defaults.createToolbarText}} '+
+            '</span> '+
+          '</div>'+
+        '</md-toolbar> '+
         '<md-content '+
-          scope.createMdContentAttributes+
-          ' class="{{mdContentClass}} create-account" '+
+          scope.defaults.createMdContentAttributes+
+          ' class="{{defaults.mdContentClass}} create-account" '+
           'ng-switch-when="create"> '+
-          '<md-toolbar class="{{mdToolbarClass}}"> '+
-            '<h2 class="{{mdToolbarToolsClass}}"> '+
-              '<span class="md-flex">{{createToolbarText}}</span> '+
-              '<md-button '+
-                'style="width:20%;position:absolute;right:15px;top:16px;color:white;" '+
-                'class="{{backButtonClass}}" '+
-                'ng-click="switchFormOnClick(\'login\')"> '+
-                '{{backButtonText}} '+
-              '</md-button> '+
-           '</h2> '+
-          '</md-toolbar> '+
           '<form ng-submit="createFormOnSubmit($event)"> '+
-            '<div '+
-              'style="padding: 20px" '+
-              scope.createInputsAttributes+'>'+
+            '<div '+scope.defaults.createInputsAttributes+' >'+
+              '<span flex layout-fill ng-include="createFormIncludeUrl"></span>'+
               '<md-input-container layout-fill> '+
                 '<label>Username</label> '+
                 '<input '+
+                  'required '+
                   'type="text" '+
                   'ng-model="user.username"> '+
               '</md-input-container> '+
               '<md-input-container layout-fill> '+
                 '<label>Email</label> '+
                 '<input '+
+                  'required '+
                   'ng-model="user.email" '+
                   'type="email"> '+
               '</md-input-container> '+
               '<md-input-container layout-fill> '+
                 '<label>Password</label> '+
                 '<input '+
+                  'required '+
                   'ng-model="user.password" '+
                   'type="password"> '+
               '</md-input-container> '+
             '</div> '+
-            '<div style="padding: 20px;"> '+
-              '<md-button '+
-                'style="width:100%" '+
-                'class="{{submitButtonClass}}"> '+
-                '{{submitButtonText}} '+
-             '</md-button> '+
+            '<div  layout="row" layout-align="space-around center"> '+
+              '<md-button flex '+
+                'class="{{defaults.submitButtonClass}}"> '+
+                '{{defaults.submitButtonText}} '+
+              '</md-button> '+
+              '<span flex="5"></span>'+
+              '<md-button flex '+
+                'class="{{defaults.backButtonClass}}" '+
+                'ng-click="switchFormOnClick(\'login\')"> '+
+                '{{defaults.backButtonText}} '+
+              '</md-button> '+
             '</div> '+
           '</form> '+
         '</md-content> '+
 
         // RESET PASSWORD
+        '<md-toolbar '+
+          'ng-if="!hideHeader" '+
+          'ng-switch-when="reset" '+
+          'class="{{defaults.mdToolbarClass}}"> '+
+          '<div class="md-toolbar-tools">'+
+            '<span> '+
+              '{{defaults.resetToolbarText}}'+
+            '</span> '+
+          '</div>'+
+        '</md-toolbar> '+
         '<md-content '+
-          scope.resetMdContentAttributes+
-          ' class="{{mdContentClass}} reset-password" '+
+          scope.defaults.resetMdContentAttributes+
+          ' class="{{defaults.mdContentClass}} reset-password" '+
           'ng-switch-when="reset"> '+
-          '<md-toolbar class="{{mdToolbarClass}}"> '+
-            '<h2 class="{{mdToolbarToolsClass}}"> '+
-              '<span>{{resetToolbarText}}</span> '+
-              '<md-button '+
-                'style="width:20%;position:absolute;right:15px;top:16px;color:white;" '+
-                'class="{{backButtonClass}}" '+
-                'ng-click="switchFormOnClick(\'login\')"> '+
-                '{{backButtonText}} '+
-              '</md-button> '+
-            '</h2> '+
-          '</md-toolbar> '+
           '<form ng-submit="resetFormOnSubmit($event)"> '+
-            '<div '+
-              'style="padding: 20px" '+
-              scope.resetInputsAttributes+'>'+
+            '<div '+scope.defaults.resetInputsAttributes+' >'+
               '<md-input-container layout-fill> '+
                 '<label>Email</label> '+
-                '<input type="email" ng-model="user.email"> '+
+                '<input '+
+                  'required '+
+                  'type="email" ng-model="user.email"> '+
               '</md-input-container> '+
             '</div> '+
-            '<div style="padding: 20px;"> '+
-              '<md-button '+
-                'style="width:100%" '+
-                'class="{{submitButtonClass}}"> '+
-                '{{submitButtonText}} '+
+            '<div layout="row" layout-align="space-around center"> '+
+              '<md-button flex '+
+                'ng-bind="defaults.submitButtonText" '+
+                'class="{{defaults.submitButtonClass}}"> '+
+              '</md-button> '+
+              '<span flex="5"></span>'+
+              '<md-button flex '+
+                'class="{{defaults.backButtonClass}}" '+
+                'ng-click="switchFormOnClick(\'login\')"> '+
+                '{{defaults.backButtonText}} '+
               '</md-button> '+
             '</div> '+
           '</form> '+
@@ -168,6 +187,31 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       '$mdToast',
       '$mdDialog',
       function ($scope, $location, Parse, $mdToast, $mdDialog) {
+
+        var defaults = $scope.defaults = {};
+        defaults.mdToolbarClass = 'md-primary md-default-theme';
+        defaults.mdContentClass = 'md-padding';
+
+        defaults.submitButtonClass = 'md-raised md-primary md-default-theme';
+        defaults.submitButtonText = 'Submit';
+        defaults.backButtonClass = '';
+        defaults.backButtonText = 'Back';
+
+        defaults.loginInputsAttributes = 'layout="row" layout-sm="column"';
+        defaults.loginButtonClass = 'md-raised md-primary md-default-theme';
+        defaults.loginButtonText = 'Login';
+        defaults.loginToolbarText = 'Enter your login details';
+
+        defaults.createButtonClass = 'md-raised md-default-theme';
+        defaults.createButtonText = 'Create Account';
+        defaults.createToolbarText = 'Enter your details';
+        defaults.createInputsAttributes = 'layout="column" layout-sm="column" layout-align="center center"';
+
+        defaults.resetInputsAttributes = 'layout="row" layout-sm="column"';
+        defaults.resetToolbarText = 'Enter your email address';
+
+        angular.extend($scope.defaults, $scope);
+
         // Set the user object in controller for better control, this is a backup.
         if (typeof $scope.user === 'undefined') {
           $scope.user = {};
@@ -189,17 +233,6 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
         // default for ng-switch.
         $scope.formType = 'login';
         $scope.switchFormOnClick = function (val) {
-          // If customCreateDialog boolean is scoped, it will switch to a $mdDialog modal.
-          if ($scope.createCustomDialog && val === 'create'){
-            $mdDialog.show({
-              controller: $scope.createCustomDialogCtrl,
-              templateUrl: $scope.createCustomDialogUrl,
-              locals: {
-                parentDirectiveScope : $scope
-              }
-            });
-            return;
-          }
           $scope.formType = val;
         };
         $scope.loginFormOnSubmit = function () {
@@ -257,31 +290,29 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
     mdParseLogin.prototype.restrict = 'E';
     mdParseLogin.prototype.scope =  {
       user: '=',
-      mainContainerAttributes: '=',
-      mdContentClass: '=',
-      mdToolbarClass: '=',
-      mdToolbarToolsClass: '=',
-      submitButtonClass: '=',
-      submitButtonText: '=',
-      backButtonClass: '=',
-      backButtonText: '=',
-      loginMdContentAttributes: '=',
-      loginInputsAttributes: '=',
-      loginButtonClass: '=',
-      loginButtonText: '=',
-      loginToolbarText: '=',
-      createMdContentAttributes: '=',
-      createInputsAttributes: '=',
-      createButtonClass: '=',
-      createButtonText: '=',
-      createToolbarText: '=',
-      resetMdContentAttributes: '=',
-      resetInputsAttributes: '=',
-      resetToolbarText: '=',
-      createCustomDialog: '=',
-      createCustomDialogUrl: '=',
-      createCustomDialogCtrl: '=',
-      onLoginSuccess: '='
+      onLoginSuccess: '=',
+      hideHeader: '=',
+      createFormIncludeUrl: '@',
+      mainContainerAttributes: '@',
+      mdContentClass: '@',
+      mdToolbarClass: '@',
+      submitButtonClass: '@',
+      submitButtonText: '@',
+      backButtonClass: '@',
+      backButtonText: '@',
+      loginMdContentAttributes: '@',
+      loginInputsAttributes: '@',
+      loginButtonClass: '@',
+      loginButtonText: '@',
+      loginToolbarText: '@',
+      createMdContentAttributes: '@',
+      createInputsAttributes: '@',
+      createButtonClass: '@',
+      createButtonText: '@',
+      createToolbarText: '@',
+      resetMdContentAttributes: '@',
+      resetInputsAttributes: '@',
+      resetToolbarText: '@'
     };
 
     return new mdParseLogin();

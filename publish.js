@@ -44,7 +44,13 @@ module.exports = function() {
       case 'md-parse-login':
         memo[name].dependencies = {
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
-          "angular-material": "master"
+          "angular-material": "*"
+        };
+        break;
+      case 'md-parse-image-picker':
+        memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "angular-material": "*"
         };
         break;
       case 'parse-messages':
