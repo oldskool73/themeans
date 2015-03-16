@@ -1,0 +1,1 @@
+for dir in ./out/clones/subbower/*; do (cd "$dir" && git push); done
