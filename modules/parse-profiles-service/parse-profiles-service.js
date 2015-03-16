@@ -45,6 +45,7 @@ angular.module('tm.parseProfiles',[
       'md5',
       'Connection',
     function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection ) {
+      var _self = this;
 
       function getProfileById(profileId, edit){
         var deferred      = $q.defer(),
@@ -224,10 +225,7 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       };
 
-      // Creates a two way relation between two Parse Profiles. The request must be accepted
-      // from one side of the request, acting like a friending. But on the other side of the
-      // request, it is connected immediately, acting like a following. The profile which a
-      // a request for connection is required is determined by a passed in Parse Role.
+      // Creates a two way relation between two Parse Profiles.
       this.connectWithProfile = function(ngReceiverProfile, senderParseUser, sendRequest) {
         var deferred        = $q.defer(),
           senderUserId    = senderParseUser.id,
@@ -267,6 +265,35 @@ angular.module('tm.parseProfiles',[
             });
           }
         });
+        return deferred.promise;
+      };
+
+      this.acceptConnectionRequest = function(connectionId) {
+        var deferred = $q.defer(),
+            query    = new Parse.Query(Connection);
+
+        query
+        .get(connectionId)
+        .then(function (parseConnection) {
+          parseConnection.set('requestStatus', 'accepted');
+
+          parseConnection
+          .save()
+          .then(function () {
+
+            deferred.resolve();
+          },
+          fail);
+        },
+        fail);
+
+        function fail(err){
+          console.error('Parse Error: ', err);
+          deferred.reject({
+            message: 'Please try again in a few moments, or contact support.'
+          });
+        }
+
         return deferred.promise;
       };
 
@@ -339,10 +366,10 @@ angular.module('tm.parseProfiles',[
       // Query for all other profiles with the Role of role argument string.
       this.getNeighbouringRoleSpecificProfiles = function(roleKey) {
         var deferred   = $q.defer(),
-          user       = Parse.User.current() || {},
-          rolesQuery = new Parse.Query(Parse.Role),
-          cacheKey   = options.profilesCacheKey,
-          cache;
+            user       = Parse.User.current() || {},
+            rolesQuery = new Parse.Query(Parse.Role),
+            cacheKey   = options.profilesCacheKey,
+            cache;
 
         $timeout(function (){
           cache = tmLocalStorage.getObject(cacheKey, []);
