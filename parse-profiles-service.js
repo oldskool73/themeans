@@ -186,6 +186,9 @@ angular.module('tm.parseProfiles', [
           relationQuery.find().then(function (response) {
             var profiles = [];
             for (var i = 0; i < response.length; i++) {
+              if (!response[i].get('profile')) {
+                continue;
+              }
               profiles.push(response[i].get('profile'));
             }
             tmLocalStorage.setObject(cacheKey, profiles);
