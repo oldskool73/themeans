@@ -65,10 +65,12 @@ angular.module('tm.md-parse-image-picker', [
               $scope.loading = true;
             });
             if (!$scope.cropper) {
-              createParseFile(name, file).then(function (response) {
+              createParseFile(name, file).then(function () {
+                // @params(response)
                 $scope.loading = false;
                 var reader = new FileReader();
-                reader.onload = function (event) {
+                reader.onload = function () {
+                  // @params(event)
                   if (reader.readyState === reader.DONE) {
                     $scope.$evalAsync(function () {
                       $scope.src = reader.result;
@@ -120,7 +122,8 @@ angular.module('tm.md-parse-image-picker', [
                   cropperOptions.aspectRatio = scope.aspectRatio;
                 }
                 var reader = new FileReader();
-                reader.onload = function (event) {
+                reader.onload = function () {
+                  // @params(event)
                   if (reader.readyState === reader.DONE) {
                     scope.canvas = $window.jQuery(scope.imgEl).cropper(cropperOptions).cropper('replace', reader.result);
                   }
@@ -128,7 +131,8 @@ angular.module('tm.md-parse-image-picker', [
                 reader.readAsDataURL(scope.file);
               }
             }).then(function (dataURI) {
-              createParseFile(name, { base64: dataURI }).then(function (response) {
+              createParseFile(name, { base64: dataURI }).then(function () {
+                // @params(response)
                 $scope.src = dataURI;
                 $scope.loading = false;
               }, function () {
