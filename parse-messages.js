@@ -99,8 +99,9 @@ angular.module('tm.parse-messages', [
       //     console.log('ERR: ', err.code, err.message);
       //   });
       // };
-      function getThreads(edit, getCachedUnreadCount) {
-        var deferred = $q.defer(), query = new Parse.Query(MessageThread), cacheKey = options.messageThreadsCacheKey, ngThreads, cachedCount, cachedThreads;
+      function getThreads(edit) {
+        //@params(edit, getCachedUnreadCount)
+        var deferred = $q.defer(), query = new Parse.Query(MessageThread), cacheKey = options.messageThreadsCacheKey, ngThreads, cachedThreads;
         if (edit) {
           cacheKey = options.messageThreadsEditCacheKey;
         }
