@@ -68,7 +68,8 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
               });
             }
           }
-        }, function (data, status) {
+        }, function () {
+          // @params (data, status)
           deferred.reject('Something went wrong, Please try again.');
         });
         return deferred.promise;
