@@ -126,7 +126,7 @@ angular.module('tm.parse', [])
             {
               attributes = attrs[key][i];
 
-              if(attributes.className && typeof attributes.getNgModel !== 'function')
+              if(attributes && attributes.className && typeof attributes.getNgModel !== 'function')
               {
                 Model = parse.Object._classMap[type];
                 value = new Model(attributes, {ngModel:true});
@@ -143,7 +143,7 @@ angular.module('tm.parse', [])
           {
             attributes = attrs[key];
 
-            if(attributes.className && typeof attributes.getNgModel !== 'function')
+            if(attributes && attributes.className && typeof attributes.getNgModel !== 'function')
             {
               Model = parse.Object._classMap[attributes.className];
               value = new Model(attributes, {ngModel:true});
