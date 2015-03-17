@@ -85,7 +85,7 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
           tmp = [];
           for (var i = 0; i < attrs[key].length; i++) {
             attributes = attrs[key][i];
-            if (attributes.className && typeof attributes.getNgModel !== 'function') {
+            if (attributes && attributes.className && typeof attributes.getNgModel !== 'function') {
               Model = parse.Object._classMap[type];
               value = new Model(attributes, { ngModel: true });
               tmp.push(value);
@@ -96,7 +96,7 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
           this.set(key, tmp);
         } else {
           attributes = attrs[key];
-          if (attributes.className && typeof attributes.getNgModel !== 'function') {
+          if (attributes && attributes.className && typeof attributes.getNgModel !== 'function') {
             Model = parse.Object._classMap[attributes.className];
             value = new Model(attributes, { ngModel: true });
             this.attributes[key] = value;
