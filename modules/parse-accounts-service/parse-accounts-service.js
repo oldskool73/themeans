@@ -98,6 +98,15 @@ angular.module('tm.parseAccounts',[
         return deferred.promise;
       };
 
+      this.isUserInRole = function(roleName) {
+        var roles = tmLocalStorage.getObject(options.rolesCacheKey, []);
+
+        if (roles.indexOf(roleName) >= 0) {
+          return true;
+        }
+        return false;
+      };
+
       this.getUserById = function(userId){
         var deferred = $q.defer(),
             query    = new Parse.Query(Parse.User);

@@ -10,7 +10,8 @@
 angular.module('tm.parseProfiles',[
     'angular-md5',
     'tm.parse',
-    'tm.localstorage'
+    'tm.localstorage',
+    'tm.parseAccounts'
   ])
   .factory('Profile', function (Parse) {
     return Parse.Object.extend('Profile');
@@ -44,8 +45,8 @@ angular.module('tm.parseProfiles',[
       '$timeout',
       'md5',
       'Connection',
-    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection ) {
-      var _self = this;
+      'tmAccounts',
+    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection, tmAccounts ) {
 
       function getProfileById(profileId, edit){
         var deferred      = $q.defer(),
@@ -149,8 +150,13 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       };
 
-      this.destroyProfileRelation = function(profileIds, classNameSwitch) {
-        var classObject;
+      this.destroyProfileRelation = function(targetProfileId, classNameSwitch) {
+        var deferred  = $q.defer(), classObject;
+        if (!Parse.User.current()) {
+          return deferred.reject({
+            message: 'You need to be logged in to connect with a profile.'
+          });
+        }
         switch (classNameSwitch) {
           case 'Follow':
             classObject = Follow;
@@ -159,9 +165,9 @@ angular.module('tm.parseProfiles',[
             classObject = Connection;
             break;
         }
-        var deferred = $q.defer(),
-            query    = new Parse.Query(classObject),
-            hash     = md5.createHash(profileIds.sort().join(''));
+        var profileIds  = [ targetProfileId, Parse.User.current().get('profile').id ],
+            query       = new Parse.Query(classObject),
+            hash        = md5.createHash(profileIds.sort().join(''));
 
         query.equalTo('profileIdsHash', hash);
         query.find({
@@ -178,8 +184,8 @@ angular.module('tm.parseProfiles',[
                 deferred.resolve();
               }
             }
-            function obliterate(follow) {
-              follow.destroy({
+            function obliterate(parseObject) {
+              parseObject.destroy({
                 success: function () {},
                 error: function (response, err) {
                   console.error('Parse Error: ', err);
@@ -226,10 +232,17 @@ angular.module('tm.parseProfiles',[
       };
 
       // Creates a two way relation between two Parse Profiles.
-      this.connectWithProfile = function(ngReceiverProfile, senderParseUser, sendRequest) {
-        var deferred        = $q.defer(),
-          senderUserId    = senderParseUser.id,
-          senderProfile   = senderParseUser.get('profile'),
+      this.connectWithProfile = function(ngReceiverProfile, roleName) {
+        var deferred = $q.defer();
+
+        if (!Parse.User.current()){
+          return deferred.reject({
+            message: 'You need to be logged in to connect with a Profile'
+          });
+        }
+
+        var senderUserId  = Parse.User.current().id,
+          senderProfile   = Parse.User.current().get('profile'),
           receiverUserId  = ngReceiverProfile.user.objectId,
           receiverProfile = new Profile(),
           connection      = new Connection(),
@@ -251,12 +264,13 @@ angular.module('tm.parseProfiles',[
         connection.set('receiver', receiverProfile);
         connection.set('profileIdsHash', hash);
         connection.set('requestStatus', 'accepted');
-        if (sendRequest) {
+
+        if ( tmAccounts.isUserInRole(roleName) ) {
           connection.set('requestStatus', 'pending');
         }
         connection.save({
-          success: function () {
-            deferred.resolve();
+          success: function (parseConnection) {
+            deferred.resolve(parseConnection.getNgModel());
           },
           error: function (err) {
             console.error('Parse Error: ', err);
@@ -297,18 +311,35 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       };
 
-      this.checkIfConnectionExists = function(profileIdsArray){
-        var deferred = $q.defer(),
-            query    = new Parse.Query(Connection),
-            hash     = md5.createHash(profileIdsArray.sort().join(''));
+      this.checkIfConnectionExists = function(targetProfileId){
+        var deferred = $q.defer();
+
+        if (!Parse.User.current()) {
+          return deferred.resolve({
+            noCurrentUser: true
+          });
+        }
+        var query       = new Parse.Query(Connection),
+            profileIds  = [ targetProfileId, Parse.User.current().get('profile').id ],
+            hash        = md5.createHash(profileIds.sort().join(''));
 
         query.equalTo('profileIdsHash', hash);
         query.find({
           success: function (response) {
             if (!response.length) {
-              return deferred.resolve(false);
+              return deferred.resolve('none');
             }
-            deferred.resolve(true);
+            else if (response[0] && response[0].get('requestStatus') === 'pending') {
+              return deferred.resolve('pending');
+            }
+            else if (response[0] && response[0].get('requestStatus') === 'accepted') {
+              return deferred.resolve('accepted');
+            } else {
+              console.error('Parse Error', response);
+              deferred.reject({
+                message: 'Please try again in a few moments, or contact support.'
+              });
+            }
           },
           error: function (err) {
             console.error('Parse Error: ', err);
