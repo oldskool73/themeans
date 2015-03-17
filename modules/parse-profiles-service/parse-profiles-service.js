@@ -444,7 +444,8 @@ angular.module('tm.parseProfiles',[
             });
             return;
           }
-          var relation      = response[0].relation(roleKey+'s'),
+          
+          var relation      = response[0].relation('users'),
               relationQuery = relation.query();
 
           if (user.id) {
