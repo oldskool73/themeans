@@ -43,6 +43,7 @@ module.exports = function() {
         break;
       case 'md-parse-login':
         memo[name].dependencies = {
+          "cropper": "~0.8.0",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
           "angular-material": "*"
         };
