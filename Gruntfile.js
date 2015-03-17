@@ -9,7 +9,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['jshint', 'karma:unit']);
   grunt.registerTask('serve', [ 'karma:continuous', 'dist:main', 'dist:demo', 'build:gh-pages', 'connect:continuous', 'watch']);
 
-  grunt.registerTask('dist', ['dist:main', 'dist:sub', 'dist:npm', 'dist:demo']);
+  grunt.registerTask('dist', ['karma:unit', 'dist:main', 'dist:sub', 'dist:npm', 'dist:demo']);
   grunt.registerTask('dist:main', ['concat:tmp', 'concat:modules', 'clean:rm_tmp', 'uglify:main']);
   grunt.registerTask('dist:sub', ['ngmin', 'uglify:sub']);
   // grunt.registerTask('dist:npm', ['cjsify','replace:npm','uglify:npm']);
@@ -75,9 +75,9 @@ module.exports = function (grunt) {
   function npmReplaceConfig(memo, moduleName){
 
     memo.push({
-      expand:true, 
-      flatten:true, 
-      src: ['dist/npm/'+moduleName+'/*.js'], 
+      expand:true,
+      flatten:true,
+      src: ['dist/npm/'+moduleName+'/*.js'],
       dest: 'dist/npm/'+moduleName+'/'
     });
 

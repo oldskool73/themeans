@@ -75,7 +75,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(ngProfile);
           },
           error: function(response, err){
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -107,7 +107,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(profile);
           },
           error: function(response, err){
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -143,7 +143,7 @@ angular.module('tm.parseProfiles',[
         .then(function () {
           deferred.resolve();
         }, function (err) {
-          console.error('Parse Error: ', err);
+          $log.info('Parse Error: ', err);
           deferred.reject({
             message: 'Please try again in a few moments, or contact support.'
           });
@@ -174,7 +174,7 @@ angular.module('tm.parseProfiles',[
         query.find({
           success: function (response) {
             if (!response.length) {
-              console.error('No Parse '+classNameSwitch+' object found.');
+              $log.error('No Parse '+classNameSwitch+' object found.');
               deferred.reject({ message: 'Please contact support' });
               return;
             }
@@ -189,7 +189,7 @@ angular.module('tm.parseProfiles',[
               parseObject.destroy({
                 success: function () {},
                 error: function (response, err) {
-                  console.error('Parse Error: ', err);
+                  $log.info('Parse Error: ', err);
                   deferred.reject({
                     message: 'Please try again in a few moments, or contact support.'
                   });
@@ -198,7 +198,7 @@ angular.module('tm.parseProfiles',[
             }
           },
           error: function (response, err) {
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -223,7 +223,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(true);
           },
           error: function (err) {
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -274,7 +274,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(parseConnection.getNgModel());
           },
           error: function (err) {
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -309,7 +309,7 @@ angular.module('tm.parseProfiles',[
         fail);
 
         function fail(err){
-          console.error('Parse Error: ', err);
+          $log.info('Parse Error: ', err);
           deferred.reject({
             message: 'Please try again in a few moments, or contact support.'
           });
@@ -342,14 +342,14 @@ angular.module('tm.parseProfiles',[
             else if (response[0] && response[0].get('requestStatus') === 'accepted') {
               return deferred.resolve('accepted');
             } else {
-              console.error('Parse Error', response);
+              $log.info('Parse Error', response);
               deferred.reject({
                 message: 'Please try again in a few moments, or contact support.'
               });
             }
           },
           error: function (err) {
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -401,7 +401,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(connections);
           },
           error: function (err) {
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Something went wrong, please contact system admin.'
             });
@@ -438,7 +438,7 @@ angular.module('tm.parseProfiles',[
         .then(function (response){
           if (response.length > 1)
           {
-            console.error('Roles Error: There are duplicate roles in the database.');
+            $log.error('Roles Error: There are duplicate roles in the database.');
             deferred.reject({
               message: 'Something went wrong, please contact system admin.'
             });
@@ -469,13 +469,13 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(profiles);
 
           }, function (err){
-            console.error('Parse Error: ', err);
+            $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
           });
         }, function (err){
-          console.error('Parse Error: ', err);
+          $log.info('Parse Error: ', err);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });

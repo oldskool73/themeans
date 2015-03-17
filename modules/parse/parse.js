@@ -24,7 +24,6 @@ angular.module('tm.parse', [])
       var $q              = arguments[0],
           $window         = arguments[1],
           $ionicPlatform  = arguments[2],
-          self            = this,
           parse           = $window.Parse;
 
       // Delete from the $window scope to ensure that we use the deps injection
@@ -37,7 +36,8 @@ angular.module('tm.parse', [])
 
       parse.Object.prototype.getNgModel = function () {
         var key, child,
-            ret = angular.fromJson(this.toJSON());
+          ret = angular.fromJson(angular.toJson(this));
+          // ret = angular.fromJson(this.toJSON());
 
         for (key in this.attributes)
         {
@@ -69,8 +69,8 @@ angular.module('tm.parse', [])
       };
 
       parse.Object.prototype.getNgFormModel = function () {
-        var key, child,
-            ret = angular.fromJson(this.toJSON());
+        // var ret = angular.fromJson(this.toJSON());
+        var ret = angular.fromJson(angular.toJson(this));
 
         ret['className'] = this.className;
         return ret;
