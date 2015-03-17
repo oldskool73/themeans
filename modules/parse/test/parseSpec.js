@@ -11,6 +11,7 @@ describe('tm.parse', function() {
         deps:['$q','$window']
       });
     });
+
     inject(function(_Parse_, _$window_){
        tmParse = _Parse_;
        $window = _$window_;
@@ -19,32 +20,105 @@ describe('tm.parse', function() {
     });
   });
 
-  // Serialization
-  it('should serialize a simple object', function(){
-    var out = new Model({
-      name: 'name'
+  describe('Serialization',function(){
+
+    it('should serialize a simple object', function(){
+      var out = new Model({
+        name: 'name'
+      });
+      
+      expect(function(){
+        out.getNgModel();
+      }).not.toThrow();
     });
-    
-    expect(function(){
-      return out.getNgModel();
-    }).not.toThrow();
+
+    it('should serialize an object with null values', function(){
+      var out = new Model({
+        name: 'name',
+        location: null
+      });
+      
+      expect(function(){
+        out.getNgModel();
+      }).not.toThrow();
+    });
+
+    it('should serilize a nested object', function(){
+        var ChildModel = tmParse.Object.extend('ChildModel');
+
+        var out = new Model({
+          name:'name',
+          child: new ChildModel({objectId:'hash',name:'child-name'})
+        });
+
+        expect(function(){
+          out.getNgModel();
+          out.get('child').getNgModel();
+        }).not.toThrow();
+        expect(out.get('child').getNgModel().name).toBe('child-name');
+    });
+
+    it('should not serilize a nested unsaved object', function(){
+        var ChildModel = tmParse.Object.extend('ChildModel');
+
+        var out = new Model({
+          name:'name',
+          child: new ChildModel({name:'child-name'})
+        });
+
+        expect(function(){
+          out.getNgModel();
+        }).toThrow('Can\'t serialize an unsaved Parse.Object');
+    });
+
+    it('should not serialize a nested unsaved file', function(){
+        var data = {base64: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'};
+
+        var out = new Model({
+          name:'name',
+          img: new tmParse.File('new-file-name',data)
+        });
+
+        expect(function(){
+          out.getNgModel();
+        }).toThrow('Tried to save an object containing an unsaved file.');
+    });
+
+    it('should serilize and deserialize a nested parse geopoint', function(){
+        var tmp = new Model({
+          name:'name',
+          child: new tmParse.GeoPoint({latitude: 40.0, longitude: -30.0})
+        });
+
+        expect(tmp.getNgModel().child._latitude).toBe(40.0);
+
+        var out = new Model(tmp.getNgModel(),{
+          ngModel:true,
+          resetOpsQueue:true
+        });
+
+        expect(out.get('child').kilometersTo(new tmParse.GeoPoint(30, 30))).toBe(5473.481602842825);
+        expect(out.getNgModel().child._latitude).toBe(40.0);
+    });
+
   });
 
-  // Deserialization
-  it('should instantiate a simple object', function(){
-    // Setup a default object
-    var out = new Model({
-      className: 'Model',
-      name:null
-    },{
-      ngModel: true,
-      resetOpsQueue: true
-    });
-    
-    expect(out).toBeDefined();
-  });
 
-  it('should instantiate an object with null keys', function(){
+  describe('Deserialization',function(){
+
+    it('should deserilize a simple object', function(){
+      var out = new Model({
+        className: 'Model',
+        name:'name'
+      },{
+        ngModel: true,
+        resetOpsQueue: true
+      });
+      
+      expect(out).toBeDefined();
+    });
+
+    it('should deserilize an object with null values', function(){
       var out = new Model({
         className: 'Model',
         name:'name',
@@ -55,50 +129,100 @@ describe('tm.parse', function() {
       });
 
       expect(out.get('name')).toBe('name');
-  });
+    });
 
-  it('should instantiate an object with parse object children', function(){
-      var ChildModel = tmParse.Object.extend('ChildModel'),
-        child = new ChildModel({name:'child-name'});
+    it('should deserilize a nested object', function(){
+      var out = new Model({
+        className: 'Model',
+        name: 'name',
+        child: {
+          className: 'ChildModel',
+          name: 'child-name'
+        }
+      },{
+        ngModel: true,
+        resetOpsQueue: true
+      });
+
+      expect(out.get('name')).toBe('name');
+      expect(out.get('child').get('name')).toBe('child-name');
+    });
+
+    it('should preserve a nested parse object on deserialization', function(){
+      var ChildModel = tmParse.Object.extend('ChildModel');
 
       var out = new Model({
+        className: 'Model',
         name:'name',
-        child: child.getNgModel()
+        child: new ChildModel({objectId: 'hash', name:'child-name'})
       },{
         ngModel: true,
         resetOpsQueue: true
       });
 
       expect(function(){
-        return out.get('child').getNgModel();
+        out.getNgModel();
+        out.get('child').getNgModel();
       }).not.toThrow();
-  });
+      expect(out.get('child').get('name')).toBe('child-name');
+    });
 
-  it('should serilize a nested deserialized object', function(){
-      var ChildModel = tmParse.Object.extend('ChildModel'),
-        child = new ChildModel({name:'child-name'});
+    it('should preserve a nested parse object on deserialization', function(){
+      var ChildModel = tmParse.Object.extend('ChildModel');
 
       var out = new Model({
         className: 'Model',
         name:'name',
-        child: child.getNgModel()
-      });
-
-      expect(out.getNgModel().child.name).toBe('child-name');
-  });
-
-  it('shoudn\'t serilize an unsaved file object', function(){
-      var data = {base64: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'};
-
-      var out = new Model({
-        name:'name',
-        img: new tmParse.File('new-file-name',data)
+        child: new ChildModel({objectId: 'hash', name:'child-name'})
+      },{
+        ngModel: true,
+        resetOpsQueue: true
       });
 
       expect(function(){
-        return out.getNgModel();
-      }).toThrow();
-  });
+        out.getNgModel();
+        out.get('child').getNgModel();
+      }).not.toThrow();
+      expect(out.get('child').get('name')).toBe('child-name');
+    });
 
+    it('should deserilize a nested serialized parse file', function(){
+      var out = new Model({
+        className: 'Model',
+        name:'name',
+        child: {
+          '__type':'File',
+          'name':'parse-image',
+          'url':'http://files.parsetfss.com/parse-image'
+        }
+      },{
+        ngModel:true,
+        resetOpsQueue: false
+      });
+
+      expect(out.get('child').url()).toBe('http://files.parsetfss.com/parse-image');
+    });
+
+    it('should preserve a nested geopoint on deserialization', function(){
+        var out = new Model({
+          className: 'Model',
+          name:'name',
+          child: {
+            '__type': 'GeoPoint',
+            'latitude': 40,
+            'longitude': -30
+          }
+        },{
+          ngModel:true,
+          resetOpsQueue: false
+        });
+
+        expect(function(){
+          out.getNgModel();
+        }).not.toThrow();
+        expect(out.get('child')._longitude).toBe(-30.0);
+    });
+
+  });
 
 });
