@@ -10,11 +10,11 @@
 angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
   .directive('mdParseLogin', function ($compile){
 
-    var mdParseLogin = function(){
+    var MdParseLogin = function(){
       return this;
     };
 
-    mdParseLogin.prototype.link = function(scope, element, attrs){
+    MdParseLogin.prototype.link = function(scope, element){ //@params(scope, element, attrs)
       var mainTmpl = '<div '+
         scope.defaults.mainContainerAttributes+
         ' ng-switch on="formType"> '+
@@ -180,13 +180,13 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
 
       compiled(scope);
     };
-    mdParseLogin.prototype.controller = [
+    MdParseLogin.prototype.controller = [
       '$scope',
       '$location',
       'Parse',
       '$mdToast',
       '$mdDialog',
-      function ($scope, $location, Parse, $mdToast, $mdDialog) {
+      function ($scope, $location, Parse, $mdToast) {
 
         var defaults = $scope.defaults = {};
         defaults.mdToolbarClass = 'md-primary md-default-theme';
@@ -287,8 +287,8 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
         };
       }
     ];
-    mdParseLogin.prototype.restrict = 'E';
-    mdParseLogin.prototype.scope =  {
+    MdParseLogin.prototype.restrict = 'E';
+    MdParseLogin.prototype.scope =  {
       user: '=',
       onLoginSuccess: '=',
       hideHeader: '=',
@@ -315,5 +315,5 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       resetToolbarText: '@'
     };
 
-    return new mdParseLogin();
+    return new MdParseLogin();
   });

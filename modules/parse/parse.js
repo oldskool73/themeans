@@ -87,10 +87,11 @@ angular.module('tm.parse', [])
         {
           return this;
         }
-        else
-        {
-          // debugger;
-        }
+        // else
+        // {
+        //   throw 'tmParse error, something has gone horribly wrong';
+        //   debugger;
+        // }
 
         var resetOpsQueue = true;
         if(typeof options.resetOpsQueue !== 'undefined')
@@ -115,7 +116,7 @@ angular.module('tm.parse', [])
           delete this._opSetQueue[0].className;
         } catch(e){}
 
-        var key, child, type, model, tmp;
+        var key, type, Model, value, attributes, tmp;
         for (key in attrs)
         {
           if(Array.isArray(attrs[key]))
@@ -123,33 +124,29 @@ angular.module('tm.parse', [])
             tmp = [];
             for(var i=0; i<attrs[key].length; i++)
             {
-              var type = attrs[key][i].className,
-                  attrsObj = attrs[key][i];
+              attributes = attrs[key][i];
 
-              if(type &&
-                  typeof attrsObj.getNgModel !== 'function')
+              if(attributes && attributes.className && typeof attributes.getNgModel !== 'function')
               {
-                var Model = parse.Object._classMap[type];
-                var value = new Model(attrsObj, {ngModel:true});
+                Model = parse.Object._classMap[type];
+                value = new Model(attributes, {ngModel:true});
                 tmp.push(value);
               }
               else
               {
-                tmp.push(angular.copy(attrsObj));
+                tmp.push(angular.copy(attributes));
               }
             }
             this.set(key,tmp);
           }
           else
           {
-            var type = attrs[key].className,
-                attrsObj = attrs[key];
+            attributes = attrs[key];
 
-            if(type &&
-                typeof attrsObj.getNgModel !== 'function')
+            if(attributes && attributes.className && typeof attributes.getNgModel !== 'function')
             {
-              var Model = parse.Object._classMap[type];
-              var value = new Model(attrsObj, {ngModel:true});
+              Model = parse.Object._classMap[attributes.className];
+              value = new Model(attributes, {ngModel:true});
               this.attributes[key] = value;
             }
             else

@@ -43,10 +43,11 @@ angular.module('tm.parseProfiles',[
       'Parse',
       'tmLocalStorage',
       '$timeout',
+      '$log',
       'md5',
       'Connection',
       'tmAccounts',
-    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection, tmAccounts ) {
+    function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection, tmAccounts, $log ) {
 
       function getProfileById(profileId, edit){
         var deferred      = $q.defer(),

@@ -83,12 +83,12 @@ angular.module('tm.md-parse-image-picker',[
           if(!$scope.cropper)
           {
             createParseFile(name, file)
-            .then(function(response){
+            .then(function(){ // @params(response)
 
               $scope.loading = false;
               
               var reader = new FileReader();
-              reader.onload = function (event) {
+              reader.onload = function () { // @params(event)
                 if(reader.readyState === reader.DONE)
                 {
                   $scope.$evalAsync(function(){
@@ -163,7 +163,7 @@ angular.module('tm.md-parse-image-picker',[
               }
 
               var reader = new FileReader();
-              reader.onload = function (event) {
+              reader.onload = function () { // @params(event)
                 if(reader.readyState === reader.DONE)
                 {
                   scope.canvas  = $window.jQuery(scope.imgEl)
@@ -176,7 +176,7 @@ angular.module('tm.md-parse-image-picker',[
             }
           }).then(function(dataURI){
             createParseFile(name, {base64: dataURI})
-            .then(function(response){
+            .then(function(){ // @params(response)
               $scope.src = dataURI;
               $scope.loading = false;
             },function(){

@@ -73,7 +73,7 @@ angular.module('tm.geolocation',[])
               });
             }
           }
-        }, function (data, status) {
+        }, function () { // @params (data, status)
           deferred.reject('Something went wrong, Please try again.');
         });
         return deferred.promise;
