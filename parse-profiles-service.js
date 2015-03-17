@@ -331,6 +331,7 @@ angular.module('tm.parseProfiles', [
             deferred.reject({ message: 'Something went wrong, please contact system admin.' });
             return;
           }
+          //TODO: this is wrong, why is s being appended?
           var relation = response[0].relation(roleKey + 's'), relationQuery = relation.query();
           if (user.id) {
             relationQuery.notEqualTo(roleKey, user);
