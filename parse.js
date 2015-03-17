@@ -41,6 +41,9 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
           headers: { 'Content-Type': 'text/plain' },
           data: data
         }).then(function (xhr) {
+          // The parse implementation uses this internally
+          // so we need to provide it
+          xhr.responseText = angular.toJson(xhr.data);
           if (xhr.status >= 200 && xhr.status < 300) {
             if (xhr.data) {
               promise.resolve(xhr.data, xhr.status, xhr);
