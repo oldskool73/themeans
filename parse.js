@@ -20,12 +20,13 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
       ]
     };
   var ngParse = function () {
-    var $q = arguments[0], $window = arguments[1], $ionicPlatform = arguments[2], self = this, parse = $window.Parse;
+    var $q = arguments[0], $window = arguments[1], $ionicPlatform = arguments[2], parse = $window.Parse;
     // Delete from the $window scope to ensure that we use the deps injection
     delete $window.Parse;
     parse.initialize(options.applicationId, options.javaScriptKey);
     parse.Object.prototype.getNgModel = function () {
-      var key, child, ret = angular.fromJson(this.toJSON());
+      var key, child, ret = angular.fromJson(angular.toJson(this));
+      // ret = angular.fromJson(this.toJSON());
       for (key in this.attributes) {
         child = this.get(key);
         if (typeof child.getNgModel === 'function') {
@@ -45,7 +46,8 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
       return ret;
     };
     parse.Object.prototype.getNgFormModel = function () {
-      var key, child, ret = angular.fromJson(this.toJSON());
+      // var ret = angular.fromJson(this.toJSON());
+      var ret = angular.fromJson(angular.toJson(this));
       ret['className'] = this.className;
       return ret;
     };
