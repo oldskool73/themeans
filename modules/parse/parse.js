@@ -43,7 +43,7 @@ angular.module('tm.parse', [])
         {
           child = this.get(key);
 
-          if (typeof child.getNgModel === 'function')
+          if (child && typeof child.getNgModel === 'function')
           {
             ret[key] = child.getNgModel();
           }
@@ -162,6 +162,15 @@ angular.module('tm.parse', [])
           this._opSetQueue = [{}];
         }
         return this;
+      };
+
+      parse.serialiseArrayForDisplay = function(parseObjectArray){
+        var ret = [];
+        for (var i=0; i < parseObjectArray.length; i++)
+        {
+          ret.push(parseObjectArray[i].getNgModel());
+        }
+        return ret;
       };
 
       if(!$ionicPlatform)
