@@ -7,7 +7,7 @@
  * # tagsInput
  */
 angular.module('tm.jquery-tags', [])
-  .directive('tmTagsInput', function () {
+  .directive('tmTagsInput', function ($window) {
     return {
       restrict: 'A',
       scope: {
@@ -21,7 +21,7 @@ angular.module('tm.jquery-tags', [])
       },
       link: function postLink(scope, element) { //@params(attr)
 
-        var $tags = jQuery(element).tagsInput({
+        var $tags = $window.jQuery(element).tagsInput({
           height: scope.containerHeight,
           width: scope.containerWidth,
           onChange: function ($el) {
