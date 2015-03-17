@@ -21,9 +21,10 @@ angular.module('tm.parse', [])
 
     var ngParse = function () {
 
-      var $q              = arguments[0],
-          $window         = arguments[1],
-          $ionicPlatform  = arguments[2],
+      var $http           = arguments[0],
+          $q              = arguments[1],
+          $window         = arguments[2],
+          $ionicPlatform  = arguments[3],
           parse           = $window.Parse;
 
       // Delete from the $window scope to ensure that we use the deps injection
@@ -33,6 +34,56 @@ angular.module('tm.parse', [])
         options.applicationId,
         options.javaScriptKey
       );
+
+      // Switch the parse._ajax method to use angular $http
+      parse._ajax = function(method, url, data, success, error) {
+        var options = {
+          success: success,
+          error: error
+        };
+
+        if (parse._useXDomainRequest()) {
+          return parse._ajaxIE8(method, url, data)._thenRunCallbacks(options);
+        }
+
+        var promise = new parse.Promise();
+
+        function dispatch(attempts){
+          $http({
+            method: method,
+            url: url,
+            headers: {
+              'Content-Type': 'text/plain'
+            },
+            data: data
+          }).then(function(xhr){
+            if (xhr.status >= 200 && xhr.status < 300) {
+              if (xhr.data) {
+                promise.resolve(xhr.data, xhr.status, xhr);
+              }
+            } else if (xhr.status >= 500) { // Retry on 5XX
+              if (++attempts < 5) {
+                // Exponentially-growing delay
+                var delay = Math.round(
+                  Math.random() * 125 * Math.pow(2, attempts)
+                );
+                setTimeout(function(){
+                  dispatch(attempts);
+                }, delay);
+              } else {
+                // After 5 retries, fail
+                promise.reject(xhr);
+              }
+            } else {
+              promise.reject(xhr);
+            }
+          });
+        }
+        
+        dispatch(0);
+
+        return promise._thenRunCallbacks(options); 
+      };
 
       parse.Object.prototype.getNgModel = function () {
         var key, child,
@@ -209,11 +260,13 @@ angular.module('tm.parse', [])
       {
         // If the deps array has changed, we need to re-add
         // the ngParse function and re-define this.$get
+        options.deps.shift('$http');
         options.deps.push(ngParse);
         this.$get = options.deps;
       }
     };
 
+    options.deps.shift('$http');
     options.deps.push(ngParse);
     this.$get = options.deps;
 
