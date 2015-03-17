@@ -82,7 +82,7 @@ angular.module('tm.parse', [])
         
         dispatch(0);
 
-        return promise._thenRunCallbacks(options); 
+        return promise._thenRunCallbacks(options);
       };
 
       parse.Object.prototype.getNgModel = function () {
@@ -260,13 +260,13 @@ angular.module('tm.parse', [])
       {
         // If the deps array has changed, we need to re-add
         // the ngParse function and re-define this.$get
-        options.deps.shift('$http');
+        options.deps.unshift('$http');
         options.deps.push(ngParse);
         this.$get = options.deps;
       }
     };
 
-    options.deps.shift('$http');
+    options.deps.unshift('$http');
     options.deps.push(ngParse);
     this.$get = options.deps;
 
