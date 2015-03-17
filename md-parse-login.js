@@ -47,6 +47,7 @@ angular.module('tm.md-parse-login', [
         defaults.resetInputsAttributes = 'layout="row" layout-sm="column"';
         defaults.resetToolbarText = 'Enter your email address';
         angular.extend($scope.defaults, $scope);
+        $scope.sending = false;
         // Set the user object in controller for better control, this is a backup.
         if (typeof $scope.user === 'undefined') {
           $scope.user = {};
@@ -71,14 +72,17 @@ angular.module('tm.md-parse-login', [
           $scope.formType = val;
         };
         $scope.loginFormOnSubmit = function () {
+          $scope.sending = true;
           Parse.User.logIn($scope.user.username, $scope.user.password, {
             success: function (user) {
+              $scope.sending = false;
               // Do stuff after successful login.
               $scope.onLoginSuccess(user);
             },
             error: function (user, error) {
               if (error.code === 100) {
                 $scope.showSimpleToast('Please check your internet connnection and try again.');
+                return;
               }
               $scope.showSimpleToast(error.message);
             }
@@ -87,12 +91,15 @@ angular.module('tm.md-parse-login', [
         $scope.resetFormOnSubmit = function () {
           Parse.User.requestPasswordReset($scope.user.email, {
             success: function () {
+              $scope.sending = false;
               // Password reset request was sent successfully
               $scope.showSimpleToast('An email with a link to reset your password has been sent.');
             },
             error: function (error) {
+              $scope.sending = false;
               if (error.code === 100) {
                 $scope.showSimpleToast('Please check your internet connnection and try again.');
+                return;
               }
               // Show the error message somewhere
               $scope.showSimpleToast(error.message);
@@ -107,13 +114,16 @@ angular.module('tm.md-parse-login', [
           }
           user.signUp(null, {
             success: function (user) {
+              $scope.sending = false;
               // Hooray! Let them use the app now.
               // passes back boolean for any existing / new controller logic
               $scope.onLoginSuccess(user, true);
             },
             error: function (user, error) {
+              $scope.sending = false;
               if (error.code === 100) {
                 $scope.showSimpleToast('Please check your internet connnection and try again.');
+                return;
               }
               // Show the error message somewhere and let the user try again.
               $scope.showSimpleToast(error.message);
