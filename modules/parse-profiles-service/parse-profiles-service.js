@@ -43,10 +43,10 @@ angular.module('tm.parseProfiles',[
       'Parse',
       'tmLocalStorage',
       '$timeout',
-      '$log',
       'md5',
       'Connection',
       'tmAccounts',
+      '$log',
     function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection, tmAccounts, $log ) {
 
       function getProfileById(profileId, edit){
@@ -287,6 +287,12 @@ angular.module('tm.parseProfiles',[
         var deferred = $q.defer(),
             query    = new Parse.Query(Connection);
 
+        if (!Parse.User.current() || !tmAccounts.isUserInRole('user')) {
+          return deferred.reject({
+            message: 'You are not permitted to perform this action.'
+          });
+        }
+
         query
         .get(connectionId)
         .then(function (parseConnection) {
@@ -365,15 +371,32 @@ angular.module('tm.parseProfiles',[
         query.include('sender');
         query.find({
           success: function (response) {
-            var ngArray = [], connections;
+            var connections = [], ngResponse = {};
+
             for (var i = 0; i < response.length; i++) {
+
               if (edit) {
-                ngArray.push(response[i].getNgFormModel());
+                connections.push(response[i].getNgFormModel());
                 continue;
               }
-              ngArray.push(response[i].getNgModel());
+              ngResponse            = response[i].getNgModel();
+              ngResponse.connection = ngResponse.sender;
+
+              if (ngResponse.sender.user.objectId === Parse.User.current().id) {
+                ngResponse.connection               = ngResponse.receiver;
+              }
+              // removing excess objects & data.
+              delete ngResponse.receiver;
+              delete ngResponse.sender;
+              if (ngResponse.requestStatus === 'pending') {
+                // Prevents the ability to scope hack the stateParams id for a pending candidate.
+                delete ngResponse.connection.objectId;
+              }
+
+              connections.push(ngResponse);
             }
-            tmLocalStorage.setObject(cacheKey, ngArray);
+
+            tmLocalStorage.setObject(cacheKey, connections);
             connections = tmLocalStorage.getObject(cacheKey, []);
             deferred.resolve(connections);
           },
