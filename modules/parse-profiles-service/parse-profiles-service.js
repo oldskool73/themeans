@@ -352,7 +352,7 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       };
 
-      function getConnections(user, edit) {
+      function getConnections(edit) {
         var deferred = $q.defer(),
             query    = new Parse.Query(Connection),
             cacheKey = options.connectionsCacheKey;
@@ -387,12 +387,12 @@ angular.module('tm.parseProfiles',[
         return deferred.promise;
       }
 
-      this.getConnectionsForDisplay = function (user) {
-        return getConnections(user, false);
+      this.getConnectionsForDisplay = function () {
+        return getConnections(false);
       };
 
-      this.getConnectionsForEdit = function (user) {
-        return getConnections(user, true);
+      this.getConnectionsForEdit = function () {
+        return getConnections(true);
       };
 
       // Query for all other profiles with the Role of role argument string.
