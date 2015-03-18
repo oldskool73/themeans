@@ -34,38 +34,38 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
         return parse._ajaxIE8(method, url, data)._thenRunCallbacks(options);
       }
       var promise = new parse.Promise();
-      function dispatch(attempts) {
+      var attempts = 0;
+      function dispatch() {
         $http({
           method: method,
           url: url,
           headers: { 'Content-Type': 'text/plain' },
           data: data
-        }).then(function (xhr) {
-          // The parse implementation uses this internally
-          // so we need to provide it
-          xhr.responseText = angular.toJson(xhr.data);
-          if (xhr.status >= 200 && xhr.status < 300) {
-            if (xhr.data) {
-              promise.resolve(xhr.data, xhr.status, xhr);
-            }
-          } else if (xhr.status >= 500) {
-            // Retry on 5XX
-            if (++attempts < 5) {
-              // Exponentially-growing delay
-              var delay = Math.round(Math.random() * 125 * Math.pow(2, attempts));
-              setTimeout(function () {
-                dispatch(attempts);
-              }, delay);
-            } else {
-              // After 5 retries, fail
-              promise.reject(xhr);
-            }
+        }).then(processResponse, processResponse);
+      }
+      function processResponse(xhr) {
+        xhr.responseText = angular.toJson(xhr.data);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          if (xhr.data) {
+            promise.resolve(xhr.data, xhr.status, xhr);
+          }
+        } else if (xhr.status >= 500) {
+          // Retry on 5XX
+          if (++attempts < 5) {
+            // Exponentially-growing delay
+            var delay = Math.round(Math.random() * 125 * Math.pow(2, attempts));
+            setTimeout(function () {
+              dispatch(attempts);
+            }, delay);
           } else {
+            // After 5 retries, fail
             promise.reject(xhr);
           }
-        });
+        } else {
+          promise.reject(xhr);
+        }
       }
-      dispatch(0);
+      dispatch();
       return promise._thenRunCallbacks(options);
     };
     parse.Object.prototype.getNgModel = function () {
