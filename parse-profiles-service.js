@@ -231,8 +231,9 @@ angular.module('tm.parseProfiles', [
         }
         query.get(connectionId).then(function (parseConnection) {
           parseConnection.set('requestStatus', 'accepted');
-          parseConnection.save().then(function () {
-            deferred.resolve();
+          parseConnection.save().then(function (response) {
+            var ngConnection = response.getNgModel();
+            deferred.resolve(ngConnection);
           }, fail);
         }, fail);
         function fail(err) {
