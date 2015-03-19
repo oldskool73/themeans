@@ -300,9 +300,9 @@ angular.module('tm.parseProfiles',[
 
           parseConnection
           .save()
-          .then(function () {
-
-            deferred.resolve();
+          .then(function (response) {
+            var ngConnection = response.getNgModel();
+            deferred.resolve(ngConnection);
           },
           fail);
         },
@@ -444,7 +444,7 @@ angular.module('tm.parseProfiles',[
             });
             return;
           }
-          
+
           var relation      = response[0].relation('users'),
               relationQuery = relation.query();
 
