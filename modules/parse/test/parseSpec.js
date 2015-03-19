@@ -8,6 +8,8 @@ describe('tm.parse', function() {
     module('tm.parse');
     module(function(ParseProvider){
       ParseProvider.configure({
+        applicationId: 'id',
+        javaScriptKey: 'key',
         deps:['$q','$window']
       });
     });
@@ -167,23 +169,33 @@ describe('tm.parse', function() {
       expect(out.get('child').get('name')).toBe('child-name');
     });
 
-    it('should preserve a nested parse object on deserialization', function(){
+    // TODO: There is a case which throws and error:
+    // Check Creem origin/master #8a33a7c controllers/settings.js for an example
+    it('shouldn\'t throw an error if you save a nested file from cache', function(){
       var ChildModel = tmParse.Object.extend('ChildModel');
 
       var out = new Model({
         className: 'Model',
         name:'name',
+        file: {
+          '__type':'File',
+          'name':'parse-image',
+          'url':'http://files.parsetfss.com/parse-image'
+        },
+        geopoint: {
+          '__type': 'GeoPoint',
+          'latitude': 40,
+          'longitude': -30
+        },
         child: new ChildModel({objectId: 'hash', name:'child-name'})
       },{
-        ngModel: true,
-        resetOpsQueue: true
+        ngModel:true,
+        resetOpsQueue:false
       });
 
       expect(function(){
-        out.getNgModel();
-        out.get('child').getNgModel();
+        out.save();
       }).not.toThrow();
-      expect(out.get('child').get('name')).toBe('child-name');
     });
 
     it('should deserilize a nested serialized parse file', function(){
@@ -203,7 +215,7 @@ describe('tm.parse', function() {
       expect(out.get('child').url()).toBe('http://files.parsetfss.com/parse-image');
     });
 
-    it('should preserve a nested geopoint on deserialization', function(){
+    it('should deserilize a nested serialized parse geopoint', function(){
         var out = new Model({
           className: 'Model',
           name:'name',
