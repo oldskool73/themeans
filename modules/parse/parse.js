@@ -36,7 +36,8 @@ angular.module('tm.parse', [])
       );
 
       // Switch the parse._ajax method to use angular $http
-      parse._ajax = function(method, url, data, success, error) {
+      parse._ajax = function (method, url, data, success, error) {
+
         var options = {
           success: success,
           error: error
@@ -47,45 +48,42 @@ angular.module('tm.parse', [])
         }
 
         var promise = new parse.Promise();
+        var attempts = 0;
 
-        function dispatch(attempts){
+        function dispatch() {
           $http({
             method: method,
             url: url,
-            headers: {
-              'Content-Type': 'text/plain'
-            },
+            headers: { 'Content-Type': 'text/plain' },
             data: data
-          }).then(function(xhr){
-            // The parse implementation uses this internally
-            // so we need to provide it
-            xhr.responseText = angular.toJson(xhr.data);
+          }).then(processResponse, processResponse);
+        }
 
-            if (xhr.status >= 200 && xhr.status < 300) {
-              if (xhr.data) {
-                promise.resolve(xhr.data, xhr.status, xhr);
-              }
-            } else if (xhr.status >= 500) { // Retry on 5XX
-              if (++attempts < 5) {
-                // Exponentially-growing delay
-                var delay = Math.round(
-                  Math.random() * 125 * Math.pow(2, attempts)
-                );
-                setTimeout(function(){
-                  dispatch(attempts);
-                }, delay);
-              } else {
-                // After 5 retries, fail
-                promise.reject(xhr);
-              }
+        function processResponse(xhr){
+          xhr.responseText = angular.toJson(xhr.data);
+          
+          if (xhr.status >= 200 && xhr.status < 300) {
+            if (xhr.data) {
+              promise.resolve(xhr.data, xhr.status, xhr);
+            }
+          } else if (xhr.status >= 500) {
+            // Retry on 5XX
+            if (++attempts < 5) {
+              // Exponentially-growing delay
+              var delay = Math.round(Math.random() * 125 * Math.pow(2, attempts));
+              setTimeout(function () {
+                dispatch(attempts);
+              }, delay);
             } else {
+              // After 5 retries, fail
               promise.reject(xhr);
             }
-          });
+          } else {
+            promise.reject(xhr);
+          }
         }
-        
-        dispatch(0);
 
+        dispatch();
         return promise._thenRunCallbacks(options);
       };
 
