@@ -39,17 +39,17 @@ angular.module('tm.parseAccounts', [
           _self.getUserRoles(user).then(function (roles) {
             // Fail safe, user accounts somehow has lost its role relations.
             if (!roles) {
-              $log.warn('Cannot find cached User roles.');
+              $log.error('Cannot find cached User roles.');
               deferred.reject({ message: 'Please try again, or contact system admin' });
               return;
             }
             deferred.resolve();
           }, function (err) {
-            $log.error('Parse Error: ' + err.code + err.message);
+            $log.error('Parse Error: ' + err.code + ' ' + err.message);
             deferred.reject({ message: 'Please try again in a few moments.' });
           });
         }, function (err) {
-          $log.warn('Parse User account doesn\'t exist', err);
+          $log.error('Parse User account doesn\'t exist, Error: ' + err);
           deferred.reject({ message: 'Your account doesn\'t exist. If this is unexpected please contact support.' });
         });
         return deferred.promise;
@@ -73,7 +73,7 @@ angular.module('tm.parseAccounts', [
             deferred.resolve(roles);
           },
           error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + err.message);
+            $log.error('Parse Error: ' + err.code + ' ' + err.message);
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
@@ -93,7 +93,7 @@ angular.module('tm.parseAccounts', [
             deferred.resolve(response);
           },
           error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + err.message);
+            $log.error('Parse Error: ' + err.code + ' ' + err.message);
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
@@ -119,7 +119,7 @@ angular.module('tm.parseAccounts', [
             deferred.resolve(ngSettings);
           },
           error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + err.message);
+            $log.error('Parse Error: ' + err.code + ' ' + err.message);
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
@@ -143,7 +143,7 @@ angular.module('tm.parseAccounts', [
             deferred.resolve(settings);
           },
           error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + err.message);
+            $log.error('Parse Error: ' + err.code + ' ' + err.message);
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
