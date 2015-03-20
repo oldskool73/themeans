@@ -167,7 +167,7 @@ angular.module('tm.parse-messages', [
             deferred.resolve(ngThreads);
           },
           error: function (err){
-            $log.error('Parse Query Error: ' + err.code + err.message);
+            $log.error('Parse Query Error: '+err.code+' '+err.message);
             deferred.reject(err);
           }
         });
@@ -255,7 +255,7 @@ angular.module('tm.parse-messages', [
               deferred.resolve(ngMessages);
             },
             error: function (err){
-              $log.error('Parse Query Error: ' + err.code + err.message);
+              $log.error('Parse Query Error: '+err.code+' '+err.message);
               deferred.reject(err);
             }
           });
@@ -287,7 +287,7 @@ angular.module('tm.parse-messages', [
             deferred.resolve(response);
           },
           error: function (err){
-            $log.error('Parse Query Error: ' + err.code + err.message);
+            $log.error('Parse Query Error: '+err.code+' '+err.message);
             deferred.reject(err);
           }
         });
@@ -318,7 +318,7 @@ angular.module('tm.parse-messages', [
         }, fail);
 
         function fail(err){
-          $log.error('Parse Error: ' + err.code + err.message);
+          $log.error('Parse Error: '+err.code+' '+err.message);
           deferred.reject(err);
         }
 
@@ -360,7 +360,7 @@ angular.module('tm.parse-messages', [
           }
         }, fail);
         function fail(err){
-          $log.error('Parse Error: ' + err.code + err.message);
+          $log.error('Parse Error: '+err.code+' '+err.message);
           deferred.reject(err);
         }
 
