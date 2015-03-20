@@ -62,7 +62,8 @@ angular.module('tm.parse-messages', [
     'MessageThread',
     'Message',
     'md5',
-    function ( Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5 ) {
+    '$log',
+    function ( Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, $log ) {
 
       // this.setMessagesStatusCount = function (){
       //   var threadCounts      = [],
@@ -166,6 +167,7 @@ angular.module('tm.parse-messages', [
             deferred.resolve(ngThreads);
           },
           error: function (err){
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject(err);
           }
         });
@@ -253,6 +255,7 @@ angular.module('tm.parse-messages', [
               deferred.resolve(ngMessages);
             },
             error: function (err){
+              $log.error('Parse Query Error: ' + err.code + err.message);
               deferred.reject(err);
             }
           });
@@ -284,6 +287,7 @@ angular.module('tm.parse-messages', [
             deferred.resolve(response);
           },
           error: function (err){
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject(err);
           }
         });
@@ -314,6 +318,7 @@ angular.module('tm.parse-messages', [
         }, fail);
 
         function fail(err){
+          $log.error('Parse Error: ' + err.code + err.message);
           deferred.reject(err);
         }
 
@@ -355,7 +360,7 @@ angular.module('tm.parse-messages', [
           }
         }, fail);
         function fail(err){
-          // console.log('Messages Service ERROR: ', err.code, err.message);
+          $log.error('Parse Error: ' + err.code + err.message);
           deferred.reject(err);
         }
 
@@ -450,7 +455,7 @@ angular.module('tm.parse-messages', [
 
         }, fail);
 
-        function fail(response, err){
+        function fail(err){
           deferred.reject(err);
         }
 

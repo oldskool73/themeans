@@ -75,7 +75,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(ngProfile);
           },
           error: function(response, err){
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -107,7 +107,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(profile);
           },
           error: function(response, err){
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Save Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -143,7 +143,7 @@ angular.module('tm.parseProfiles',[
         .then(function () {
           deferred.resolve();
         }, function (err) {
-          $log.info('Parse Error: ', err);
+          $log.error('Parse Save Error: ' + err.code + err.message);
           deferred.reject({
             message: 'Please try again in a few moments, or contact support.'
           });
@@ -189,7 +189,7 @@ angular.module('tm.parseProfiles',[
               parseObject.destroy({
                 success: function () {},
                 error: function (response, err) {
-                  $log.info('Parse Error: ', err);
+                  $log.error('Parse Destroy Error: ' + err.code + err.message);
                   deferred.reject({
                     message: 'Please try again in a few moments, or contact support.'
                   });
@@ -198,7 +198,7 @@ angular.module('tm.parseProfiles',[
             }
           },
           error: function (response, err) {
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -223,7 +223,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(true);
           },
           error: function (err) {
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -274,7 +274,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(parseConnection.getNgModel());
           },
           error: function (err) {
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -309,7 +309,7 @@ angular.module('tm.parseProfiles',[
         fail);
 
         function fail(err){
-          $log.info('Parse Error: ', err);
+          $log.error('Parse Error: ' + err.code + err.message);
           deferred.reject({
             message: 'Please try again in a few moments, or contact support.'
           });
@@ -349,7 +349,7 @@ angular.module('tm.parseProfiles',[
             }
           },
           error: function (err) {
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -401,7 +401,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(connections);
           },
           error: function (err) {
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Something went wrong, please contact system admin.'
             });
@@ -470,13 +470,13 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(profiles);
 
           }, function (err){
-            $log.info('Parse Error: ', err);
+            $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
           });
         }, function (err){
-          $log.info('Parse Error: ', err);
+          $log.error('Parse Query Error: ' + err.code + err.message);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
