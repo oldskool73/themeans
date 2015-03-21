@@ -245,7 +245,10 @@ angular.module('tm.parseProfiles', [
       this.checkIfConnectionExists = function (targetProfileId) {
         var deferred = $q.defer();
         if (!Parse.User.current()) {
-          return deferred.resolve({ noCurrentUser: true });
+          $timeout(function () {
+            deferred.resolve({ noCurrentUser: true });
+          }, 0);
+          return deferred.promise;
         }
         var query = new Parse.Query(Connection), profileIds = [
             targetProfileId,
