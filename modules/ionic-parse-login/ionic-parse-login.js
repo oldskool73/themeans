@@ -210,8 +210,8 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
 
         $scope.resetFormOnSubmit = function(){
           $ionicLoading.show({
-            template: 'Loading...',
-            duration: 10000
+            // template: 'Loading...',
+            // duration: 10000
           });
           Parse.User.requestPasswordReset($scope.user.email, {
             success: function() {
@@ -264,8 +264,8 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
         };
         $scope.createFormOnSubmit = function(){
           $ionicLoading.show({
-            template: 'Loading...',
-            duration: 10000
+            // template: 'Loading...',
+            // duration: 10000
           });
           var user = new Parse.User();
           var keys = Object.keys($scope.user);
@@ -276,6 +276,7 @@ angular.module('tm.ionic-parse-login',['tm.parse'])
           }
           user.signUp(null, {
             success: function(user) {
+              $ionicLoading.hide();
               // TODO: Test that this is working without fail, I have a feeling its not 100%.
               $scope.createAccountModal.remove();
               // Hooray! Let them use the app now.
