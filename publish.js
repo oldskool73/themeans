@@ -54,6 +54,13 @@ module.exports = function() {
           "angular-material": "*"
         };
         break;
+      case 'md-parse-places-autosuggest':
+        memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "angular-material": "*",
+          "angular-google-maps": "~2.0.17"
+        };
+        break;
       case 'parse-messages':
         memo[name].dependencies = {
           "angular-md5": "~0.1.7"
