@@ -1,0 +1,10 @@
+{
+  "name": "themeans-md-parse-places-autosuggest",
+  "version": "0.0.2",
+  "main": ["./md-parse-places-autosuggest.js"],
+  "dependencies": {
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+    "angular-material": "*",
+    "angular-google-maps": "~2.0.17"
+  }
+}
