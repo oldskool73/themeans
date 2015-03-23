@@ -120,14 +120,14 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             '</div> '+
             '<div  layout="row" layout-align="space-around center"> '+
               '<md-button flex '+
+                // Nice simple way to disable a form, also prevents enter key from submit.
+                'ng-disabled="!createForm.$valid" '+
                 'class="{{defaults.submitButtonClass}}"> '+
                 '{{defaults.submitButtonText}} '+
               '</md-button> '+
               '<span flex="5"></span>'+
               '<md-button flex '+
                 'class="{{defaults.backButtonClass}}" '+
-                // Nice simple way to disable a form, also prevents enter key from submit.
-                'ng-disabled="!createForm.$valid" '+
                 'ng-click="switchFormOnClick(\'login\')"> '+
                 '{{defaults.backButtonText}} '+
               '</md-button> '+
