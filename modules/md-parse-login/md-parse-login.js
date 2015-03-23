@@ -93,7 +93,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
           scope.defaults.createMdContentAttributes+
           ' class="{{defaults.mdContentClass}} create-account" '+
           'ng-switch-when="create"> '+
-          '<form ng-submit="createFormOnSubmit($event)"> '+
+          '<form name="createForm" ng-submit="createFormOnSubmit($event)"> '+
             '<div '+scope.defaults.createInputsAttributes+' >'+
               '<span flex layout-fill ng-include="createFormIncludeUrl"></span>'+
               '<md-input-container layout-fill> '+
@@ -126,6 +126,8 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               '<span flex="5"></span>'+
               '<md-button flex '+
                 'class="{{defaults.backButtonClass}}" '+
+                // Nice simple way to disable a form, also prevents enter key from submit.
+                'ng-disabled="!createForm.$valid" '+
                 'ng-click="switchFormOnClick(\'login\')"> '+
                 '{{defaults.backButtonText}} '+
               '</md-button> '+
