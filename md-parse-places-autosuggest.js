@@ -82,7 +82,10 @@ angular.module('tm.md-parse-places-autosuggest', [
           $scope.$watch('selectedItem', function (newVal, oldVal) {
             if (newVal) {
               if (oldVal && newVal.description === oldVal.description) {
-                return;
+                // TODO amay0048 / xaun : why does this need a delay of 100ms?
+                return $timeout(function () {
+                  $scope.validation.deferred.resolve([]);
+                }, 100);
               }
               $scope.searchText = angular.copy($scope.validation.loadingText);
               uiGmapGoogleMapApi.then(function (maps) {
@@ -96,6 +99,8 @@ angular.module('tm.md-parse-places-autosuggest', [
                     });
                     delete newVal.html_attributions;
                   }
+                  // Parse doesnt accept nested object keys with '$$'.
+                  delete newVal.$$hashKey;
                   $timeout(function () {
                     $scope.selectedItem = $scope.ngModel = newVal;
                     $scope.validation.deferred.resolve([]);
