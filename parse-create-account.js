@@ -32,13 +32,16 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
     };
     require.define('/packages/parse-create-account/parse-create-account.js', function (module, exports, __dirname, __filename) {
         'use strict';
-        function createAccount(Parse, beforeProfileSave, beforeSettingsSave) {
+        function CreateAccount(Parse, beforeProfileSave, beforeSettingsSave) {
             this.beforeUserSave = function (user) {
-                var deferred = new Parse.Promise();
+                var deferred = new Parse.Promise(), userACL = new Parse.ACL();
                 createProfile(user).then(function (profile) {
                     user.set('profile', profile);
                     createSettings(user).then(function (settings) {
+                        userACL.setPublicReadAccess(false);
+                        userACL.setPublicWriteAccess(false);
                         user.set('settings', settings);
+                        user.setACL(userACL);
                         deferred.resolve(user);
                     }, fail);
                 }, fail);
@@ -50,7 +53,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
             };
             this.afterUserSave = function (user) {
                 var deferred = new Parse.Promise();
-                setProfileUserPointer(user).then(function (profile) {
+                setUserPointersToProfile(user).then(function (profile) {
                     setSettingsUserPointer(user).then(function (settings) {
                         deferred.resolve(profile, settings);
                     }, deferred.reject);
@@ -75,7 +78,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
             }
             function createSettings(user) {
                 var Settings = Parse.Object.extend('Settings'), settings = new Settings(), deferred = new Parse.Promise();
-                beforeSettingsSave(settings).then(function (settings) {
+                beforeSettingsSave(settings, user).then(function (settings) {
                     settings.save({
                         success: function (response) {
                             deferred.resolve(response);
@@ -89,22 +92,35 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 });
                 return deferred;
             }
-            function setProfileUserPointer(parseUser) {
-                var deferred = new Parse.Promise(), parseProfile = parseUser.get('profile');
-                parseProfile.set('user', parseUser);
-                parseProfile.save(null, {
-                    success: function (response) {
-                        deferred.resolve(response);
-                    },
-                    error: function (response, error) {
-                        deferred.reject(error);
-                    }
+            function setUserPointersToProfile(parseUser) {
+                Parse.Cloud.useMasterKey();
+                var deferred = new Parse.Promise(), parseProfileRef = parseUser.get('profile'), profileACL;
+                parseProfileRef.fetch().then(function (parseProfile) {
+                    profileACL = parseProfile.get('ACL');
+                    profileACL.setReadAccess(parseUser, true);
+                    profileACL.setWriteAccess(parseUser, true);
+                    parseProfile.set('user', parseUser);
+                    parseProfile.setACL(profileACL);
+                    parseProfile.save(null, {
+                        success: function (response) {
+                            deferred.resolve(response);
+                        },
+                        error: function (response, error) {
+                            deferred.reject(error);
+                        }
+                    });
+                }, function (error) {
+                    deferred.reject(error);
                 });
                 return deferred;
             }
             function setSettingsUserPointer(parseUser) {
-                var deferred = new Parse.Promise(), parseSettings = parseUser.get('settings');
+                Parse.Cloud.useMasterKey();
+                var deferred = new Parse.Promise(), parseSettings = parseUser.get('settings'), settingsACL = new Parse.ACL();
+                settingsACL.setReadAccess(parseUser, true);
+                settingsACL.setWriteAccess(parseUser, true);
                 parseSettings.set('user', parseUser);
+                parseSettings.setACL(settingsACL);
                 parseSettings.save(null, {
                     success: function (response) {
                         deferred.resolve(response);
@@ -118,7 +134,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
             return this;
         }
         module.exports = function (Parse, beforeProfileSave, beforeSettingsSave) {
-            return new createAccount(Parse, beforeProfileSave, beforeSettingsSave);
+            return new CreateAccount(Parse, beforeProfileSave, beforeSettingsSave);
         };
     });
     global.exports = require('/packages/parse-create-account/parse-create-account.js');
