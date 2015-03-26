@@ -7,129 +7,156 @@
    @beforeSettingsSave (required): a function that returns a promise
 **/
 
-function createAccount(Parse, beforeProfileSave, beforeSettingsSave){
+function CreateAccount(Parse, beforeProfileSave, beforeSettingsSave) {
 
-  this.beforeUserSave = function(user){
-    var deferred = new Parse.Promise();
+    this.beforeUserSave = function (user) {
+        var deferred = new Parse.Promise(),
+            userACL  = new Parse.ACL();
 
-    createProfile(user)
-    .then(function(profile) {
-      user.set('profile', profile);
+        createProfile(user)
+        .then(function (profile) {
 
-      createSettings(user)
-      .then(function(settings) {
-        user.set('settings', settings);
-        
-        deferred.resolve(user);
+            user.set('profile', profile);
 
-      }, fail);
+            createSettings(user)
+            .then(function (settings) {
 
-    }, fail);
+                userACL.setPublicReadAccess(false);
+                userACL.setPublicWriteAccess(false);
 
-    function fail(err){
-      console.log(err);
-      deferred.reject(err);
+                user.set('settings', settings);
+                user.setACL(userACL);
+
+                deferred.resolve(user);
+
+            },
+            fail);
+        },
+        fail);
+        function fail(err) {
+            console.log(err);
+            deferred.reject(err);
+        }
+        return deferred;
+    };
+    this.afterUserSave = function (user) {
+        var deferred = new Parse.Promise();
+
+        setUserPointersToProfile(user)
+        .then(function (profile) {
+
+            setSettingsUserPointer(user)
+            .then(function (settings) {
+
+                deferred.resolve(profile, settings);
+            },
+            deferred.reject);
+        },
+        deferred.reject);
+
+        return deferred;
+    };
+    function createProfile(user) {
+        var Profile     = Parse.Object.extend('Profile'),
+            profile     = new Profile(),
+            deferred    = new Parse.Promise();
+
+        beforeProfileSave(profile, user)
+        .then(function (profile) {
+
+            profile.save(profile, {
+                success: function (response) {
+                    deferred.resolve(response);
+                },
+                error: function (response, error) {
+                    deferred.reject(error);
+                }
+            });
+        }, function (err) {
+            deferred.reject(err);
+        });
+        return deferred;
     }
+    function createSettings(user) {
+        var Settings = Parse.Object.extend('Settings'),
+            settings = new Settings(),
+            deferred = new Parse.Promise();
 
-    return deferred;
-  };
+        beforeSettingsSave(settings, user)
+        .then(function (settings) {
 
-  this.afterUserSave = function(user){
-    var deferred = new Parse.Promise();
+            settings.save({
+                success: function (response) {
+                    deferred.resolve(response);
+                },
+                error: function (response, err) {
+                    deferred.reject(err);
+                }
+            });
+        }, function (err) {
+            deferred.reject(err);
+        });
+        return deferred;
+    }
+    function setUserPointersToProfile(parseUser) {
+        // REQUIRED: MasterKey is needed when settings a User as the ACL of another
+        //////////// Parse object when _User class is locked down to public create only.
+        Parse.Cloud.useMasterKey();
+        var deferred        = new Parse.Promise(),
+            parseProfileRef = parseUser.get('profile'),
+            profileACL;
 
-    setProfileUserPointer(user).then(function(profile){
-      setSettingsUserPointer(user).then(function(settings){
-        deferred.resolve(profile,settings);
-      },deferred.reject);
-    },deferred.reject);
+        parseProfileRef.fetch()
+        .then(function (parseProfile){
 
-    return deferred;
-  };
+            profileACL = parseProfile.get('ACL');
 
+            profileACL.setReadAccess(parseUser, true);
+            profileACL.setWriteAccess(parseUser, true);
 
-  function createProfile(user) {
-    var Profile   = Parse.Object.extend('Profile'),
-        profile   = new Profile(),
-        deferred  = new Parse.Promise();
+            parseProfile.set('user', parseUser);
+            parseProfile.setACL(profileACL);
 
-    beforeProfileSave(profile, user)
-    .then(function(profile){
-      profile.save(profile, {
-        success: function(response) {
-          // The object was saved successfully.
-          deferred.resolve(response);
-        },
-        error: function(response, error) {
-          deferred.reject(error);
-        }
-      });
-    },function(err){
-      deferred.reject(err);
-    });
+            parseProfile.save(null, {
+                success: function (response) {
+                    deferred.resolve(response);
+                },
+                error: function (response, error) {
+                    deferred.reject(error);
+                }
+            });
+        },function (error) {
+            deferred.reject(error);
+        });
 
-    return deferred;
-  }
+        return deferred;
+    }
+    function setSettingsUserPointer(parseUser) {
+        // REQUIRED: MasterKey is needed when settings a User as the ACL of another
+        //////////// Parse object when _User class is locked down to public create only.
+        Parse.Cloud.useMasterKey();
+        var deferred      = new Parse.Promise(),
+            parseSettings = parseUser.get('settings'),
+            settingsACL   = new Parse.ACL();
 
-  function createSettings(user) {
+        settingsACL.setReadAccess(parseUser, true);
+        settingsACL.setWriteAccess(parseUser, true);
 
-    var Settings = Parse.Object.extend('Settings'),
-        settings = new Settings(),
-        deferred = new Parse.Promise();
+        parseSettings.set('user', parseUser);
+        parseSettings.setACL(settingsACL);
 
-    beforeSettingsSave(settings)
-    .then(function (settings){
-      settings.save({
-        success: function (response) {
-          deferred.resolve(response);
-        },
-        error: function (response, err) {
-          deferred.reject(err);
-        }
-      });
-    },function(err){
-      deferred.reject(err);
-    });
-
-    return deferred;
-  }
-
-  function setProfileUserPointer(parseUser) {
-    var deferred = new Parse.Promise(),
-      parseProfile = parseUser.get('profile');
-
-    parseProfile.set('user', parseUser);
-    parseProfile.save(null, {
-      success: function (response) {
-        deferred.resolve(response);
-      },
-      error: function (response, error) {
-        deferred.reject(error);
-      }
-    });
-
-    return deferred;
-  }
-
-  function setSettingsUserPointer(parseUser) {
-    var deferred = new Parse.Promise(),
-      parseSettings = parseUser.get('settings');
-
-    parseSettings.set('user', parseUser);
-    parseSettings.save(null, {
-      success: function (response) {
-        deferred.resolve(response);
-      },
-      error: function (response, error) {
-        deferred.reject(error);
-      }
-    });
-
-    return deferred;
-  }
-
-  return this;
+        parseSettings.save(null, {
+            success: function (response) {
+                deferred.resolve(response);
+            },
+            error: function (response, error) {
+                deferred.reject(error);
+            }
+        });
+        return deferred;
+    }
+    return this;
 }
-
-module.exports = function(Parse, beforeProfileSave, beforeSettingsSave){
-  return new createAccount(Parse, beforeProfileSave, beforeSettingsSave);
+module.exports = function (Parse, beforeProfileSave, beforeSettingsSave) {
+    return new CreateAccount(Parse, beforeProfileSave, beforeSettingsSave);
 };
