@@ -75,7 +75,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(ngProfile);
           },
           error: function(response, err){
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -90,6 +90,55 @@ angular.module('tm.parseProfiles',[
 
       this.getProfileByIdForDisplay = function(profileId){
         return getProfileById(profileId, false);
+      };
+
+      function getProfiles(excludingSelf) {
+        var deferred      = $q.defer(),
+            profilesQuery = new Parse.Query(Profile),
+            cacheKey      = options.profilesCacheKey,
+            profiles      = [],
+            cache;
+
+        $timeout(function () {
+          cache = tmLocalStorage.getObject(cacheKey, []);
+          deferred.notify(cache);
+        },0);
+
+        profilesQuery.find({
+          success: function (response) {
+            if (excludingSelf) {
+              for (var i = 0; i < response.length; i++) {
+
+                if (response[i].get('user').id === Parse.User.current().id) {
+                  continue;
+                }
+                profiles.push(response[i]);
+              }
+            }
+            else {
+              profiles = response;
+            }
+
+            tmLocalStorage.setObject(cacheKey, Parse.serialiseArrayForDisplay(profiles));
+            profiles = tmLocalStorage.getObject(cacheKey, []);
+            deferred.resolve(profiles);
+          },
+          error: function (err) {
+            $log.error('Parse Error: ' + err.message, err.code);
+            deferred.reject({
+              message: 'Please try again in a few moments, or contact support.'
+            });
+          }
+        });
+        return deferred.promise;
+      }
+
+      this.getProfiles = function () {
+        return getProfiles();
+      };
+
+      this.getNeighbouringProfiles = function (){
+        return getProfiles(true);
       };
 
       this.updateProfile = function(ngProfile){
@@ -107,7 +156,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(profile);
           },
           error: function(response, err){
-            $log.error('Parse Save Error: '+err.code+' '+err.message);
+            $log.error('Parse Save Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -143,7 +192,7 @@ angular.module('tm.parseProfiles',[
         .then(function () {
           deferred.resolve();
         }, function (err) {
-          $log.error('Parse Save Error: '+err.code+' '+err.message);
+          $log.error('Parse Save Error: ' + err.message, err.code);
           deferred.reject({
             message: 'Please try again in a few moments, or contact support.'
           });
@@ -189,7 +238,7 @@ angular.module('tm.parseProfiles',[
               parseObject.destroy({
                 success: function () {},
                 error: function (response, err) {
-                  $log.error('Parse Destroy Error: '+err.code+' '+err.message);
+                  $log.error('Parse Destroy Error: ' + err.message, err.code);
                   deferred.reject({
                     message: 'Please try again in a few moments, or contact support.'
                   });
@@ -198,7 +247,7 @@ angular.module('tm.parseProfiles',[
             }
           },
           error: function (response, err) {
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -223,7 +272,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(true);
           },
           error: function (err) {
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -274,7 +323,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(parseConnection.getNgModel());
           },
           error: function (err) {
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -309,7 +358,7 @@ angular.module('tm.parseProfiles',[
         fail);
 
         function fail(err){
-          $log.error('Parse Error: '+err.code+' '+err.message);
+          $log.error('Parse Error: ' + err.message, err.code);
           deferred.reject({
             message: 'Please try again in a few moments, or contact support.'
           });
@@ -352,7 +401,7 @@ angular.module('tm.parseProfiles',[
             }
           },
           error: function (err) {
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Please try again in a few moments, or contact support.'
             });
@@ -404,7 +453,7 @@ angular.module('tm.parseProfiles',[
             deferred.resolve(connections);
           },
           error: function (err) {
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject({
               message: 'Something went wrong, please contact system admin.'
             });
@@ -421,71 +470,6 @@ angular.module('tm.parseProfiles',[
         return getConnections(true);
       };
 
-      // Query for all other profiles with the Role of role argument string.
-      this.getNeighbouringRoleSpecificProfiles = function(roleKey) {
-        var deferred   = $q.defer(),
-            user       = Parse.User.current() || {},
-            rolesQuery = new Parse.Query(Parse.Role),
-            cacheKey   = options.profilesCacheKey,
-            cache;
-
-        $timeout(function (){
-          cache = tmLocalStorage.getObject(cacheKey, []);
-          deferred.notify(cache);
-        }, 0);
-
-        rolesQuery.equalTo('name', roleKey);
-
-        rolesQuery
-        .find()
-        .then(function (response){
-          if (response.length > 1)
-          {
-            $log.error('Roles Error: There are duplicate roles in the database.');
-            deferred.reject({
-              message: 'Something went wrong, please contact system admin.'
-            });
-            return;
-          }
-
-          var relation      = response[0].relation('users'),
-              relationQuery = relation.query();
-
-          if (user.id) {
-            relationQuery.notEqualTo(roleKey, user);
-          }
-
-          relationQuery.include('profile');
-
-          relationQuery
-          .find()
-          .then(function (response){
-            var profiles = [];
-            for (var i = 0; i < response.length; i++)
-            {
-              if (!response[i].get('profile')) {
-                continue;
-              }
-              profiles.push(response[i].get('profile'));
-            }
-            tmLocalStorage.setObject(cacheKey, profiles);
-            profiles = tmLocalStorage.getObject(cacheKey, []);
-            deferred.resolve(profiles);
-
-          }, function (err){
-            $log.error('Parse Query Error: '+err.code+' '+err.message);
-            deferred.reject({
-              message: 'Please try again in a few moments, or contact support.'
-            });
-          });
-        }, function (err){
-          $log.error('Parse Query Error: '+err.code+' '+err.message);
-            deferred.reject({
-              message: 'Please try again in a few moments, or contact support.'
-            });
-        });
-        return deferred.promise;
-      };
 
       return this;
     }];
