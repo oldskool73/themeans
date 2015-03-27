@@ -46,7 +46,7 @@ angular.module('tm.md-parse-places-autosuggest', [
           $scope.lookupItem = {};
           $scope.validation = {
             loadingText: 'Loading address details...',
-            deferred: null
+            deferred: $q.defer()
           };
           function placesSearch(searchText) {
             var deferred = $q.defer();
@@ -82,7 +82,6 @@ angular.module('tm.md-parse-places-autosuggest', [
           $scope.$watch('selectedItem', function (newVal, oldVal) {
             if (newVal) {
               if (oldVal && newVal.description === oldVal.description) {
-                // TODO amay0048 / xaun : why does this need a delay of 100ms?
                 return $timeout(function () {
                   $scope.validation.deferred.resolve([]);
                 }, 100);
