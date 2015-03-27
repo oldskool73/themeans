@@ -45,61 +45,8 @@ angular.module('tm.parse-messages', [
     'Message',
     'md5',
     '$log',
-    function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, $log) {
-      // this.setMessagesStatusCount = function (){
-      //   var threadCounts      = [],
-      //       totalCount        = 0;
-      //   getThreads(true, false)
-      //   .then(function (threads) {
-      //     for (var i = 0; i < threads.length; i++) {
-      //       var parseThread = new MessageThread(threads[i], {
-      //             ngModel: true,
-      //             resetOpsQueue: false
-      //           }),
-      //           relation    = parseThread.relation('messages'),
-      //           query       = relation.query();
-      //       query.equalTo('status', 1);
-      //       query
-      //       .count()
-      //       .then((function (i, parseThread) {
-      //         return function (count) {
-      //           // Pushes the count of unread messages for this thread.
-      //           threadCounts.push(count);
-      //           // Sets the count for this thread to cache.
-      //           tmLocalStorage.set('thread:unread:count:'+parseThread.id, count);
-      //           if (threadCounts.length === parseThread.length) {
-      //             for (var j = 0; j < threadCounts.length; j++) {
-      //               // sums up all the threadCounts and caches the total.
-      //               totalCount += threadCounts[j];
-      //             }
-      //             tmLocalStorage.set('unread:count:'+Parse.User.current().id, totalCount);
-      //           }
-      //         };
-      //       })(i, parseThread), function (err) {
-      //         console.log('ERROR: ', err.code, err.message);
-      //       });
-      //     }
-      //   }, function (err) {
-      //     console.log('ERROR: ', err.code, err.message);
-      //   });
-      // };
-      // this.clearUnreadFromThread = function(thread){
-      //   var parseThread = new MessageThread(thread),
-      //       relation    = parseThread.relation('messages'),
-      //       query       = relation.query();
-      //   query.equalTo('status', 1);
-      //   query
-      //   .find()
-      //   .then(function (messages) {
-      //     for (var i = 0; i < messages.length; i++) {
-      //       messages[i].set('status', 0);
-      //       messages[i].save();
-      //     }
-      //     _self.setMessagesStatusCount();
-      //   }, function (err) {
-      //     console.log('ERR: ', err.code, err.message);
-      //   });
-      // };
+    'Profile',
+    function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, $log, Profile) {
       function getThreads(edit) {
         //@params(edit, getCachedUnreadCount)
         var deferred = $q.defer(), query = new Parse.Query(MessageThread), cacheKey = options.messageThreadsCacheKey, ngThreads, cachedThreads;
@@ -110,23 +57,16 @@ angular.module('tm.parse-messages', [
           cachedThreads = tmLocalStorage.getObject(cacheKey, []);
           deferred.notify(cachedThreads);
         }, 0);
-        query.include('users');
-        query.include('users.profile');
+        query.include('profiles');
         query.find({
           success: function (parseThreads) {
             ngThreads = getThreadRecipients(parseThreads, edit);
-            // if (getCachedUnreadCount){
-            //   for (var i = 0; i < ngThreads.length; i++) {
-            //     cachedCount = tmLocalStorage.get(':thread:unread:count:'+ngThreads[i].objectId, 0);
-            //     ngThreads[i].unreadCount = cachedCount;
-            //   }
-            // }
             tmLocalStorage.setObject(cacheKey, ngThreads);
             ngThreads = tmLocalStorage.getObject(cacheKey, []);
             deferred.resolve(ngThreads);
           },
           error: function (err) {
-            $log.error('Parse Query Error: ' + err.code + ' ' + err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject(err);
           }
         });
@@ -140,7 +80,7 @@ angular.module('tm.parse-messages', [
       };
       // Adds a recipients key to each ngThread and excludes the currentUser from the array.
       function getThreadRecipients(parseThreads, edit) {
-        var currentUser = Parse.User.current(), ngThreads = [], members, ngThread;
+        var currentUserProfile = Parse.User.current().get('profile'), ngThreads = [], members, ngThread;
         for (var i = 0; i < parseThreads.length; i++) {
           if (edit) {
             ngThread = parseThreads[i].getNgFormModel();
@@ -148,9 +88,9 @@ angular.module('tm.parse-messages', [
             ngThread = parseThreads[i].getNgModel();
           }
           ngThread.recipients = [];
-          members = ngThread.users;
+          members = ngThread.profiles;
           for (var j = 0; j < members.length; j++) {
-            if (members[j].objectId !== currentUser.id) {
+            if (members[j].objectId !== currentUserProfile.id) {
               ngThread.recipients.push(members[j]);
             }
           }
@@ -172,7 +112,6 @@ angular.module('tm.parse-messages', [
           query = relation.query();
           query.ascending('createdAt');
           query.include('sender');
-          query.include('sender.profile');
           query.include('receivers');
           query.find({
             success: function (parseMessages) {
@@ -189,7 +128,7 @@ angular.module('tm.parse-messages', [
               deferred.resolve(ngMessages);
             },
             error: function (err) {
-              $log.error('Parse Query Error: ' + err.code + ' ' + err.message);
+              $log.error('Parse Query Error: ' + err.message, err.code);
               deferred.reject(err);
             }
           });
@@ -206,14 +145,13 @@ angular.module('tm.parse-messages', [
       };
       function getThreadById(threadId) {
         var deferred = $q.defer(), query = new Parse.Query(MessageThread);
-        query.include('users');
-        query.include('users.profile');
+        query.include('profiles');
         query.get(threadId, {
           success: function (response) {
             deferred.resolve(response);
           },
           error: function (err) {
-            $log.error('Parse Query Error: ' + err.code + ' ' + err.message);
+            $log.error('Parse Query Error: ' + err.message, err.code);
             deferred.reject(err);
           }
         });
@@ -223,7 +161,7 @@ angular.module('tm.parse-messages', [
       this.respond = function (threadId, message) {
         var deferred = $q.defer();
         getThreadById(threadId).then(function (thread) {
-          message.sender = Parse.User.current();
+          message.sender = Parse.User.current().get('profile');
           message.receivers = getThreadRecipients([thread], true)[0].recipients;
           addMessageToThread(thread, message).then(function () {
             //@params(message)
@@ -233,26 +171,35 @@ angular.module('tm.parse-messages', [
           }, fail);
         }, fail);
         function fail(err) {
-          $log.error('Parse Error: ' + err.code + ' ' + err.message);
+          $log.error('Parse Error: ' + err.message, err.code);
           deferred.reject(err);
         }
         return deferred.promise;
       };
       // send a message to a profile
       this.send = function (message) {
-        var deferred = $q.defer(), threadUsers = [
-            message.sender,
-            message.receivers
-          ];
-        // flatten the array.
-        threadUsers = threadUsers.concat.apply([], threadUsers);
-        checkForExistingThread(threadUsers).then(function (thread) {
+        var deferred = $q.defer(), tmpReceivers = [], userIds = [];
+        // convert ngProfile receivers to parse pointer objects & get user ids for thread ACL.
+        for (var i = 0; i < message.receivers.length; i++) {
+          // create parse pointer object from receivers ngProfile
+          var receiver = new Profile();
+          receiver.id = message.receivers[i].objectId;
+          // get the user id for thread acl
+          userIds.push(message.receivers[i].user.objectId);
+          tmpReceivers.push(receiver);
+        }
+        message.receivers = tmpReceivers;
+        // push the sender's (currentUser) user id into the userId array for acls.
+        userIds.push(Parse.User.current().id);
+        // concat profiles into an array.
+        var threadProfiles = message.receivers.concat([message.sender]);
+        checkForExistingThread(threadProfiles).then(function (thread) {
           if (thread) {
             addMessageToThread(thread[0], message).then(function () {
               deferred.resolve();
             }, fail);
           } else {
-            createThread(threadUsers).then(function (thread) {
+            createThread(threadProfiles, userIds).then(function (thread) {
               addMessageToThread(thread, message).then(function () {
                 deferred.resolve();
               }, fail);
@@ -260,18 +207,17 @@ angular.module('tm.parse-messages', [
           }
         }, fail);
         function fail(err) {
-          $log.error('Parse Error: ' + err.code + ' ' + err.message);
+          $log.error('Parse Error: ' + err.message, err.code);
           deferred.reject(err);
         }
         return deferred.promise;
       };
-      function checkForExistingThread(users) {
-        var deferred = $q.defer(), query = new Parse.Query(MessageThread);
-        var userIds = [];
-        for (var i = 0; i < users.length; i++) {
-          userIds.push(users[i].id);
+      function checkForExistingThread(profiles) {
+        var deferred = $q.defer(), query = new Parse.Query(MessageThread), profileIds = [];
+        for (var i = 0; i < profiles.length; i++) {
+          profileIds.push(profiles[i].id);
         }
-        query.equalTo('userIdsHash', hashUserIds(userIds));
+        query.equalTo('profileIdsHash', hashProfileIds(profileIds));
         query.find({
           success: function (response) {
             if (response.length > 1) {
@@ -288,17 +234,17 @@ angular.module('tm.parse-messages', [
         });
         return deferred.promise;
       }
-      function createThread(threadUsers) {
-        var deferred = $q.defer(), threadACL = new Parse.ACL(), userIds = [];
-        var messageThread = new MessageThread({ users: [] });
-        for (var i = 0; i < threadUsers.length; i++) {
-          threadACL.setReadAccess(threadUsers[i].id, true);
-          threadACL.setWriteAccess(threadUsers[i].id, true);
-          messageThread.get('users').push(threadUsers[i]);
-          userIds.push(threadUsers[i].id);
+      function createThread(threadProfiles, userIds) {
+        var deferred = $q.defer(), threadACL = new Parse.ACL(), profileIds = [];
+        var messageThread = new MessageThread({ profiles: [] });
+        for (var i = 0; i < threadProfiles.length; i++) {
+          threadACL.setReadAccess(userIds[i], true);
+          threadACL.setWriteAccess(userIds[i], true);
+          messageThread.get('profiles').push(threadProfiles[i]);
+          profileIds.push(threadProfiles[i].id);
         }
         messageThread.setACL(threadACL);
-        messageThread.set('userIdsHash', hashUserIds(userIds));
+        messageThread.set('profileIdsHash', hashProfileIds(profileIds));
         messageThread.save({
           success: function (response) {
             deferred.resolve(response);
@@ -309,8 +255,8 @@ angular.module('tm.parse-messages', [
         });
         return deferred.promise;
       }
-      function hashUserIds(userIds) {
-        return md5.createHash(userIds.sort().join(''));
+      function hashProfileIds(profileIds) {
+        return md5.createHash(profileIds.sort().join(''));
       }
       function addMessageToThread(thread, message) {
         var deferred = $q.defer(), relation = thread.relation('messages');
