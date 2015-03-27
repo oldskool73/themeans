@@ -46,7 +46,8 @@ angular.module('tm.parse-messages', [
     'md5',
     '$log',
     'Profile',
-    function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, $log, Profile) {
+    'tmAccounts',
+    function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, $log, Profile, tmAccounts) {
       function getThreads(edit) {
         //@params(edit, getCachedUnreadCount)
         var deferred = $q.defer(), query = new Parse.Query(MessageThread), cacheKey = options.messageThreadsCacheKey, ngThreads, cachedThreads;
@@ -67,6 +68,9 @@ angular.module('tm.parse-messages', [
           },
           error: function (err) {
             $log.error('Parse Query Error: ' + err.message, err.code);
+            if (err.code === 119) {
+              return operationForbiddenFail(deferred);
+            }
             deferred.reject(err);
           }
         });
@@ -78,6 +82,18 @@ angular.module('tm.parse-messages', [
       this.getThreadsForDisplay = function (getCachedUnreadCount) {
         return getThreads(false, getCachedUnreadCount);
       };
+      // user not allowed to perform this operation due to access forbidden..
+      // user account does not exist or there is a major bug with acls.
+      function operationForbiddenFail(deferred) {
+        tmAccounts.getUserRolesWithErrorHandling(Parse.User.current(), true).then(function () {
+          return;
+        }, function () {
+          return deferred.reject({
+            title: 'Your account is missing or something is wrong with authorisation.',
+            message: 'Please try logging in again or contacting support'
+          });
+        });
+      }
       // Adds a recipients key to each ngThread and excludes the currentUser from the array.
       function getThreadRecipients(parseThreads, edit) {
         var currentUserProfile = Parse.User.current().get('profile'), ngThreads = [], members, ngThread;
