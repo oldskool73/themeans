@@ -70,6 +70,9 @@ angular.module('tm.parseProfiles', [
           },
           error: function (response, err) {
             $log.error('Parse Query Error: ' + err.message, err.code);
+            if (err.code === 119) {
+              return operationForbiddenFail(deferred);
+            }
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
@@ -105,6 +108,9 @@ angular.module('tm.parseProfiles', [
           },
           error: function (err) {
             $log.error('Parse Error: ' + err.message, err.code);
+            if (err.code === 119) {
+              return operationForbiddenFail(deferred);
+            }
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
@@ -116,6 +122,18 @@ angular.module('tm.parseProfiles', [
       this.getNeighbouringProfiles = function () {
         return getProfiles(true);
       };
+      // user not allowed to perform this operation due to access forbidden..
+      // user account does not exist or there is a major bug with acls.
+      function operationForbiddenFail(deferred) {
+        tmAccounts.getUserRolesWithErrorHandling(Parse.User.current(), true).then(function () {
+          return;
+        }, function () {
+          return deferred.reject({
+            title: 'Your account is missing or something is wrong with authorisation.',
+            message: 'Please try logging in again or contacting support'
+          });
+        });
+      }
       this.updateProfile = function (ngProfile) {
         var deferred = $q.defer(), profile = new Profile(ngProfile, {
             ngModel: true,
