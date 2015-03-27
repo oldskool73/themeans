@@ -22,7 +22,9 @@ angular.module('tm.geolocation',[])
     };
 
     // Method for instantiating
-    this.$get = function GeoLocation($q, $http) {
+    this.$get = function GeoLocation($q, $http, $rootScope) {
+
+      var gps = {};
       // AngularJS will instantiate a singleton by calling "new" on this function
       this.currentPosition = function () {
         var deferred = $q.defer();
@@ -78,6 +80,43 @@ angular.module('tm.geolocation',[])
         });
         return deferred.promise;
       };
+
+      this.startWatching = function(){
+        var deferred = $q.defer();
+
+        if (navigator.geolocation)
+        {
+          var gpsOptions = {
+            enableHighAccuracy : false,
+            // timeout : 1000 * 60 * 4,
+            timeout : 1000 * 4,
+            maximumAge : 1 * 1000
+          };
+
+          gps.GPSWatchId = navigator
+          .geolocation
+          .watchPosition(function onSuccess(pos){
+            $rootScope.$broadcast('gps-position-update',{
+              geoposition: pos
+            });
+          }, function onError(){
+
+          }, gpsOptions);
+
+          deferred.resolve({
+            message: 'Started watching position',
+            gpsId: gps.GPSWatchId
+          });
+        }
+        else
+        {
+          deferred.reject({ message: 'This platform doesn\'t support geolocation' });
+        }
+
+        return deferred.promise;
+      };
+      this.stopWatching = function(){};
+
       return this;
     };
 
