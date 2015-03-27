@@ -30,7 +30,9 @@ angular.module('tm.parseAccounts', [
     'Parse',
     'tmLocalStorage',
     '$log',
-    function ($q, $timeout, Settings, Parse, tmLocalStorage, $log) {
+    '$state',
+    function ($q, $timeout, Settings, Parse, tmLocalStorage, $log, $state) {
+      var _self = this;
       // Authenticates User by checking if exists, and returns an array of role names that
       // the User belongs to.
       /////// DEPENDANCY: Parse Cloud Code Function that gets Parse User object, finds all
@@ -39,7 +41,8 @@ angular.module('tm.parseAccounts', [
         var deferred = $q.defer(), cacheKey = options.rolesCacheKey, roles;
         var userId = user.id || user.objectId;
         if (typeof userId === 'undefined') {
-          deferred.reject({ message: 'Please try logging in again, or contact system admin.' });
+          $log.error('User has no id or objectId: cannot getUserRoles.');
+          return deferred.reject({ message: 'Please try logging in again, or contact system admin.' });
         }
         Parse.Cloud.run('getUserRoles', { userId: userId }, {
           success: function (roleNamesArray) {
@@ -47,11 +50,29 @@ angular.module('tm.parseAccounts', [
             roles = tmLocalStorage.getObject(cacheKey, []);
             deferred.resolve(roles);
           },
-          error: function (err) {
-            $log.error('Parse Cloud Error: ' + err.message);
-            deferred.reject({ message: 'Please try logging in again, or contact system admin.' });
+          error: function () {
+            $log.error('Parse Cloud Error: getUserRoles returned error.');
+            deferred.reject();
           }
         });
+        return deferred.promise;
+      };
+      // Extension of getUserRoles method. Handles all the error scenarios just leaving out
+      // the actualy display message to be handled in the calling function.
+      this.getUserRolesWithErrorHandling = function (user, mustHaveRoles) {
+        var deferred = $q.defer();
+        _self.getUserRoles(user).then(function (roles) {
+          if (mustHaveRoles && !roles || !roles.length) {
+            return fail();
+          }
+          deferred.resolve(roles);
+        }, fail);
+        function fail() {
+          tmLocalStorage.clear();
+          Parse.User.logOut();
+          $state.go('login');
+          deferred.reject();
+        }
         return deferred.promise;
       };
       this.isUserInRole = function (roleName) {
