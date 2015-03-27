@@ -80,6 +80,8 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
           for (var i = 0; i < child.length; i++) {
             if (typeof child[i].getNgModel === 'function') {
               ret[key].push(child[i].getNgModel());
+            } else {
+              ret[key].push(child[i]);
             }
           }
         } else {
