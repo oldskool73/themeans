@@ -291,16 +291,16 @@ angular.module('tm.parseProfiles',[
           });
         }
 
-        var senderUserId  = Parse.User.current().id,
-          senderProfile   = Parse.User.current().get('profile'),
-          receiverUserId  = ngReceiverProfile.user.objectId,
-          receiverProfile = new Profile(),
-          connection      = new Connection(),
-          ACL             = new Parse.ACL(),
-          hash            = md5.createHash([
-            senderProfile.id,
-            ngReceiverProfile.objectId
-          ].sort().join(''));
+        var senderUserId    = Parse.User.current().id,
+            senderProfile   = Parse.User.current().get('profile'),
+            receiverUserId  = ngReceiverProfile.user.objectId,
+            receiverProfile = new Profile(),
+            connection      = new Connection(),
+            ACL             = new Parse.ACL(),
+            hash            = md5.createHash([
+              senderProfile.id,
+              ngReceiverProfile.objectId
+            ].sort().join(''));
 
         receiverProfile.id = ngReceiverProfile.objectId;
 

@@ -74,24 +74,6 @@ angular.module('tm.parseAccounts',[
         return false;
       };
 
-      this.getUserById = function(userId){
-        var deferred = $q.defer(),
-            query    = new Parse.Query(Parse.User);
-
-        query.get(userId, {
-          success: function(response){
-            deferred.resolve(response);
-          },
-          error: function(response, err){
-            $log.error('Parse Error: ' + err.message, err.code);
-            deferred.reject({
-              message: 'Please try again in a few moments, or contact support.'
-            });
-          }
-        });
-        return deferred.promise;
-      };
-
       function getSettingsById(settingsId, edit){
         var deferred      = $q.defer(),
             settingsQuery = new Parse.Query(Settings),

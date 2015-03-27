@@ -61,7 +61,7 @@ angular.module('tm.parse', [])
 
         function processResponse(xhr){
           xhr.responseText = angular.toJson(xhr.data);
-          
+
           if (xhr.status >= 200 && xhr.status < 300) {
             if (xhr.data) {
               promise.resolve(xhr.data, xhr.status, xhr);
@@ -108,6 +108,10 @@ angular.module('tm.parse', [])
               if (typeof child[i].getNgModel === 'function')
               {
                 ret[key].push(child[i].getNgModel());
+              }
+              else
+              {
+                ret[key].push(child[i]);
               }
             }
           }
