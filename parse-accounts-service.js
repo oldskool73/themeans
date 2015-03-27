@@ -31,50 +31,25 @@ angular.module('tm.parseAccounts', [
     'tmLocalStorage',
     '$log',
     function ($q, $timeout, Settings, Parse, tmLocalStorage, $log) {
-      var _self = this;
-      // Checks that account & roles are functioning properly.
-      this.userAuthentication = function (user) {
-        var deferred = $q.defer();
-        user.fetch().then(function () {
-          _self.getUserRoles(user).then(function (roles) {
-            // Fail safe, user accounts somehow has lost its role relations.
-            if (!roles) {
-              $log.error('Cannot find cached User roles.');
-              deferred.reject({ message: 'Please try again, or contact system admin' });
-              return;
-            }
-            deferred.resolve();
-          }, function (err) {
-            $log.error('Parse Error: ' + err.code + ' ' + err.message);
-            deferred.reject({ message: 'Please try again in a few moments.' });
-          });
-        }, function (err) {
-          $log.error('Parse User account doesn\'t exist, Error: ' + err);
-          deferred.reject({ message: 'Your account doesn\'t exist. If this is unexpected please contact support.' });
-        });
-        return deferred.promise;
-      };
-      // Returns an array of role names strings that this Parse User belongs to.
+      // Authenticates User by checking if exists, and returns an array of role names that
+      // the User belongs to.
+      /////// DEPENDANCY: Parse Cloud Code Function that gets Parse User object, finds all
+      /////////////////// roles that the user belongs to, and returns an array of role names.
       this.getUserRoles = function (user) {
-        var deferred = $q.defer(), queryRoles = new Parse.Query(Parse.Role), cacheKey = options.rolesCacheKey;
-        queryRoles.equalTo('users', user);
-        queryRoles.find({
-          success: function (response) {
-            if (!response.length) {
-              $log.error('Parse Error: Parse User is not associated with any roles.');
-              deferred.reject({ message: 'There is an error with your account, please contact support.' });
-            }
-            var roles = [];
-            for (var i = 0; i < response.length; i++) {
-              roles.push(response[i].get('name'));
-            }
-            tmLocalStorage.setObject(cacheKey, roles);
+        var deferred = $q.defer(), cacheKey = options.rolesCacheKey, roles;
+        var userId = user.id || user.objectId;
+        if (typeof userId === 'undefined') {
+          deferred.reject({ message: 'Please try logging in again, or contact system admin.' });
+        }
+        Parse.Cloud.run('getUserRoles', { userId: userId }, {
+          success: function (roleNamesArray) {
+            tmLocalStorage.setObject(cacheKey, roleNamesArray);
             roles = tmLocalStorage.getObject(cacheKey, []);
             deferred.resolve(roles);
           },
-          error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + ' ' + err.message);
-            deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
+          error: function (err) {
+            $log.error('Parse Cloud Error: ' + err.message);
+            deferred.reject({ message: 'Please try logging in again, or contact system admin.' });
           }
         });
         return deferred.promise;
@@ -85,19 +60,6 @@ angular.module('tm.parseAccounts', [
           return true;
         }
         return false;
-      };
-      this.getUserById = function (userId) {
-        var deferred = $q.defer(), query = new Parse.Query(Parse.User);
-        query.get(userId, {
-          success: function (response) {
-            deferred.resolve(response);
-          },
-          error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + ' ' + err.message);
-            deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
-          }
-        });
-        return deferred.promise;
       };
       function getSettingsById(settingsId, edit) {
         var deferred = $q.defer(), settingsQuery = new Parse.Query(Settings), cacheKey = options.settingsCacheKey, ngSettings;
@@ -119,7 +81,7 @@ angular.module('tm.parseAccounts', [
             deferred.resolve(ngSettings);
           },
           error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + ' ' + err.message);
+            $log.error('Parse Error: ' + err.message, err.code);
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
@@ -143,7 +105,7 @@ angular.module('tm.parseAccounts', [
             deferred.resolve(settings);
           },
           error: function (response, err) {
-            $log.error('Parse Error: ' + err.code + ' ' + err.message);
+            $log.error('Parse Error: ' + err.message, err.code);
             deferred.reject({ message: 'Please try again in a few moments, or contact support.' });
           }
         });
