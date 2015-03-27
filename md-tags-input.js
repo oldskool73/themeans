@@ -18,6 +18,9 @@ angular.module('tm.md-tags-input', []).directive('tmTagsInput', [
         function ($scope) {
           $scope.skill = '';
           $scope.addOnClick = function () {
+            if (typeof $scope.ngModel === 'undefined') {
+              $scope.ngModel = [];
+            }
             var skill = $scope.skill;
             skill = skill.replace(/[^\w\s-]/gi, '');
             skill = skill.toLowerCase();
