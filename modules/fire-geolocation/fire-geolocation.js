@@ -19,6 +19,11 @@ angular.module('tm.fire-location',[
         geoFireEndpoint = new $window.GeoFire(base);
 
     $rootScope.$on('gps-position-update',function(evt, location){
+      if(!Parse.User.current())
+      {
+        return;
+      }
+      
       geoFireEndpoint
       .set(Parse.User.current().id, [
         location.geoposition.coords.latitude,
