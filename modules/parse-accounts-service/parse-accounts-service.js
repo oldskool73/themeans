@@ -20,7 +20,7 @@ angular.module('tm.parseAccounts',[
       settingsCacheKey: 'User/Settings',
       settingEditCacheKey: 'User/Settings/Edit',
       rolesCacheKey: 'User/Roles',
-      userSecurityLevel: 'default'
+      isSecured: false
     };
 
     this.configure = function (configOptions) {
@@ -33,7 +33,7 @@ angular.module('tm.parseAccounts',[
       // Authenticates User by checking if exists, and caches an array of role names that
       // the User belongs to.
       this.getUserRoles = function(user) {
-        if (options.userSecurityLevel === 'secured') {
+        if (options.isSecured === true) {
           return getUserRolesSecured(user);
         }
         else {
