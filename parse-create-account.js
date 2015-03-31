@@ -96,7 +96,10 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 Parse.Cloud.useMasterKey();
                 var deferred = new Parse.Promise(), parseProfileRef = parseUser.get('profile'), profileACL;
                 parseProfileRef.fetch().then(function (parseProfile) {
-                    profileACL = parseProfile.get('ACL');
+                    profileACL = parseProfile.getACL();
+                    if (!profileACL) {
+                        profileACL = new Parse.ACL();
+                    }
                     profileACL.setReadAccess(parseUser, true);
                     profileACL.setWriteAccess(parseUser, true);
                     parseProfile.set('user', parseUser);
