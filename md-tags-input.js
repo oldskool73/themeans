@@ -40,7 +40,7 @@ angular.module('tm.md-tags-input', []).directive('tmTagsInput', [
               $scope.addOnClick();
               $event.preventDefault();
             }
-            if ($event.which === 8) {
+            if ($event.which === 8 && $scope.ngModel) {
               $scope.skillOnClick($scope.ngModel.length - 1);
             }
           };
