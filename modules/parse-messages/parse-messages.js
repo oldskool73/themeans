@@ -87,7 +87,7 @@ angular.module('tm.parse-messages', [
 
           if (err.code === 119) {
 
-              return operationForbiddenFail(deferred);
+              return operationForbiddenFail(deferred, 'MessageThread');
             }
           deferred.reject(err);
         }
@@ -103,14 +103,31 @@ angular.module('tm.parse-messages', [
       return getThreads(false, getCachedUnreadCount);
     };
 
-    // user not allowed to perform this operation due to access forbidden..
-    // user account does not exist or there is a major bug with acls.
-    function operationForbiddenFail(deferred) {
+    // _User not allowed to perform this operation due to access forbidden..
+    // _User account does not exist, or there is a major bug with acls, or route/state auth is
+    // letting a _User access something they shouldn't be able to.
+    function operationForbiddenFail(deferred, parseClassName) {
+      parseClassName = parseClassName ? ' on a ' + parseClassName : '';
+      // A non signed in user has queried something they are not allowed to.
+      if (!Parse.User.current()) {
+        return deferred.reject({
+          title: 'Authorisation error: ',
+          message: 'You cannot perform this operation' + parseClassName
+        });
+      }
+      // tmAccounts.getUserRoles authenticates _User and their _Roles.
       tmAccounts
-      .getUserRolesWithErrorHandling(Parse.User.current(), true)
+      .getUserRoles(Parse.User.current())
       .then(function () {
-        return;
+        // _User is authenticated, but has managed to query something they are not permitted to.
+        return deferred.reject({
+          title: 'Authorisation error: ',
+          message: 'You cannot perform this operation' + parseClassName
+        });
       }, function () {
+        // _User either does not exist, or has incorrect role permissions.
+        tmLocalStorage.clear();
+        Parse.User.logOut();
         return deferred.reject({
           title: 'Your account is missing or something is wrong with authorisation.',
           message: 'Please try logging in again or contacting support'

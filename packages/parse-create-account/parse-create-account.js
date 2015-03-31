@@ -109,7 +109,11 @@ function CreateAccount(Parse, beforeProfileSave, beforeSettingsSave) {
         parseProfileRef.fetch()
         .then(function (parseProfile){
 
-            profileACL = parseProfile.get('ACL');
+            profileACL = parseProfile.getACL();
+
+            if (!profileACL) {
+                profileACL = new Parse.ACL();
+            }
 
             profileACL.setReadAccess(parseUser, true);
             profileACL.setWriteAccess(parseUser, true);

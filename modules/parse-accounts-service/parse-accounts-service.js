@@ -18,30 +18,73 @@ angular.module('tm.parseAccounts',[
 
     var options = {
       settingsCacheKey: 'User/Settings',
-      rolesCacheKey: 'User/Roles',
       settingEditCacheKey: 'User/Settings/Edit',
+      rolesCacheKey: 'User/Roles',
+      userSecurityLevel: 'default'
     };
 
     this.configure = function (configOptions) {
       angular.extend(options, configOptions);
     };
 
-    this.$get = [ '$q', '$timeout', 'Settings', 'Parse', 'tmLocalStorage', '$log', '$state',
-    function ( $q, $timeout, Settings, Parse, tmLocalStorage, $log, $state ) {
-      var _self = this;
-      // Authenticates User by checking if exists, and returns an array of role names that
+    this.$get = [ '$q', '$timeout', 'Settings', 'Parse', 'tmLocalStorage', '$log',
+    function ( $q, $timeout, Settings, Parse, tmLocalStorage, $log ) {
+
+      // Authenticates User by checking if exists, and caches an array of role names that
       // the User belongs to.
-      /////// DEPENDANCY: Parse Cloud Code Function that gets Parse User object, finds all
-      /////////////////// roles that the user belongs to, and returns an array of role names.
       this.getUserRoles = function(user) {
-        var deferred = $q.defer(),
-            cacheKey = options.rolesCacheKey,
+        if (options.userSecurityLevel === 'secured') {
+          return getUserRolesSecured(user);
+        }
+        else {
+          return getUserRoles(user);
+        }
+      };
+
+      function getUserRoles(user) {
+        var deferred    = $q.defer(),
+            queryRoles  = new Parse.Query(Parse.Role),
+            cacheKey    = options.rolesCacheKey,
             roles;
+
+        user.fetch()
+        .then(function () {
+
+          queryRoles.equalTo('users', user);
+
+          queryRoles.find()
+          .then(function (parseRoles) {
+
+            roles = parseRoles.map(function (parseRole) {
+
+              return parseRole.get('name');
+            });
+            tmLocalStorage.setObject(cacheKey, roles);
+            roles = tmLocalStorage.getObject(cacheKey, []);
+            deferred.resolve(roles);
+
+          }, function (err) {
+            $log.error('Parse Error: ' + err.message, err.code);
+            deferred.reject();
+          });
+        }, function (err) {
+          $log.error('Parse Error: ' + err.message, err.code);
+          deferred.reject();
+        });
+        return deferred.promise;
+      }
+      ////// DEPENDANCY: Parse Cloud Code Function that gets Parse User object, finds all
+      ////////////////// roles that the user belongs to, runs any authentication logic that you
+      ////////////////// wish to implement for the specific application, and returns an array
+      ////////////////// of role names.
+      function getUserRolesSecured(user) {
+        var deferred = $q.defer(),
+            cacheKey = options.rolesCacheKey;
 
         var userId   = user.id || user.objectId;
 
         if (typeof userId === 'undefined') {
-          $log.error('User has no id or objectId: cannot getUserRoles.');
+          $log.error('User has no id or objectId: cannot get users roles.');
           return deferred.reject({
             message: 'Please try logging in again, or contact system admin.'
           });
@@ -50,43 +93,18 @@ angular.module('tm.parseAccounts',[
         Parse.Cloud.run('getUserRoles', {
           userId: userId
         }, {
-          success: function(roleNamesArray) {
-            tmLocalStorage.setObject(cacheKey, roleNamesArray);
+          success: function(roles) {
+            tmLocalStorage.setObject(cacheKey, roles);
             roles = tmLocalStorage.getObject(cacheKey, []);
-
             deferred.resolve(roles);
           },
-          error: function() {
-            $log.error('Parse Cloud Error: getUserRoles returned error.');
+          error: function(err) {
+            $log.error('Parse Cloud getUserRoles Error: ' + err.message);
             deferred.reject();
           }
         });
         return deferred.promise;
-      };
-      // Extension of getUserRoles method. Handles all the error scenarios just leaving out
-      // the actualy display message to be handled in the calling function.
-      this.getUserRolesWithErrorHandling = function(user, mustHaveRoles) {
-        var deferred = $q.defer();
-
-        _self.getUserRoles(user)
-        .then(function (roles) {
-          if (mustHaveRoles && !roles || !roles.length) {
-
-            return fail();
-          }
-          deferred.resolve(roles);
-        },
-        fail);
-
-        function fail() {
-          tmLocalStorage.clear();
-          Parse.User.logOut();
-          $state.go('login');
-          deferred.reject();
-        }
-
-        return deferred.promise;
-      };
+      }
 
       this.isUserInRole = function(roleName) {
         var roles = tmLocalStorage.getObject(options.rolesCacheKey, []);
