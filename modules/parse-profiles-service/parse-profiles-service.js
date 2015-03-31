@@ -109,6 +109,12 @@ angular.module('tm.parseProfiles',[
           deferred.notify(cache);
         },0);
 
+        var queryIncludeOptions = arguments[1] ? arguments[1] : [];
+        for (var i = 0; i < queryIncludeOptions.length; i++) {
+
+          profilesQuery.include(queryIncludeOptions[i]);
+        }
+
         profilesQuery.find({
           success: function (response) {
             if (excludingSelf) {
@@ -148,11 +154,11 @@ angular.module('tm.parseProfiles',[
       }
 
       this.getProfiles = function () {
-        return getProfiles();
+        return getProfiles(arguments);
       };
 
       this.getNeighbouringProfiles = function (){
-        return getProfiles(true);
+        return getProfiles(true, arguments);
       };
 
       // _User not allowed to perform this operation due to access forbidden..
