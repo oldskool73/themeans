@@ -26,6 +26,12 @@ angular.module('tm.parseProfiles', [
   function (Parse) {
     return Parse.Object.extend('Connection');
   }
+]).run([
+  '$rootScope',
+  'tmProfiles',
+  function ($rootScope, tmProfiles) {
+    tmProfiles.setRootScope($rootScope);
+  }
 ]).provider('tmProfiles', function () {
   var options = {
       profileCacheKey: 'User/Profile',
@@ -49,6 +55,17 @@ angular.module('tm.parseProfiles', [
     'tmAccounts',
     '$log',
     function ($q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection, tmAccounts, $log) {
+      var $rootScope;
+      // rootScope for broadcasting results
+      this.setRootScope = function (rootScopeRef) {
+        $rootScope = rootScopeRef;
+      };
+      this.getProfileByIdForEditing = function (profileId) {
+        return getProfileById(profileId, true);
+      };
+      this.getProfileByIdForDisplay = function (profileId) {
+        return getProfileById(profileId, false);
+      };
       function getProfileById(profileId, edit) {
         var deferred = $q.defer(), profilesQuery = new Parse.Query(Profile), cacheKey = options.profileCacheKey, ngProfile, model, cache;
         if (edit) {
@@ -79,11 +96,11 @@ angular.module('tm.parseProfiles', [
         });
         return deferred.promise;
       }
-      this.getProfileByIdForEditing = function (profileId) {
-        return getProfileById(profileId, true);
+      this.getProfiles = function () {
+        return getProfiles(arguments);
       };
-      this.getProfileByIdForDisplay = function (profileId) {
-        return getProfileById(profileId, false);
+      this.getNeighbouringProfiles = function () {
+        return getProfiles(true, arguments);
       };
       function getProfiles(excludingSelf) {
         var deferred = $q.defer(), profilesQuery = new Parse.Query(Profile), cacheKey = options.profilesCacheKey, profiles = [], cache;
@@ -126,12 +143,6 @@ angular.module('tm.parseProfiles', [
         });
         return deferred.promise;
       }
-      this.getProfiles = function () {
-        return getProfiles(arguments);
-      };
-      this.getNeighbouringProfiles = function () {
-        return getProfiles(true, arguments);
-      };
       // _User not allowed to perform this operation due to access forbidden..
       // _User account does not exist, or there is a major bug with acls, or route/state auth is
       // letting a _User access something they shouldn't be able to.
@@ -362,31 +373,49 @@ angular.module('tm.parseProfiles', [
         }
         query.include('receiver');
         query.include('sender');
+        query.descending('updatedAt');
         query.find({
-          success: function (response) {
-            var connections = [], ngResponse = {};
-            for (var i = 0; i < response.length; i++) {
-              if (edit) {
-                connections.push(response[i].getNgFormModel());
-                continue;
-              }
-              ngResponse = response[i].getNgModel();
-              ngResponse.connection = ngResponse.sender;
-              if (ngResponse.sender.user.objectId === Parse.User.current().id) {
-                ngResponse.connection = ngResponse.receiver;
+          success: function (parseConnections) {
+            var ngConnections = [], ngConnection;
+            if (edit) {
+              ngConnections = parseConnections.map(function (parseConnection) {
+                return parseConnection.getNgFormModel();
+              });
+              tmLocalStorage.setObject(cacheKey, ngConnections);
+              return deferred.resolve(ngConnections);
+            }
+            // The following code is designed to simplify displaying a connection.
+            ngConnections = parseConnections.map(function (parseConnection) {
+              ngConnection = parseConnection.getNgModel();
+              if (ngConnection.sender.user.objectId === Parse.User.current().id) {
+                ngConnection.connection = ngConnection.receiver;
+              } else {
+                ngConnection.connection = ngConnection.sender;
               }
               // removing excess objects & data.
-              delete ngResponse.receiver;
-              delete ngResponse.sender;
-              if (ngResponse.requestStatus === 'pending') {
+              delete ngConnection.receiver;
+              delete ngConnection.sender;
+              if (ngConnection.requestStatus === 'pending') {
                 // Prevents the ability to scope hack the stateParams id for a pending candidate.
-                delete ngResponse.connection.objectId;
+                delete ngConnection.connection.objectId;
               }
-              connections.push(ngResponse);
+              return ngConnection;
+            });
+            var pendingConnections = [], acceptedConnections = [];
+            ngConnections.forEach(function (ngConnection) {
+              if (ngConnection.requestStatus === 'pending') {
+                return pendingConnections.push(ngConnection);
+              }
+              return acceptedConnections.push(ngConnection);
+            });
+            if ($rootScope && $rootScope.GLOBALS && $rootScope.GLOBALS.events && $rootScope.GLOBALS.events.updateConnectionsBadge) {
+              $rootScope.$broadcast($rootScope.GLOBALS.events.updateConnectionsBadge, { pendingCount: pendingConnections.length });
             }
-            tmLocalStorage.setObject(cacheKey, connections);
-            connections = tmLocalStorage.getObject(cacheKey, []);
-            deferred.resolve(connections);
+            tmLocalStorage.setObject(cacheKey, ngConnections);
+            return deferred.resolve({
+              acceptedConnections: acceptedConnections,
+              pendingConnections: pendingConnections
+            });
           },
           error: function (err) {
             $log.error('Parse Query Error: ' + err.message, err.code);
