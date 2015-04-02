@@ -17,6 +17,9 @@ angular.module('tm.parse-messages', [
 .factory('Message', function (Parse) {
   return Parse.Object.extend('Message');
 })
+.run(function ($rootScope, tmMessages){
+  tmMessages.setRootScope($rootScope);
+})
 .provider('tmMessages', function () {
 
   var options = {
@@ -25,7 +28,8 @@ angular.module('tm.parse-messages', [
     messageThreadsCacheKey: 'User/Messages/Threads',
     messageThreadsEditCacheKey: 'User/Messages/Threads/Edit',
     messageThreadCacheKey: 'User/Messages/Thread',
-    messageThreadEditCacheKey: 'User/Messages/Thread/Edit'
+    messageThreadEditCacheKey: 'User/Messages/Thread/Edit',
+    profilesForbiddenDisplayName: 'No Name Available'
   };
 
   this.configure = function (configOptions) {
@@ -43,7 +47,14 @@ angular.module('tm.parse-messages', [
   '$log',
   'Profile',
   'tmAccounts',
+  '$document',
   function (Parse, $q, $timeout, tmLocalStorage, MessageThread, Message, md5, $log, Profile, tmAccounts) {
+
+    var $rootScope;
+    // rootScope for broadcasting results
+    this.setRootScope  = function(rootScopeRef){
+      $rootScope = rootScopeRef;
+    };
 
     function getThreadById(threadId) {
       var deferred = $q.defer(),
@@ -90,14 +101,17 @@ angular.module('tm.parse-messages', [
       queryThreads
       .find()
       .then(function (parseThreads) {
-        // TODO xaun / amay0048: how should this behave?
+
+        // ACL / CLP forbidden response returns null entries in array find queries
+        // Iterate through threads profiles and splice out any null entry with a generic message
+        // ** Customisable through provider config options **
         function handleNullEntries() {
           parseThreads.forEach(function (parseThread) {
             var index = parseThread.get('profiles').indexOf(null);
             if (index >= 0) {
               $log.warn('User does not have permissions to view sender or recipient profile(s) for MessageThread/' + parseThread.id);
               parseThread.get('profiles').splice(index, 1, {
-                fullName: 'No Name Available'
+                fullName: options.profilesForbiddenDisplayName
               });
               handleNullEntries();
             }
@@ -225,7 +239,17 @@ angular.module('tm.parse-messages', [
                   recipient.viewed = true;
                 }
               });
+
               promises.push(parseMessage.save());
+
+              // ACL / CLP forbidden response does not return 'sender' column
+              // set sender name to a generic default
+              // ** Customisable through provider config options **
+              if (!parseMessage.get('sender')) {
+                parseMessage.set('sender', {
+                  fullName: options.profilesForbiddenDisplayName
+                });
+              }
 
               return edit ? parseMessage.getNgFormModel() : parseMessage.getNgModel();
             });
@@ -240,6 +264,7 @@ angular.module('tm.parse-messages', [
 
             }, function (err) {
               $log.error('Parse Save Error: ' + err.message, err.code);
+              deferred.resole(ngMessages);
             });
           },
           error: function (err){
@@ -278,6 +303,15 @@ angular.module('tm.parse-messages', [
 
       callBacks = {
         success: function (response) {
+          if (returnCount && typeof response === 'number')
+          {
+            if ($rootScope && $rootScope.GLOBALS && $rootScope.GLOBALS.events && $rootScope.GLOBALS.events.updateMessageBadge)
+            {
+              $rootScope.$broadcast($rootScope.GLOBALS.events.updateMessageBadge, {
+                unreadCount: response
+              });
+            }
+          }
           deferred.resolve(response);
         },
         error: function (err) {
@@ -297,10 +331,6 @@ angular.module('tm.parse-messages', [
 
       return deferred.promise;
     }
-
-    this.setMessagesToRead = function(ngThread) {
-
-    };
 
     // _User not allowed to perform this operation due to access forbidden..
     // _User account does not exist, or there is a major bug with acls, or route/state auth is
