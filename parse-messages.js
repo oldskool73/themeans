@@ -370,7 +370,6 @@ angular.module('tm.parse-messages', [
           messageThread.get('profiles').push(participantProfiles[i]);
           profileIds.push(participantProfiles[i].id);
         }
-        ;
         messageThread.setACL(threadACL);
         messageThread.set('profileIdsHash', hashProfileIds(profileIds));
         messageThread.save({
