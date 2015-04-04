@@ -28,8 +28,7 @@ angular.module('tm.md-parse-login', [
       'Parse',
       '$mdToast',
       '$mdDialog',
-      '$log',
-      function ($scope, $location, Parse, $mdToast, $log) {
+      function ($scope, $location, Parse, $mdToast) {
         var defaults = $scope.defaults = {};
         defaults.mdToolbarClass = 'md-primary md-default-theme';
         defaults.mdContentClass = 'md-padding';
