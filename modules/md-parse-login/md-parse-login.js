@@ -188,8 +188,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       'Parse',
       '$mdToast',
       '$mdDialog',
-      '$log',
-      function ($scope, $location, Parse, $mdToast, $log) {
+      function ( $scope, $location, Parse, $mdToast ) {
 
         var defaults = $scope.defaults = {};
         defaults.mdToolbarClass = 'md-primary md-default-theme';

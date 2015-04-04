@@ -22,7 +22,12 @@ module.exports = function() {
     modulesName = fs.readdirSync(__dirname + '/dist/npm');
   }
 
+  function version(minor){
+    return '0.1.'+minor;
+  }
+
   function makingComponentData(memo, name){
+
     memo[name] = {
       name: 'themeans-' + name,
       main: './' + name + '.js'
@@ -30,6 +35,7 @@ module.exports = function() {
 
     switch(name){
       case 'parse':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "angular":"~1.3.0",
           "parse": "master",
@@ -37,11 +43,13 @@ module.exports = function() {
         };
         break;
       case 'ionic-parse-login':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse"
         };
         break;
       case 'md-parse-login':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "cropper": "~0.8.0",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
@@ -49,12 +57,14 @@ module.exports = function() {
         };
         break;
       case 'md-parse-image-picker':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
           "angular-material": "*"
         };
         break;
       case 'md-parse-places-autosuggest':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
           "angular-material": "*",
@@ -62,11 +72,13 @@ module.exports = function() {
         };
         break;
       case 'parse-messages':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "angular-md5": "~0.1.7"
         };
         break;
       case 'parse-profiles-service':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "angular-md5": "~0.1.7",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
@@ -74,12 +86,14 @@ module.exports = function() {
         };
         break;
       case 'parse-accounts-service':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
           "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
         };
         break;
       case 'jquery-tags':
+        memo[name].version = version(0);
         memo[name].dependencies = {
           "jQuery-Tags-Input": "https://github.com/themeans/jQuery-Tags-Input.git#master"
         };

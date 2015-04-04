@@ -6,7 +6,7 @@
  * # tagsInput
  */
 angular.module('tm.md-tags-input', [])
-  .directive('tmTagsInput', function ($window) {
+  .directive('tmTagsInput', function ( ) {
     return {
       template: '<div>'+
                   '<md-button '+

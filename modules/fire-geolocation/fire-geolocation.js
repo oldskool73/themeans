@@ -36,15 +36,18 @@ angular.module('tm.fire-location',[
         radius: 3000
     });
 
-    var onKeyEnteredRegistration = geoQuery.on('key_entered', function(key, location) {
+    // var onKeyEnteredRegistration = 
+    geoQuery.on('key_entered', function(key, location) {
       $rootScope.$broadcast('geofire-key-entered',key, location);
     });
 
-    var onKeyEnteredRegistration = geoQuery.on('key_moved', function(key, location) {
+    // var onKeyEnteredRegistration = 
+    geoQuery.on('key_moved', function(key, location) {
       $rootScope.$broadcast('geofire-key-moved',key, location);
     });
 
-    var onReadyRegistration = geoQuery.on('ready', function() {
+    // var onReadyRegistration = 
+    geoQuery.on('ready', function() {
       $rootScope.$broadcast('geofire-ready');
     });
 
