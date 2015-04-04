@@ -1,0 +1,8 @@
+{
+  "name": "themeans-ionic-parse-login",
+  "version": "0.1.0",
+  "main": ["./ionic-parse-login.js"],
+  "dependencies": {
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse"
+  }
+}
