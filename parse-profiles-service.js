@@ -112,6 +112,8 @@ angular.module('tm.parseProfiles', [
         for (var i = 0; i < queryIncludeOptions.length; i++) {
           profilesQuery.include(queryIncludeOptions[i]);
         }
+        profilesQuery.limit(1000);
+        profilesQuery.ascending('businessName');
         profilesQuery.find({
           success: function (response) {
             if (excludingSelf) {
