@@ -510,8 +510,7 @@ angular.module('tm.parse-messages', [
         threadACL.setWriteAccess(userIds[i], true);
         messageThread.get('profiles').push(participantProfiles[i]);
         profileIds.push(participantProfiles[i].id);
-      };
-
+      }
 
       messageThread.setACL(threadACL);
       messageThread.set('profileIdsHash', hashProfileIds(profileIds));
