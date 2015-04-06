@@ -1,0 +1,8 @@
+{
+  "name": "themeans-global-ng-progress",
+  "version": "0.1.0",
+  "main": ["./global-ng-progress.js"],
+  "dependencies": {
+    "ngprogress": "~1.0.7"
+  }
+}
