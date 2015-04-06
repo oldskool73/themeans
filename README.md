@@ -28,7 +28,7 @@ grunt dist
 grunt build:subbower
 grunt publish:subbower
 cd out/clones/subbower/[module-name]
-git push origin npm-[module-name]
+git push origin bower-[module-name]
 ```
 
 If you're adding a module, also run

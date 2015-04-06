@@ -92,10 +92,10 @@ module.exports = function() {
           "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
         };
         break;
-      case 'jquery-tags':
+      case 'global-ng-progress':
         memo[name].version = version(0);
         memo[name].dependencies = {
-          "jQuery-Tags-Input": "https://github.com/themeans/jQuery-Tags-Input.git#master"
+          "ngprogress": "~1.0.7"
         };
         break;
     }
