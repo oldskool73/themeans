@@ -1,6 +1,6 @@
 {
   "name": "themeans-parse-profiles-service",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": ["./parse-profiles-service.js"],
   "dependencies": {
     "angular-md5": "~0.1.7",
