@@ -53,6 +53,7 @@ angular.module('tm.parseProfiles',[
   function ( $q, Profile, Follow, Parse, tmLocalStorage, $timeout, md5, Connection, tmAccounts, $log ) {
 
     var $rootScope;
+
     // rootScope for broadcasting results
     this.setRootScope  = function(rootScopeRef){
       $rootScope = rootScopeRef;
@@ -106,15 +107,15 @@ angular.module('tm.parseProfiles',[
       return deferred.promise;
     }
 
-    this.getProfiles = function () {
-      return getProfiles(arguments);
+    this.getProfiles = function (queryOptions) {
+      return getProfiles(false, queryOptions);
     };
 
-    this.getNeighbouringProfiles = function (){
-      return getProfiles(true, arguments);
+    this.getNeighbouringProfiles = function (queryOptions){
+      return getProfiles(true, queryOptions);
     };
 
-    function getProfiles(excludingSelf) {
+    function getProfiles(excludingSelf, queryOptions) {
       var deferred      = $q.defer(),
           profilesQuery = new Parse.Query(Profile),
           cacheKey      = options.profilesCacheKey,
@@ -126,15 +127,12 @@ angular.module('tm.parseProfiles',[
         deferred.notify(cache);
       },0);
 
-      var queryIncludeOptions = arguments[1] ? arguments[1] : [];
-      for (var i = 0; i < queryIncludeOptions.length; i++) {
+      // set any query options by passing in an array of key/value objects.
+      // e.g [{ key: 'include', value: 'settings' }]
+      queryOptions.forEach(function (queryOption) {
+        profilesQuery[queryOption.key](queryOption.value);
+      });
 
-        profilesQuery.include(queryIncludeOptions[i]);
-      }
-
-      profilesQuery.limit(1000);
-      profilesQuery.ascending('businessName');
-      
       profilesQuery.find({
         success: function (response) {
           if (excludingSelf) {
@@ -502,7 +500,8 @@ angular.module('tm.parseProfiles',[
             return deferred.resolve(ngConnections);
           }
 
-          // The following code is designed to simplify displaying a connection.
+          // Simplifies displaying the connection by saving the opposite person of the relationship
+          // into a key of the connection ngModel.
           ngConnections = parseConnections.map(function (parseConnection) {
 
             ngConnection = parseConnection.getNgModel();

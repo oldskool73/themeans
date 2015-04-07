@@ -78,7 +78,7 @@ module.exports = function() {
         };
         break;
       case 'parse-profiles-service':
-        memo[name].version = version(0);
+        memo[name].version = version(1);
         memo[name].dependencies = {
           "angular-md5": "~0.1.7",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
