@@ -1,0 +1,8 @@
+{
+  "name": "themeans-consolelog",
+  "version": "0.2.0",
+  "main": ["./consolelog.js"],
+  "dependencies": {
+    "angular": "~1.3.0"
+  }
+}
