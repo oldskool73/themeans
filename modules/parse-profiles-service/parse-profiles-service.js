@@ -108,50 +108,36 @@ angular.module('tm.parseProfiles',[
     }
 
     this.getProfiles = function (queryOptions) {
-      return getProfiles(false, queryOptions);
+      if (!queryOptions || !Array.isArray(queryOptions))
+      {
+        if (!Array.isArray(queryOptions))
+        {
+          $log.warn('typeError: tmProfiles.getNeighbouringProfiles() expects an Array of Parse Query options.');
+        }
+        queryOptions = [];
+      }
+      return getProfiles(queryOptions);
     };
 
-    this.getNeighbouringProfiles = function (queryOptions){
-      return getProfiles(true, queryOptions);
-    };
-
-    function getProfiles(excludingSelf, queryOptions) {
+    function getProfiles(queryOptions) {
       var deferred      = $q.defer(),
           profilesQuery = new Parse.Query(Profile),
           cacheKey      = options.profilesCacheKey,
-          profiles      = [],
           cache;
 
       $timeout(function () {
         cache = tmLocalStorage.getObject(cacheKey, []);
         deferred.notify(cache);
-      },0);
+      }, 0);
 
-      // set any query options by passing in an array of key/value objects.
-      // e.g [{ key: 'include', value: 'settings' }]
+      // set any query options by passing in an array of key/values objects.
+      // e.g [{ func: 'equalTo', args: ['name', 'john smith'] }]
       queryOptions.forEach(function (queryOption) {
-        profilesQuery[queryOption.key](queryOption.value);
+        profilesQuery[queryOption.func].apply(profilesQuery, queryOption.args);
       });
 
       profilesQuery.find({
-        success: function (response) {
-          if (excludingSelf) {
-            for (var i = 0; i < response.length; i++) {
-
-              if (!response[i].get('user')) {
-                $log.warn('Profiles are being created without Parse Users, or something is wrong with profile \'user\' pointers.');
-                continue;
-              }
-              if (response[i].get('user').id === Parse.User.current().id) {
-                continue;
-              }
-              profiles.push(response[i]);
-            }
-          }
-          else {
-            profiles = response;
-          }
-
+        success: function (profiles) {
           tmLocalStorage.setObject(cacheKey, Parse.serialiseArrayForDisplay(profiles));
           profiles = tmLocalStorage.getObject(cacheKey, []);
           deferred.resolve(profiles);

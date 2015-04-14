@@ -6,7 +6,7 @@
  * @description
  * # parseLogin
  */
-angular.module('tm.ionic-parse-login',['tm.parse'])
+angular.module('tm.ionic-parse-login',['tm.parse', 'ionic'])
   .directive('ionicParseLogin', function () {
 
     var mainTmpl = '<form ng-submit="loginFormOnSubmit($event)">'+

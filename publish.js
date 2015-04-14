@@ -45,6 +45,7 @@ module.exports = function() {
       case 'ionic-parse-login':
         memo[name].version = version(0);
         memo[name].dependencies = {
+          "ionic": "~1.0.0-rc",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse"
         };
         break;
@@ -74,15 +75,18 @@ module.exports = function() {
       case 'parse-messages':
         memo[name].version = version(0);
         memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "themeans-parse-profiles-service": "https://github.com/themeans/themeans.git#bower-parse-profiles-service",
+          "themeans-parse-accounts-service": "https://github.com/themeans/themeans.git#bower-parse-accounts-service",
           "angular-md5": "~0.1.7"
         };
         break;
       case 'parse-profiles-service':
-        memo[name].version = version(1);
+        memo[name].version = version(0);
         memo[name].dependencies = {
-          "angular-md5": "~0.1.7",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
-          "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage"
+          "themeans-localstorage": "https://github.com/themeans/themeans.git#bower-localstorage",
+          "angular-md5": "~0.1.7"
         };
         break;
       case 'parse-accounts-service':
@@ -96,6 +100,19 @@ module.exports = function() {
         memo[name].version = version(0);
         memo[name].dependencies = {
           "ngprogress": "~1.0.7"
+        };
+        break;
+      case 'ionic-ng-camera':
+        memo[name].version = version(0);
+        memo[name].dependencies = {
+          "ionic": "~1.0.0-rc"
+        };
+        break;
+      case 'md-parse-image-grid-picker':
+        memo[name].version = version(0);
+        memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "angular-material": "*"
         };
         break;
     }
