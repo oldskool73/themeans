@@ -1,0 +1,8 @@
+{
+  "name": "themeans-tags-input",
+  "version": "0.2.0",
+  "main": ["./tags-input.js"],
+  "dependencies": {
+    "angular": "~1.3.0"
+  }
+}
