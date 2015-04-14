@@ -1,0 +1,8 @@
+{
+  "name": "themeans-ionic-ng-camera",
+  "version": "0.1.0",
+  "main": ["./ionic-ng-camera.js"],
+  "dependencies": {
+    "ionic": "~1.0.0-rc"
+  }
+}
