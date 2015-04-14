@@ -8,6 +8,8 @@
 angular.module('tm.parse-messages', [
   'tm.parse',
   'tm.localstorage',
+  'tm.parseAccounts',
+  'tm.parseProfiles',
   'angular-md5'
 ]).factory('MessageThread', [
   'Parse',
@@ -28,7 +30,7 @@ angular.module('tm.parse-messages', [
 ]).provider('tmMessages', function () {
   var options = {
       messagesCacheKey: 'User/Messages',
-      messagesEditCacheKey: 'user/Messages/Edit',
+      messagesEditCacheKey: 'User/Messages/Edit',
       messageThreadsCacheKey: 'User/Messages/Threads',
       messageThreadsEditCacheKey: 'User/Messages/Threads/Edit',
       messageThreadCacheKey: 'User/Messages/Thread',

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "main": ["./parse-messages.js"],
   "dependencies": {
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+    "themeans-parse-profiles-service": "https://github.com/themeans/themeans.git#bower-parse-profiles-service",
+    "themeans-parse-accounts-service": "https://github.com/themeans/themeans.git#bower-parse-accounts-service",
     "angular-md5": "~0.1.7"
   }
 }
