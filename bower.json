@@ -1,8 +1,8 @@
 {
   "name": "themeans-jquery-tags",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": ["./jquery-tags.js"],
   "dependencies": {
-    "jQuery-Tags-Input": "https://github.com/themeans/jQuery-Tags-Input.git#master"
+    "angular": "~1.3.0"
   }
 }
