@@ -1,20 +1,22 @@
 # 2.0.0
 
-## Features
+##Features
 
-  #### input-tags
+
+##### input-tags
   - now supports both md & ionic with switchable templates
 
-  #### [NEW] md-parse-image-grid-picker
+##### [NEW] md-parse-image-grid-picker
   - add images into a customisable grid (gallery).
 
-  #### [NEW] ionic-ng-camera
+##### [NEW] ionic-ng-camera
   - angular service wrapper for cordova ngCamera plugin
 
-  #### parse-profiles-service
+##### parse-profiles-service
   - getProfiles function now accepts query options as an arguements which allows for dynamically
     selecting any parse query.
     CODE EXAMPLE:
+
     ```
     var queryOptions = [{
       func: 'equalTo',
@@ -24,19 +26,21 @@
 
 ## Bug Fixes
 
-  #### input-tags
+
+##### input-tags
   - Backspacing while adding a tag wont remove a tag anymore
   - Now propery checks for correct type, preventing typeErrors
   - Removed the ability to add blank tags
 
 ## Breaking Changes
 
-  #### parse-profiles-service
-    - Removed getNeighbouringProfiles function.
 
-################################################################################################
-################################################################################################
+##### parse-profiles-service
+- Removed getNeighbouringProfiles function.
 
+
+
+---
 # 1.0.0
 
 ## Features

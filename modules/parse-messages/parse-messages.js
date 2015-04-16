@@ -67,7 +67,7 @@ angular.module('tm.parse-messages', [
         success: function (response){
           deferred.resolve(response);
         },
-        error: function (err){
+        error: function (res, err){
           $log.error('Parse Query Error: ' + err.message, err.code);
           deferred.reject(err);
         }
