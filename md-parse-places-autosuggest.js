@@ -30,6 +30,7 @@ angular.module('tm.md-parse-places-autosuggest', [
       restrict: 'E',
       scope: {
         selectedItem: '=ngModel',
+        predictionsTypes: '=',
         label: '@'
       },
       link: function (scope, el) {
@@ -54,7 +55,7 @@ angular.module('tm.md-parse-places-autosuggest', [
               var service = new maps.places.AutocompleteService();
               service.getPlacePredictions({
                 input: searchText,
-                types: ['address'],
+                types: $scope.predictionsTypes || ['address'],
                 componentRestrictions: { country: 'au' }
               }, function (predictions, status) {
                 if (status != maps.places.PlacesServiceStatus.OK) {
