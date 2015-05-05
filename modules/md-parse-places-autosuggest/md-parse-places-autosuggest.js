@@ -46,8 +46,8 @@ angular.module('tm.md-parse-places-autosuggest',[
               '</md-autocomplete>',
     restrict: 'E',
     scope: {
-      // isDisabled:'=',
       selectedItem:'=ngModel',
+      predictionsTypes: '=',
       label:'@'
     },
     link: function(scope, el){
@@ -65,12 +65,12 @@ angular.module('tm.md-parse-places-autosuggest',[
       function placesSearch(searchText){
         var deferred = $q.defer();
 
-        uiGmapGoogleMapApi.then(function(maps){
+        uiGmapGoogleMapApi.then(function (maps){
           var service = new maps.places.AutocompleteService();
 
           service.getPlacePredictions({
             input: searchText,
-            types:['address'],
+            types: $scope.predictionsTypes || ['address'],
             componentRestrictions: {country: 'au'}
           }, function (predictions, status) {
             if (status != maps.places.PlacesServiceStatus.OK) {
