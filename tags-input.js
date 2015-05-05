@@ -9,14 +9,17 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
   '$compile',
   function ($compile) {
     var template = {
-        md: '<div>' + '<md-button ' + 'type="button" ' + 'ng-click="skillOnClick($index)" ' + 'ng-repeat="skill in ngModel track by $index" ' + 'style="display:inline-block;margin-right:4px;margin-bottom:4px" ' + 'class="md-primary md-raised">' + '{{skill}}' + '<md-icon ' + 'style="height:14px;width:14px;margin-left:6px;margin-top:-4px" ' + 'md-svg-icon="cancel">' + '</md-icon>' + '</md-button>' + '<div layout="row" layout-align="start end">' + '<md-input-container flex>' + '<label for="label">Skill</label>' + '<input type="text" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'id="label" ' + 'ng-model="skill">' + '</md-input-container>' + '<md-input-container flex="20">' + '<md-button class="add-tab md-primary" ' + 'ng-click="addOnClick()" ' + 'type="button">' + 'Add' + '</md-button>' + '</md-input-container>' + '</div>' + '</div>',
-        ionic: '<label class="item item-input item-stacked-label item-text-wrap">' + '<span class="input-label">My current skills: </span>' + '<div>' + '<button class="button button-positive" ' + 'type="button" ' + 'ng-repeat="skill in ngModel track by $index" ' + 'ng-click="skillOnClick($index)" ' + 'style="margin: 0 4px 4px 0; ">' + '{{ skill }}&nbsp;&nbsp;' + '<i class="icon ion-close-circled"></i>' + '</button>' + '</div>' + '</label>' + '<label class="item item-input item-stacked-label">' + '<span class="input-label">Add a Skill: </span>' + '<input ' + 'type="text" ' + 'class="item-wrap" ' + 'style="width: 100%;height: 100px;" ' + 'placeholder="What skills do you have?" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'ng-model="skill">' + '</span>' + '</label>'
+        md: '<div>' + '<md-button ' + 'type="button" ' + 'ng-click="tagOnClick($index)" ' + 'ng-repeat="tag in tags track by $index" ' + 'style="display:inline-block;margin-right:4px;margin-bottom:4px" ' + 'class="md-primary md-raised">' + '{{tag}}' + '<md-icon ' + 'style="height:14px;width:14px;margin-left:6px;margin-top:-4px" ' + 'md-svg-icon="cancel">' + '</md-icon>' + '</md-button>' + '<div layout="row">' + '<md-input-container flex ng-if="!suggestive()">' + '<label for="label">{{inputLabel}}</label>' + '<input type="text" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'id="label" ' + 'ng-model="tag.searchText">' + '</md-input-container>' + '<md-autocomplete ng-if="suggestive()" flex ' + 'style="min-width: 0px;" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'md-no-cache="true" ' + 'md-selected-item="tag.selectedText" ' + 'md-search-text="tag.searchText" ' + 'md-items="item in getMatches(tag.searchText)" ' + 'md-item-text="item.display" ' + 'md-floating-label="{{inputLabel}}">' + '<span md-highlight-text="tag.searchText">{{item.display}}</span>' + '</md-autocomplete>' + '<md-button class="add-tab md-primary" flex="20" ' + 'style="min-width: 0px;" ' + 'ng-click="addOnClick()" ' + 'type="button">' + 'Add' + '</md-button>' + '</div>' + '</div>',
+        ionic: '<label class="item item-input item-stacked-label item-text-wrap">' + '<span class="input-label">My current skills: </span>' + '<div>' + '<button class="button button-positive" ' + 'type="button" ' + 'ng-repeat="tag in tags track by $index" ' + 'ng-click="tagOnClick($index)" ' + 'style="margin: 0 4px 4px 0; ">' + '{{tag}}&nbsp;&nbsp;' + '<i class="icon ion-close-circled"></i>' + '</button>' + '</div>' + '</label>' + '<label class="item item-input item-stacked-label">' + '<span class="input-label">Add a Skill: </span>' + '<input ' + 'type="text" ' + 'class="item-wrap" ' + 'placeholder="What skills do you have?" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'ng-model="tag.searchText">' + '</span>' + '</label>'
       };
     return {
       restrict: 'E',
       scope: {
-        ngModel: '=',
-        environment: '@'
+        tags: '=ngModel',
+        environment: '@',
+        suggestive: '&',
+        suggestions: '=?',
+        inputLabel: '@'
       },
       link: function (scope, elem) {
         // @params(attr)
@@ -29,32 +32,55 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
       controller: [
         '$scope',
         function ($scope) {
-          $scope.skill = '';
-          $scope.addOnClick = function () {
-            if (!$scope.ngModel || !Array.isArray($scope.ngModel)) {
-              $scope.ngModel = [];
-            }
-            var skill = $scope.skill;
-            skill = skill.replace(/[^\w\s-]/gi, '');
-            skill = skill.toLowerCase();
-            if ($scope.ngModel.indexOf(skill) < 0 && skill.length > 0) {
-              $scope.ngModel.push(skill);
-            }
-            $scope.skill = '';
+          $scope.inputLabel = $scope.inputLabel ? $scope.inputLabel : 'Add a Tag';
+          var defaultTag = {
+              searchText: '',
+              selectedText: {
+                display: '',
+                value: ''
+              }
+            };
+          $scope.tag = angular.copy(defaultTag);
+          $scope.getMatches = function (query) {
+            $scope.suggestions = $scope.suggestions ? $scope.suggestions : [];
+            return query ? $scope.suggestions.filter(createFilterFor(query)) : [];
           };
-          $scope.skillOnClick = function (index) {
+          function createFilterFor(query) {
+            var lowercaseQuery = angular.lowercase(query);
+            return function filterFn(suggestion) {
+              return suggestion.value.indexOf(lowercaseQuery) === 0;
+            };
+          }
+          $scope.addOnClick = function () {
+            if (!$scope.tags || !Array.isArray($scope.tags)) {
+              $scope.tags = [];
+            }
+            // no suggested value was selected.
+            if ($scope.suggestive() && !$scope.tag.selectedText) {
+              return;
+            }
+            var tag = $scope.tag.selectedText.value || $scope.tag.searchText || '';
+            tag = tag.replace(/[^\w\s-]/gi, '');
+            tag = tag.toLowerCase();
+            if ($scope.tags.indexOf(tag) < 0 && tag.length > 0) {
+              $scope.tags.push(tag);
+            }
+            $scope.tag = angular.copy(defaultTag);
+          };
+          $scope.tagOnClick = function (index) {
             $scope.$applyAsync(function () {
-              $scope.ngModel.splice(index, 1);
+              $scope.tags.splice(index, 1);
             });
           };
           $scope.inputOnKeyDown = function ($event) {
             $event.stopPropagation();
+            console.log($event.which);
             if ($event.which === 13) {
               $scope.addOnClick();
               $event.preventDefault();
             }
-            if ($event.which === 8 && $scope.ngModel && !$scope.skill.length) {
-              $scope.skillOnClick($scope.ngModel.length - 1);
+            if ($event.which === 8 && $scope.tags && !$scope.tag.searchText.length) {
+              $scope.tagOnClick($scope.tags.length - 1);
             }
           };
         }
