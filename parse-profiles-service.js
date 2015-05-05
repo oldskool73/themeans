@@ -99,7 +99,7 @@ angular.module('tm.parseProfiles', [
       this.getProfiles = function (queryOptions) {
         if (!queryOptions || !Array.isArray(queryOptions)) {
           if (!Array.isArray(queryOptions)) {
-            $log.warn('typeError: tmProfiles.getNeighbouringProfiles() expects an Array of Parse Query options.');
+            $log.warn('typeError: Expects an Array of Parse Query options.');
           }
           queryOptions = [];
         }
