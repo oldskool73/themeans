@@ -33,10 +33,7 @@ angular.module('tm.md-parse-places-autosuggest',[
 
   return {
     template: '<md-autocomplete flex '+
-                  // 'ng-disabled="isDisabled" '+
-                  // 'md-no-cache="noCache" '+
-                  // 'md-delay="300" '+
-                  'ng-model="model" '+
+                  'md-no-cache="true" '+
                   'md-selected-item="selectedItem" '+
                   'md-search-text="searchText" '+
                   'md-items="item in querySearch(searchText)" '+
@@ -47,7 +44,7 @@ angular.module('tm.md-parse-places-autosuggest',[
     restrict: 'E',
     scope: {
       selectedItem:'=ngModel',
-      predictionsTypes: '=',
+      predictionsTypes: '=?',
       label:'@'
     },
     link: function(scope, el){
@@ -66,11 +63,16 @@ angular.module('tm.md-parse-places-autosuggest',[
         var deferred = $q.defer();
 
         uiGmapGoogleMapApi.then(function (maps){
-          var service = new maps.places.AutocompleteService();
+          var service = new maps.places.AutocompleteService(),
+              types   = ['address'];
+
+          if ($scope.predictionsTypes) {
+            types = $scope.predictionsTypes;
+          }
 
           service.getPlacePredictions({
             input: searchText,
-            types: $scope.predictionsTypes || ['address'],
+            types: types,
             componentRestrictions: {country: 'au'}
           }, function (predictions, status) {
             if (status != maps.places.PlacesServiceStatus.OK) {
@@ -104,8 +106,13 @@ angular.module('tm.md-parse-places-autosuggest',[
         return placesSearch(searchText);
       };
 
-      $scope.$watch('selectedItem',function(newVal, oldVal){
-        if(newVal)
+      $scope.$watch('selectedItem',function (newVal, oldVal) {
+
+        if (!newVal && $scope.searchText && $scope.searchText !== $scope.validation.loadingText)
+        {
+          $scope.searchText = '';
+        }
+        else if(newVal)
         {
           if(oldVal && newVal.description === oldVal.description)
           {
