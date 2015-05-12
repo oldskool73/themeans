@@ -60,6 +60,19 @@ angular.module('tm.parseProfiles', [
       this.setRootScope = function (rootScopeRef) {
         $rootScope = rootScopeRef;
       };
+      this.countProfiles = function () {
+        var deferred = $q.defer(), query = new Parse.Query(Profile);
+        query.count({
+          success: function (response) {
+            deferred.resolve(response);
+          },
+          error: function (err) {
+            $log.error('Parse Count Error: ' + err.message, err.code);
+            deferred.reject(err);
+          }
+        });
+        return deferred.promise;
+      };
       this.getProfileByIdForEditing = function (profileId) {
         return getProfileById(profileId, true);
       };
