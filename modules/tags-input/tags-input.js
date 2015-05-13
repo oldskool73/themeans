@@ -127,7 +127,9 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
               return;
             }
             var tag = $scope.tag.selectedText.value || $scope.tag.searchText || '';
-            tag = tag.replace(/[^\w\s-]/gi, '');
+            if (!$scope.suggestive()) {
+              tag = tag.replace(/[^\w\s-]/gi, '');
+            }
             tag = tag.toLowerCase();
 
             if ($scope.tags.indexOf(tag) < 0 && tag.length > 0)
