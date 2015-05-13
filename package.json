@@ -1,6 +1,6 @@
 {
   "name": "themeans-parse-create-account",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "main": ["./parse-create-account.js"],
   "dependencies": {
   }

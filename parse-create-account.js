@@ -62,6 +62,9 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
             };
             function createProfile(user) {
                 var Profile = Parse.Object.extend('Profile'), profile = new Profile(), deferred = new Parse.Promise();
+                if (!user) {
+                    deferred.reject({ message: 'Error: Cannot create Profile with out a _User.' });
+                }
                 beforeProfileSave(profile, user).then(function (profile) {
                     profile.save(profile, {
                         success: function (response) {
