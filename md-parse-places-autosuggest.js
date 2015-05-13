@@ -36,6 +36,18 @@ angular.module('tm.md-parse-places-autosuggest', [
       link: function (scope, el) {
         scope.el = el;
         scope.tmpEl = $document[0].createElement('google-places-detail-tmp');
+        /*
+      ** Defining the searchText in the linking function seems to prevent any random values
+      ** getting attached to this binding.
+      *
+      ** The MdAutoComplete class in angular-material.js doesn't seems to validate or check
+      ** that the type is right before binding it to the dom, and I couldn't trace the
+      ** reason a boolean was getting binded.
+      *
+      ** Note that declaring this binding in the controller does not work. It clears the
+      ** value, but then causes the 'cear input' button to not function.
+      */
+        scope.searchText = '';
       },
       controller: [
         '$scope',
@@ -84,9 +96,7 @@ angular.module('tm.md-parse-places-autosuggest', [
             return placesSearch(searchText);
           };
           $scope.$watch('selectedItem', function (newVal, oldVal) {
-            if (!newVal && $scope.searchText && $scope.searchText !== $scope.validation.loadingText) {
-              $scope.searchText = '';
-            } else if (newVal) {
+            if (newVal && newVal.place_id) {
               if (oldVal && newVal.description === oldVal.description) {
                 return $timeout(function () {
                   $scope.validation.deferred.resolve([]);
