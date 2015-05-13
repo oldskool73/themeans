@@ -374,7 +374,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                     for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
                         buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
                     }
-                } else if (typeof value === 'object' || typeof value === 'string') {
+                } else if (typeof value === 'object' || typeof value === 'string' || typeof value === 'number') {
                     buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
                 } else if (isFunction(value)) {
                     if (typeof originalTemplate !== 'string')
@@ -413,7 +413,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 return token[1];
             };
             mustache.name = 'mustache.js';
-            mustache.version = '1.1.0';
+            mustache.version = '1.2.0';
             mustache.tags = [
                 '{{',
                 '}}'

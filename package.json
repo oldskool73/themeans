@@ -1,6 +1,6 @@
 {
   "name": "themeans-parse-email",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "main": ["./parse-email.js"],
   "dependencies": {
   }
