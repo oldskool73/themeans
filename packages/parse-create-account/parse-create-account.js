@@ -61,6 +61,12 @@ function CreateAccount(Parse, beforeProfileSave, beforeSettingsSave) {
             profile     = new Profile(),
             deferred    = new Parse.Promise();
 
+        if (!user) {
+            deferred.reject({
+                message: 'Error: Cannot create Profile with out a _User.'
+            });
+        }
+
         beforeProfileSave(profile, user)
         .then(function (profile) {
 
