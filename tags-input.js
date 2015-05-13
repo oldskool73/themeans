@@ -10,7 +10,7 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
   function ($compile) {
     var template = {
         md: '<div>' + '<md-button ' + 'type="button" ' + 'ng-click="tagOnClick($index)" ' + 'ng-repeat="tag in tags track by $index" ' + 'style="display:inline-block;margin-right:4px;margin-bottom:4px" ' + 'class="md-primary md-raised">' + '{{tag}}' + '<md-icon ' + 'style="height:14px;width:14px;margin-left:6px;margin-top:-4px" ' + 'md-svg-icon="cancel">' + '</md-icon>' + '</md-button>' + '<div layout="row">' + '<md-input-container flex ng-if="!suggestive()">' + '<label for="label">{{inputLabel}}</label>' + '<input type="text" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'id="label" ' + 'ng-model="tag.searchText">' + '</md-input-container>' + '<md-autocomplete ng-if="suggestive()" flex ' + 'style="min-width: 0px;" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'md-no-cache="true" ' + 'md-selected-item="tag.selectedText" ' + 'md-search-text="tag.searchText" ' + 'md-items="item in getMatches(tag.searchText)" ' + 'md-item-text="item.display" ' + 'md-floating-label="{{inputLabel}}">' + '<span md-highlight-text="tag.searchText">{{item.display}}</span>' + '</md-autocomplete>' + '<md-button class="add-tab md-primary" flex="20" ' + 'style="min-width: 0px;" ' + 'ng-click="addOnClick()" ' + 'type="button">' + 'Add' + '</md-button>' + '</div>' + '</div>',
-        ionic: '<label class="item item-input item-stacked-label item-text-wrap">' + '<span class="input-label">My current skills: </span>' + '<div>' + '<button class="button button-positive" ' + 'type="button" ' + 'ng-repeat="tag in tags track by $index" ' + 'ng-click="tagOnClick($index)" ' + 'style="margin: 0 4px 4px 0; ">' + '{{tag}}&nbsp;&nbsp;' + '<i class="icon ion-close-circled"></i>' + '</button>' + '</div>' + '</label>' + '<label class="item item-input item-stacked-label">' + '<span class="input-label">Add a Skill: </span>' + '<input ' + 'type="text" ' + 'class="item-wrap" ' + 'placeholder="What skills do you have?" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'ng-model="tag.searchText">' + '</span>' + '</label>'
+        ionic: '<label class="item item-input item-stacked-label item-text-wrap">' + '<span class="input-label">My current skills: </span>' + '<div>' + '<button class="button button-positive" ' + 'type="button" ' + 'ng-repeat="tag in tags track by $index" ' + 'ng-click="tagOnClick($index)" ' + 'style="margin: 0 4px 4px 0; ">' + '{{tag}}&nbsp;&nbsp;' + '<i class="icon ion-close-circled"></i>' + '</button>' + '</div>' + '</label>' + '<label class="item item-input item-stacked-label">' + '<span class="input-label">Add a Skill: </span>' + '<input ' + 'type="text" ' + 'class="item-wrap" ' + 'placeholder="What skills do you have?" ' + 'ng-keydown="inputOnKeyDown($event)" ' + 'ng-model="tag.searchText">' + '</label>'
       };
     return {
       restrict: 'E',
@@ -60,7 +60,9 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
               return;
             }
             var tag = $scope.tag.selectedText.value || $scope.tag.searchText || '';
-            tag = tag.replace(/[^\w\s-]/gi, '');
+            if (!$scope.suggestive()) {
+              tag = tag.replace(/[^\w\s-]/gi, '');
+            }
             tag = tag.toLowerCase();
             if ($scope.tags.indexOf(tag) < 0 && tag.length > 0) {
               $scope.tags.push(tag);
@@ -74,7 +76,6 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
           };
           $scope.inputOnKeyDown = function ($event) {
             $event.stopPropagation();
-            console.log($event.which);
             if ($event.which === 13) {
               $scope.addOnClick();
               $event.preventDefault();
