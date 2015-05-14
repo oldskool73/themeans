@@ -122,13 +122,13 @@ angular.module('tm.md-parse-places-autosuggest',[
 
         if(newVal && newVal.place_id)
         {
-          if(oldVal && newVal.description === oldVal.description)
-          {
-            return $timeout(function () {
-              $scope.validation.deferred.resolve([]);
-            }, 100);
-          }
-
+          // if(oldVal && newVal.description === oldVal.description)
+          // {
+          //   return $timeout(function () {
+          //     $scope.validation.deferred.resolve([]);
+          //     return $scope.validation.deferred.promise;
+          //   }, 200);
+          // }
           $scope.searchText = angular.copy($scope.validation.loadingText);
 
           uiGmapGoogleMapApi.then(function(maps){
