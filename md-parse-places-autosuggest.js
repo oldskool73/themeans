@@ -97,11 +97,13 @@ angular.module('tm.md-parse-places-autosuggest', [
           };
           $scope.$watch('selectedItem', function (newVal, oldVal) {
             if (newVal && newVal.place_id) {
-              if (oldVal && newVal.description === oldVal.description) {
-                return $timeout(function () {
-                  $scope.validation.deferred.resolve([]);
-                }, 100);
-              }
+              // if(oldVal && newVal.description === oldVal.description)
+              // {
+              //   return $timeout(function () {
+              //     $scope.validation.deferred.resolve([]);
+              //     return $scope.validation.deferred.promise;
+              //   }, 200);
+              // }
               $scope.searchText = angular.copy($scope.validation.loadingText);
               uiGmapGoogleMapApi.then(function (maps) {
                 var service = new maps.places.PlacesService($scope.tmpEl);
