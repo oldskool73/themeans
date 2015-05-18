@@ -17,12 +17,12 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
     MdParseLogin.prototype.link = function(scope, element){ //@params(scope, element, attrs)
       var mainTmpl = '<div '+
         scope.defaults.mainContainerAttributes+
-        ' ng-switch on="formType"> '+
+        ' ng-switch="formType">'+
         // LOGIN
         '<md-toolbar '+
           'ng-if="!hideHeader" '+
           'ng-switch-when="login" '+
-          'class="{{defaults.mdToolbarClass}}"> '+
+          'class="{{defaults.mdToolbarClass}}">'+
           '<div class="md-toolbar-tools">'+
             '<span>'+
               '{{defaults.loginToolbarText}}'+
@@ -55,6 +55,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               'layout="row" '+
               'layout-align="center center">'+
               '<md-button flex '+
+                'type="submit" '+
                 'class="{{defaults.loginButtonClass}}"> '+
                 '{{defaults.loginButtonText}} '+
               '</md-button> '+
@@ -71,6 +72,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             'layout="row" '+
             'layout-align="center center">'+
             '<md-button flex '+
+              'type="button" '+
               'ng-bind="defaults.createButtonText" '+
               'class="{{defaults.createButtonClass}}" '+
               'ng-click="switchFormOnClick(\'create\')"> '+
@@ -120,6 +122,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             '</div> '+
             '<div  layout="row" layout-align="space-around center"> '+
               '<md-button flex '+
+                'type="submit" '+
                 // Nice simple way to disable a form, also prevents enter key from submit.
                 'ng-disabled="!createForm.$valid" '+
                 'class="{{defaults.submitButtonClass}}"> '+
@@ -127,6 +130,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               '</md-button> '+
               '<span flex="5"></span>'+
               '<md-button flex '+
+                'type="button" '+
                 'class="{{defaults.backButtonClass}}" '+
                 'ng-click="switchFormOnClick(\'login\')"> '+
                 '{{defaults.backButtonText}} '+
@@ -161,11 +165,13 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             '</div> '+
             '<div layout="row" layout-align="space-around center"> '+
               '<md-button flex '+
+                'type="submit" '+
                 'ng-bind="defaults.submitButtonText" '+
                 'class="{{defaults.submitButtonClass}}"> '+
               '</md-button> '+
               '<span flex="5"></span>'+
               '<md-button flex '+
+                'type="button" '+
                 'class="{{defaults.backButtonClass}}" '+
                 'ng-click="switchFormOnClick(\'login\')"> '+
                 '{{defaults.backButtonText}} '+
@@ -188,8 +194,8 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       'Parse',
       '$mdToast',
       '$mdDialog',
-      function ( $scope, $location, Parse, $mdToast ) {
-
+      '$animate',
+      function ( $scope, $location, Parse, $mdToast, $animate ) {
         var defaults = $scope.defaults = {};
         defaults.mdToolbarClass = 'md-primary md-default-theme';
         defaults.mdContentClass = 'md-padding';
@@ -232,7 +238,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
           }).join(' ');
         };
         $scope.showSimpleToast = function (toastContent) {
-          $mdToast.show($mdToast.simple().content(toastContent).position($scope.getToastPosition()).hideDelay(1500));
+          $mdToast.show($mdToast.simple().content(toastContent).position($scope.getToastPosition()).hideDelay(2500));
         };
         // default for ng-switch.
         $scope.formType = 'login';
