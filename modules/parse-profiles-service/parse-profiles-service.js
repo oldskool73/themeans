@@ -59,11 +59,15 @@ angular.module('tm.parseProfiles',[
       $rootScope = rootScopeRef;
     };
 
-    this.countProfiles = function() {
-      var deferred = $q.defer(),
-          query    = new Parse.Query(Profile);
+    this.countProfiles = function(queryOptions) {
+      var deferred        = $q.defer(),
+          profilesQuery   = new Parse.Query(Profile);
 
-      query.count({
+      queryOptions.forEach(function (queryOption) {
+        profilesQuery[queryOption.func].apply(profilesQuery, queryOption.args);
+      });
+
+      profilesQuery.count({
         success: function(response) {
           deferred.resolve(response);
         },
