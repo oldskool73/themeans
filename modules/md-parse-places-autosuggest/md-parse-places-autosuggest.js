@@ -142,8 +142,8 @@ angular.module('tm.md-parse-places-autosuggest',[
               {
                 newVal = angular.extend(newVal,place);
                 newVal.geoPoint = new Parse.GeoPoint({
-                    latitude: newVal.geometry.location.k,
-                    longitude: newVal.geometry.location.B
+                    latitude: newVal.geometry.location.lat(),
+                    longitude: newVal.geometry.location.lng()
                 });
                 delete newVal.html_attributions;
               }
