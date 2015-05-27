@@ -63,6 +63,8 @@ angular.module('tm.parseProfiles',[
       var deferred        = $q.defer(),
           profilesQuery   = new Parse.Query(Profile);
 
+      queryOptions ? queryOptions : [];
+
       queryOptions.forEach(function (queryOption) {
         profilesQuery[queryOption.func].apply(profilesQuery, queryOption.args);
       });
