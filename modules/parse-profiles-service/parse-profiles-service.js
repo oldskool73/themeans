@@ -524,10 +524,7 @@ angular.module('tm.parseProfiles',[
             // removing excess objects & data.
             delete ngConnection.receiver;
             delete ngConnection.sender;
-            if (ngConnection.requestStatus === 'pending') {
-              // Prevents the ability to scope hack the stateParams id for a pending candidate.
-              delete ngConnection.connection.objectId;
-            }
+
             return ngConnection;
           });
 

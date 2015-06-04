@@ -5,6 +5,7 @@
  * @name creemWebApp.directive:mdParsePlacesAutosuggest
  * @description
  * # mdParsePlacesAutosuggest
+ **** DOCS: https://developers.google.com/maps/documentation/javascript/places-autocomplete
  */
 angular.module('tm.md-parse-places-autosuggest',[
   'uiGmapgoogle-maps',
