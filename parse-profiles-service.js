@@ -62,6 +62,7 @@ angular.module('tm.parseProfiles', [
       };
       this.countProfiles = function (queryOptions) {
         var deferred = $q.defer(), profilesQuery = new Parse.Query(Profile);
+        queryOptions ? queryOptions : [];
         queryOptions.forEach(function (queryOption) {
           profilesQuery[queryOption.func].apply(profilesQuery, queryOption.args);
         });
@@ -402,10 +403,6 @@ angular.module('tm.parseProfiles', [
               // removing excess objects & data.
               delete ngConnection.receiver;
               delete ngConnection.sender;
-              if (ngConnection.requestStatus === 'pending') {
-                // Prevents the ability to scope hack the stateParams id for a pending candidate.
-                delete ngConnection.connection.objectId;
-              }
               return ngConnection;
             });
             var pendingConnections = [], acceptedConnections = [];
