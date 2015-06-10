@@ -35,7 +35,7 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
             var primaryDomain = options.primaryDomain, configObject = options.emailConfig, dataObject = options.emailData;
             var deferred = new Parse.Promise();
             var Mandrill = Parse.require('mandrill');
-            Mandrill.initialize('X7_fibq-tCUbHXVe4cfNVw');
+            Mandrill.initialize(configObject.apiKey);
             var fs = Parse.require('fs');
             var Mustache = require('/node_modules/mustache/mustache.js', module);
             var template = fs.readFileSync(configObject.templateFile, 'utf8');
@@ -45,12 +45,9 @@ if(typeof Parse.require === "undefined"){Parse.require = require;}(function (glo
                 message: {
                     html: html,
                     subject: configObject.emailSubject,
-                    from_email: configObject.fromEmail,
-                    from_name: configObject.fromName,
-                    to: [{
-                            email: dataObject.receiverEmail,
-                            name: dataObject.receiverName
-                        }]
+                    from_name: configObject.from.name,
+                    from_email: configObject.from.email,
+                    to: configObject.to
                 },
                 async: true
             }, {
