@@ -45,7 +45,7 @@ module.exports = function() {
       case 'ionic-parse-login':
         memo[name].version = version(0);
         memo[name].dependencies = {
-          "ionic": "~1.0.0-rc",
+          "ionic": "^1.0.0-,
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse"
         };
         break;
@@ -69,6 +69,14 @@ module.exports = function() {
         memo[name].dependencies = {
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
           "angular-material": "*",
+          "angular-google-maps": "~2.0.17"
+        };
+        break;
+      case 'ionic-parse-places-autosuggest':
+        memo[name].version = version(0);
+        memo[name].dependencies = {
+          "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+          "ionic": "^1.0.0",
           "angular-google-maps": "~2.0.17"
         };
         break;
@@ -105,7 +113,7 @@ module.exports = function() {
       case 'ionic-ng-camera':
         memo[name].version = version(0);
         memo[name].dependencies = {
-          "ionic": "~1.0.0-rc"
+          "ionic": "^1.0.0"
         };
         break;
       case 'md-parse-image-grid-picker':

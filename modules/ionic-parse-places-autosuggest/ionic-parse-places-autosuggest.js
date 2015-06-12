@@ -8,7 +8,8 @@
 
 angular.module('tm.ionic-parse-places-autosuggest', [
   'uiGmapgoogle-maps',
-  'tm.parse'
+  'tm.parse',
+  'ionic'
 ])
 .config(function ($provide,uiGmapGoogleMapApiProvider) {
   var libraries = 'places';
