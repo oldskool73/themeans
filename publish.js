@@ -45,7 +45,7 @@ module.exports = function() {
       case 'ionic-parse-login':
         memo[name].version = version(0);
         memo[name].dependencies = {
-          "ionic": "^1.0.0-,
+          "ionic": "^1.0.0-",
           "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse"
         };
         break;
