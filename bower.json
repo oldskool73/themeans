@@ -1,0 +1,10 @@
+{
+  "name": "themeans-ionic-parse-places-autosuggest",
+  "version": "0.1.0",
+  "main": ["./ionic-parse-places-autosuggest.js"],
+  "dependencies": {
+    "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
+    "ionic": "^1.0.0",
+    "angular-google-maps": "~2.0.17"
+  }
+}
