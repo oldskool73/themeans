@@ -47,7 +47,7 @@ angular.module('tm.ionic-parse-places-autosuggest', [
         'Parse',
         function ($scope, $timeout, $ionicModal, $q, uiGmapGoogleMapApi, Parse) {
           $scope.predictions = [];
-          $ionicModal.fromTemplateUrl('views/places-suggest.html', {
+          $ionicModal.fromTemplate('<ion-modal-view>' + '<div class="bar bar-header item-input-inset">' + '<label class="item-input-wrapper">' + '<i class="icon ion-ios7-search placeholder-icon"></i>' + '<input type="search" ' + 'placeholder="Enter Address" ' + 'ng-model="query" ' + 'name="addressText" ' + 'ng-keydown="enterAddressOnKeydown(query)">' + '</label>' + '<button class="button button-clear" ' + 'ng-click="closeIconOnClick()">' + 'Cancel' + '</button>' + '</div>' + '<ion-content>' + '<ion-list>' + '<ion-item ng-repeat="prediction in predictions track by $index" ' + 'ng-click="predictionOnClick(prediction)"> ' + '{{prediction.description}}' + '</ion-item>' + '</ion-list>' + '</ion-content>' + '</ion-modal-view>', {
             scope: $scope,
             animation: 'slide-in-up'
           }).then(function (modal) {
