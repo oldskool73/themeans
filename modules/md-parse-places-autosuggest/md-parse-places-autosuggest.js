@@ -60,7 +60,7 @@ angular.module('tm.md-parse-places-autosuggest',[
       ** reason a boolean was getting binded.
       *
       ** Note that declaring this binding in the controller does not work. It clears the
-      ** value, but then causes the 'cear input' button to not function.
+      ** value, but then causes the 'clear input' button to not function.
       */
       scope.searchText = '';
     },
