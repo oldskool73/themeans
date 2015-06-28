@@ -77,7 +77,7 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
         return deferred.promise;
       };
       this.getAddressFromString = function (string) {
-        var deferred = $q.defer(); 
+        var deferred = $q.defer();
         var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + options.key + '&address=' + string;
         $http.get(url).then(function (response) {
           var data = response.data;
