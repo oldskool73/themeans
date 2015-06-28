@@ -281,7 +281,7 @@ angular.module('tm.ionic-parse-login',['tm.parse', 'ionic'])
               $scope.createAccountModal.remove();
               // Hooray! Let them use the app now.
               // NOTE: call $ionicLoading.hide() in controller onLoginSuccess.
-              $scope.onLoginSuccess(user);
+              $scope.onLoginSuccess(user, true);
             },
             error: function(user, error) {
               var message = error.message;
