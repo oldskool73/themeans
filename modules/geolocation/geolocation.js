@@ -81,6 +81,48 @@ angular.module('tm.geolocation',[])
         return deferred.promise;
       };
 
+      this.getAddressFromString = function(string) {
+        var deferred = $q.defer();
+        var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + options.key + '&address=' + string;
+        
+        $http.get(url).then(function (response) {
+          var data = response.data;
+          if (data.status === 'OK' || data.statusText === 'OK')
+          {
+            var address_components = data.results[0];
+            deferred.resolve(address_components);
+          }
+          else
+          {
+            if (data.status === 'ZERO_RESULTS')
+            {
+              deferred.reject({
+                message: 'We couldn\'t find your position. Please enter your address:',
+                response: data
+              });
+            }
+            else if (data.status === 'OVER_QUERY_LIMIT')
+            {
+              deferred.reject({
+                message: 'Something went wrong, Please try again later.',
+                response: data
+              });
+            }
+            else
+            {
+              deferred.reject({
+                message: 'Something went wrong, Please try again later.',
+                response: data
+              });
+            }
+          }
+        }, function () {
+          // @params (data, status)
+          deferred.reject('Something went wrong, Please try again.');
+        });
+        return deferred.promise;
+      };
+
       this.startWatching = function(){
         var deferred = $q.defer();
 
