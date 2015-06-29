@@ -120,7 +120,10 @@ angular.module('tm.md-parse-places-autosuggest',[
       };
 
       $scope.$watch('selectedItem',function (newVal, oldVal) {
-
+        if (typeof newVal === 'undefined' && oldVal)
+        {
+          $scope.searchText = '';
+        }
         if(newVal && newVal.place_id)
         {
           // if(oldVal && newVal.description === oldVal.description)
