@@ -87,6 +87,9 @@ angular.module('tm.md-parse-login', [
         };
         $scope.loginFormOnSubmit = function () {
           $scope.sending = true;
+          if ($scope.usernameToLowercase) {
+            $scope.user.username = $scope.user.username.toLowerCase();
+          }
           Parse.User.logIn($scope.user.username, $scope.user.password, {
             success: function (user) {
               $scope.sending = false;
