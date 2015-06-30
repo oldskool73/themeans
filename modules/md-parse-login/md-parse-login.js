@@ -16,6 +16,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
 
     MdParseLogin.prototype.link = function(scope, element){ //@params(scope, element, attrs)
       var mainTmpl = '<div '+
+        'id="md-toast-parent" '+
         scope.defaults.mainContainerAttributes+
         ' ng-switch="formType">'+
         // LOGIN
@@ -205,35 +206,26 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       '$location',
       'Parse',
       '$mdToast',
-      '$mdDialog',
-      '$animate',
-      function ( $scope, $location, Parse, $mdToast, $animate ) {
+      function ($scope, $location, Parse, $mdToast) {
         var defaults = $scope.defaults = {};
         defaults.mdToolbarClass = 'md-primary md-default-theme';
         defaults.mdContentClass = 'md-padding';
-
         defaults.submitButtonClass = 'md-raised md-primary md-default-theme';
         defaults.submitButtonText = 'Submit';
         defaults.backButtonClass = '';
         defaults.backButtonText = 'Back';
-
         defaults.loginInputsAttributes = 'layout="row" layout-sm="column"';
         defaults.loginButtonClass = 'md-raised md-primary md-default-theme';
         defaults.loginButtonText = 'Login';
         defaults.loginToolbarText = 'Enter your login details';
-
         defaults.createButtonClass = 'md-raised md-default-theme';
         defaults.createButtonText = 'Create Account';
         defaults.createToolbarText = 'Enter your details';
         defaults.createInputsAttributes = 'layout="column" layout-sm="column" layout-align="center center"';
-
         defaults.resetInputsAttributes = 'layout="row" layout-sm="column"';
         defaults.resetToolbarText = 'Enter your email address';
-
         angular.extend($scope.defaults, $scope);
-
         $scope.sending = false;
-
         // Set the user object in controller for better control, this is a backup.
         if (typeof $scope.user === 'undefined') {
           $scope.user = {};
@@ -249,8 +241,28 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             return $scope.toastPosition[pos];
           }).join(' ');
         };
-        $scope.showSimpleToast = function (toastContent) {
-          $mdToast.show($mdToast.simple().content(toastContent).position($scope.getToastPosition()).hideDelay(2500));
+        $scope.showToastAlert = function (toastContent) {
+          $scope.toastMessage = toastContent;
+          var basicToastTemplate = '<md-toast>'+
+            '<span flex>{{toastMessage}}</span>'+
+          '</md-toast>';
+          var toastConfig = {
+            scope: $scope,
+            preserveScope: true,
+            bindToController: true,
+            hideDelay: parseInt($scope.customToastHideDelay) || 6000,
+            position: $scope.getToastPosition(),
+            parent: $scope.toastParentElementId
+                    ? angular.element(document.getElementById($scope.toastParentElementId))
+                    : angular.element(document.getElementById('md-toast-parent'))
+          };
+          if ($scope.customToastTemplateUrl) {
+            toastConfig.templateUrl = $scope.customToastTemplateUrl;
+          }
+          else {
+            toastConfig.template = basicToastTemplate;
+          }
+          $mdToast.show(toastConfig);
         };
         // default for ng-switch.
         $scope.formType = 'login';
@@ -266,11 +278,17 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               $scope.onLoginSuccess(user);
             },
             error: function (user, error) {
+              // connection_failed
               if (error.code === 100) {
-                $scope.showSimpleToast('Please check your internet connnection and try again.');
+                $scope.showToastAlert('Please check your internet connnection and try again.');
                 return;
               }
-              $scope.showSimpleToast(error.message);
+              // object_not_found
+              if (error.code === 101) {
+                $scope.showToastAlert('Incorrect username or password.');
+                return;
+              }
+              $scope.showToastAlert(error.message);
             }
           });
         };
@@ -279,16 +297,15 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             success: function () {
               $scope.sending = false;
               // Password reset request was sent successfully
-              $scope.showSimpleToast('An email with a link to reset your password has been sent.');
+              $scope.showToastAlert('An email with a link to reset your password has been sent.');
             },
             error: function (error) {
               $scope.sending = false;
               if (error.code === 100) {
-                $scope.showSimpleToast('Please check your internet connnection and try again.');
+                $scope.showToastAlert('Please check your internet connnection and try again.');
                 return;
               }
-              // Show the error message somewhere
-              $scope.showSimpleToast(error.message);
+              $scope.showToastAlert(error.message);
             }
           });
         };
@@ -311,11 +328,10 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
             error: function (user, error) {
               $scope.sending = false;
               if (error.code === 100) {
-                $scope.showSimpleToast('Please check your internet connnection and try again.');
+                $scope.showToastAlert('Please check your internet connnection and try again.');
                 return;
               }
-              // Show the error message somewhere and let the user try again.
-              $scope.showSimpleToast(error.message);
+              $scope.showToastAlert(error.message);
             }
           });
         };
