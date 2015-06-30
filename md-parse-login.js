@@ -110,6 +110,9 @@ angular.module('tm.md-parse-login', [
         $scope.createFormOnSubmit = function () {
           var user = new Parse.User();
           var keys = Object.keys($scope.user);
+          if ($scope.usernameToLowercase) {
+            $scope.user.username = $scope.user.username.toLowerCase();
+          }
           for (var i = 0; i < keys.length; i++) {
             user.set(keys[i], $scope.user[keys[i]]);
           }
@@ -138,6 +141,7 @@ angular.module('tm.md-parse-login', [
       user: '=',
       onLoginSuccess: '=',
       hideHeader: '=',
+      usernameToLowercase: '=?',
       createFormIncludeUrl: '@',
       mainContainerAttributes: '@',
       mdContentClass: '@',
