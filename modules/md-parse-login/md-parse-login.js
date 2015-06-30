@@ -8,6 +8,15 @@
     ## Complete with create account and reset password.
  */
 angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
+  .directive('autoFocus', function() {
+    return {
+      link: {
+        post: function postLink(scope, element, attr) {
+            element[0].focus();
+        }
+      }
+    }
+  })
   .directive('mdParseLogin', function ($compile){
 
     var MdParseLogin = function(){
@@ -39,7 +48,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               scope.defaults.loginInputsAttributes+'>'+
               '<md-input-container layout-fill> '+
                 '<label>Username</label> '+
-                '<input '+
+                '<input auto-focus '+
                   'required '+
                   'type="text" '+
                   'ng-model="user.username"> '+
