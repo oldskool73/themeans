@@ -295,7 +295,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
         $scope.createFormOnSubmit = function () {
           var user = new Parse.User();
           var keys = Object.keys($scope.user);
-          if (!$scope.allowUppercaseUsername) {
+          if ($scope.usernameToLowercase) {
             $scope.user.username = $scope.user.username.toLowerCase();
           }
           for (var i = 0; i < keys.length; i++) {
@@ -326,7 +326,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
       user: '=',
       onLoginSuccess: '=',
       hideHeader: '=',
-      allowUpperCaseUsername: '=?',
+      usernameToLowercase: '=?',
       createFormIncludeUrl: '@',
       mainContainerAttributes: '@',
       mdContentClass: '@',
