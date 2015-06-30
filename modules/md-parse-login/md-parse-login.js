@@ -64,7 +64,8 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
           '</form> '+
           '<p '+
             'layout="row" '+
-            'layout-align="center center">'+
+            'layout-align="center center" '+
+            'style="cursor: pointer;">'+
             '<a ng-click="switchFormOnClick(\'reset\')"> '+
               'Forgot password '+
             '</a> '+
