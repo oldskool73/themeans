@@ -21,6 +21,7 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
               'style="height:14px;width:14px;margin-left:6px;margin-top:-4px" ' +
               'md-svg-icon="cancel">' +
             '</md-icon>' +
+            '<md-tooltip>Click to remove</md-tooltop>'+
           '</md-button>' +
           '<div layout="row">' +
             '<md-input-container flex ng-if="!suggestive()">' +
@@ -41,12 +42,12 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
                 'md-floating-label="{{inputLabel}}">' +
               '<span md-highlight-text="tag.searchText">{{item.display}}</span>' +
             '</md-autocomplete>' +
-            '<md-button class="add-tab md-primary" flex="20" ' +
-              'style="min-width: 0px;" ' +
-              'ng-click="addOnClick()" ' +
-              'type="button">' +
-                'Add' +
-            '</md-button>' +
+            // '<md-button class="add-tab md-primary" flex="20" ' +
+            //   'style="min-width: 0px;" ' +
+            //   'ng-click="addOnClick()" ' +
+            //   'type="button">' +
+            //     'Add' +
+            // '</md-button>' +
           '</div>' +
         '</div>',
         ionic: '<label class="item item-input item-stacked-label item-text-wrap">' +
@@ -156,6 +157,12 @@ angular.module('tm.tags-input', []).directive('tmTagsInput', [
               $scope.tagOnClick($scope.tags.length - 1);
             }
           };
+          // adds tags on md-suggestions click select
+          $scope.$watch('tag.searchText', function (item) {
+            if ($scope.tag && $scope.tag.selectedText && $scope.tag.selectedText.value) {
+              $scope.addOnClick();
+            }
+          });
         }
       ]
     };

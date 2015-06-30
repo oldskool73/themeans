@@ -102,23 +102,35 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
                 '<label>Username</label> '+
                 '<input '+
                   'required '+
+                  'name="username" '+
                   'type="text" '+
                   'ng-model="user.username"> '+
               '</md-input-container> '+
+              '<div layout-fill ng-messages="createForm.username.$error" style="color:maroon;padding:10px;">'+
+                '<div ng-message="required">You did not enter a user name</div>'+
+              '</div>'+
               '<md-input-container layout-fill> '+
                 '<label>Email</label> '+
                 '<input '+
                   'required '+
+                  'name="email" '+
                   'ng-model="user.email" '+
                   'type="email"> '+
               '</md-input-container> '+
+              '<div layout-fill ng-messages="createForm.email.$error" style="color:maroon;padding:10px">'+
+                '<div ng-message="required">You did not enter your email address</div>'+
+              '</div>'+
               '<md-input-container layout-fill> '+
                 '<label>Password</label> '+
                 '<input '+
                   'required '+
+                  'name="password" '+
                   'ng-model="user.password" '+
                   'type="password"> '+
               '</md-input-container> '+
+              '<div layout-fill ng-messages="createForm.password.$error" style="color:maroon;padding:10px">'+
+                '<div ng-message="required">You did not enter a password</div>'+
+              '</div>'+
             '</div> '+
             '<div  layout="row" layout-align="space-around center"> '+
               '<md-button flex '+
