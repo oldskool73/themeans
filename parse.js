@@ -171,17 +171,21 @@ angular.module('tm.parse', []).provider('Parse', function ParseProvider() {
     }
     // parse initialize device on $ionicPlatform ready.
     var deferred = $q.defer();
-    $ionicPlatform.ready(function () {
+    $ionicPlatform.ready().then(function success() {
       if ($window.parsePlugin) {
         var bridge = $window.parsePlugin;
         // Delete from the $window scope to ensure that we use the deps injection
         delete $window.parsePlugin;
-        bridge.initialize(options.applicationId, options.clientKey, function () {
+        bridge.initialize(options.applicationId, options.clientKey, function success() {
           deferred.resolve(bridge);
-        }, function () {
-          deferred.reject(bridge);
+        }, function err(ex) {
+          deferred.reject(ex);
         });
+      } else {
+        deferred.reject('$window.parsePlugin is not defined');
       }
+    }, function err(ex) {
+      deferred.reject(ex);
     });
     parse.nativeBridge = deferred.promise;
     return parse;
