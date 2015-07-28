@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "main": ["./ionic-ng-camera.js"],
   "dependencies": {
-    "ionic": "~1.0.0-rc"
+    "ionic": "^1.0.0"
   }
 }
