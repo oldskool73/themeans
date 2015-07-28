@@ -4,7 +4,7 @@
   "main": ["./ionic-parse-places-autosuggest.js"],
   "dependencies": {
     "themeans-parse": "https://github.com/themeans/themeans.git#bower-parse",
-    "ionic": "^1.0.0",
+    "ionic": "~1",
     "angular-google-maps": "~2.0.17"
   }
 }
