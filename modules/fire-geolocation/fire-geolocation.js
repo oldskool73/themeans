@@ -10,51 +10,73 @@
 angular.module('tm.fire-location',[
     'firebase'
   ])
-  .service('FireConfig', function FireConfig(Firebase, $window, $timeout, $interval, Parse, $rootScope) {
+  .service('FireLocation', function FireLocation(Firebase, FBRoot, $window, $timeout, $interval, $rootScope, tmGeoLocation) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var serverTimeOffset;
 
-    var base = new Firebase('https://creem.firebaseio.com/'),
-        // geopositionRef = new Firebase('https://creem.firebaseio.com/location'),
+    var base = FBRoot,
         geoFireEndpoint = new $window.GeoFire(base);
 
-    $rootScope.$on('gps-position-update',function(evt, location){
-      if(!Parse.User.current())
-      {
-        return;
-      }
-      
-      geoFireEndpoint
-      .set(Parse.User.current().id, [
-        location.geoposition.coords.latitude,
-        location.geoposition.coords.longitude
-      ]);
-    });
-    // debugger;
-    var geoQuery = geoFireEndpoint.query({
-        center: [-33.8685763,151.2097666],
-        radius: 3000
-    });
-
-    // var onKeyEnteredRegistration = 
-    geoQuery.on('key_entered', function(key, location) {
-      $rootScope.$broadcast('geofire-key-entered',key, location);
-    });
-
-    // var onKeyEnteredRegistration = 
-    geoQuery.on('key_moved', function(key, location) {
-      $rootScope.$broadcast('geofire-key-moved',key, location);
-    });
-
-    // var onReadyRegistration = 
-    geoQuery.on('ready', function() {
-      $rootScope.$broadcast('geofire-ready');
-    });
-
+    // Just testing for now
     $interval(function(){
       geoFireEndpoint
-      .set('xxxyyyzzz', [-33.8685763,151.2097666 + Math.random()/100]);
-    },4000);
+      .set('xxxyyyzzz', [ 37.32479044, -122.02507262 + Math.random()/100 ]);
+    }, 4000);
+
+    // Maybe set to last known location??
+    var geoQuery;
+
+    function configureGeoQuery( lat, lng ) {
+      
+      geoQuery = geoFireEndpoint.query({
+          center: [ lat, lng ],
+          radius: 3000
+      });
+
+      // Will need a service that checks the key against keys in your group
+      geoQuery.on('key_entered', 
+        function onKeyEnteredRegistration(key, location) {
+
+          $rootScope.$broadcast('geofire-key-entered', key, location);
+        });
+      
+      // Will need a service that checks the key against keys in your group
+      geoQuery.on('key_moved', 
+        function onKeyEnteredRegistration(key, location) {
+
+          $rootScope.$broadcast('geofire-key-moved', key, location);
+        });
+
+      geoQuery.on('ready', 
+        function onReadyRegistration() {
+
+          $rootScope.$broadcast('geofire-ready');
+        });
+    }
+
+    $rootScope.$on('gps-position-update', 
+      function gpsPositionOnUpdate(evt, location){
+
+        var lat = location.geoposition.coords.latitude,
+          lng = location.geoposition.coords.longitude;
+
+        if(geoQuery)
+        {
+          geoQuery.updateCriteria({
+            center: [ lat, lng ],
+            radius: 3000
+          });
+        }
+        else
+        {
+          configureGeoQuery( lat, lng );
+        }
+
+        // This should be your UUID for firebase
+        geoFireEndpoint
+        .set('boodle', [ lat, lng ]);
+
+      });
 
     (function(ref) {
       serverTimeOffset = 0;
@@ -63,12 +85,8 @@ angular.module('tm.fire-location',[
       });
     })(base);
 
-    this.updateLocation = function(){
-
-    };
-
     this.getCurrentServerTime = function(){
-        return Date.now() + serverTimeOffset;
+      return Date.now() + serverTimeOffset;
     };
 
     return this;
