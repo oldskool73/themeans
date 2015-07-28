@@ -19,8 +19,9 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
     '$q',
     '$http',
     '$rootScope',
-    function GeoLocation($q, $http, $rootScope) {
-      var gps = {};
+    '$log',
+    function GeoLocation($q, $http, $rootScope, $log) {
+      var gps = {}, self = this;
       // AngularJS will instantiate a singleton by calling "new" on this function
       this.currentPosition = function () {
         var deferred = $q.defer();
@@ -108,17 +109,24 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
         });
         return deferred.promise;
       };
-      this.startWatching = function () {
+      this.startWatching = function (gpsOptions) {
         var deferred = $q.defer();
         if (navigator.geolocation) {
-          var gpsOptions = {
-              enableHighAccuracy: false,
-              timeout: 1000 * 4,
-              maximumAge: 1 * 1000
+          if (!gpsOptions) {
+            // This needs enough time to return a geopos 
+            // or it will return an empty object. 
+            gpsOptions = {
+              enableHighAccuracy: true,
+              timeout: 20 * 1000,
+              maximumAge: 20 * 1000
             };
+          }
+          self.stopWatching();
           gps.GPSWatchId = navigator.geolocation.watchPosition(function onSuccess(pos) {
+            // $log.info('gps-position-update',pos);
             $rootScope.$broadcast('gps-position-update', { geoposition: pos });
-          }, function onError() {
+          }, function onError(err) {
+            $log.error(err);
           }, gpsOptions);
           deferred.resolve({
             message: 'Started watching position',
@@ -130,6 +138,10 @@ angular.module('tm.geolocation', []).provider('tmGeoLocation', function () {
         return deferred.promise;
       };
       this.stopWatching = function () {
+        if (gps.GPSWatchId) {
+          return navigator.geolocation.clearWatch(gps.GPSWatchId);
+        }
+        return true;
       };
       return this;
     }
