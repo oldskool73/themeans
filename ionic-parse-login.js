@@ -49,10 +49,7 @@ angular.module('tm.ionic-parse-login', [
           };
         }
         $scope.loginFormOnSubmit = function () {
-          $ionicLoading.show({
-            template: 'Loading...',
-            duration: 10000
-          });
+          $ionicLoading.show({});
           Parse.User.logIn($scope.user.username, $scope.user.password, {
             success: function (user) {
               // Do stuff after successful login.
