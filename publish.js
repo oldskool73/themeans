@@ -38,7 +38,7 @@ module.exports = function() {
         memo[name].version = version(0);
         memo[name].dependencies = {
           "angular":"~1.3.0",
-          "parse": "master",
+          "parse": "1.4.2",
           "parse-angular-patch": "master"
         };
         break;
