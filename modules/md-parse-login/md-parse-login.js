@@ -190,7 +190,7 @@ angular.module('tm.md-parse-login', ['tm.parse', 'ngMaterial'])
               '<md-button flex '+
                 'type="submit" '+
                 'ng-bind="defaults.submitButtonText" '+
-                'ng-class="{{defaults.submitButtonClass}}" '+
+                'class="defaults.submitButtonClass" '+
                 'ng-disabled="!user.email" >'+
               '</md-button> '+
               '<span flex="5"></span>'+
